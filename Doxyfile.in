@@ -9,7 +9,7 @@ PROJECT_BRIEF          =
 
 PROJECT_LOGO           =
 
-OUTPUT_DIRECTORY       = doc
+OUTPUT_DIRECTORY       = "@CMAKE_CURRENT_SOURCE_DIR@/docs"
 
 CREATE_SUBDIRS         = NO
 

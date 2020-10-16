@@ -132,14 +132,16 @@ public:
 
 	// clang-format off
 /** \name 1D vector quantities of stored neutrons
-| Variable   | Comment                        | Units                    |
-| ---------  | ----------------               | ------------------------ |
-| x,y,z      | position in                    | [cm]                     |
-| dx,dy,dz   | direction                      | (normalized velocity)    |
-| sx,sy,sz   | polarization of non-photons    |                          |
-| time       | ray time w.r.t. ray generation | [ms]                     |
-| wavelength |                                | [Ang]                    |
-| weight     | weight                         |                          |
+| Variable    | Comment                        | Units                    |
+| ---------   | ----------------               | ------------------------ |
+| x,y,z       | position in                    | [cm]                     |
+| dx,dy,dz    | direction                      | (normalized velocity)    |
+| sx,sy,sz    | polarization of non-photons    |                          |
+| sPx,sPy,sPz | s-polarization of photons      |                          |
+| pPx,pPy,pPz | p-polarization of photons      |                          |
+| time        | ray time w.r.t. ray generation | [ms]                     |
+| wavelength  |                                | [Ang]                    |
+| weight      | weight                         |                          |
 */
 	// clang-format on
 
