@@ -46,6 +46,8 @@ public:
 	 * \param[in] dx,dy,dz : direction
 	 * \param[in] sPx, sPy, sPz : s-polarization
 	 * \param[in] pPx, pPy, pPz : p-polarization
+	 * \param[in] t : ray time
+	 * \param[in] p : weight
 	 */
 	void
 	add_photon(double x, double y, double z,       // position
@@ -62,7 +64,7 @@ public:
 	 * \param[in] x,y,z : neutron position in cm
 	 * \param[in] sx, sy, sz : neutron polarization (not working yet)
 	 * \param[in] dx, dy, dz : neutron direction
-	 * \param[in] ray time : time in ms
+	 * \param[in] time : time in ms
 	 * \param[in] weight : weight
 	 * \param[in] ekin : kinetic energy
 	 */
