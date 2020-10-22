@@ -987,7 +987,7 @@ IGNORE_PREFIX          =
 # Configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
-HTML_OUTPUT            = html
+HTML_OUTPUT            = ./
 HTML_FILE_EXTENSION    = .html
 
 # The HTML_HEADER tag can be used to specify a user-defined HTML header file for

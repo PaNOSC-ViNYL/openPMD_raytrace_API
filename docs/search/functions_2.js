@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['is_5fchunk_5ffinished',['is_chunk_finished',['../classrays.html#a94eaff44b6abb0de92227ad6d9e79b4a',1,'rays']]]
+  ['push_5fback_5fnonphoton',['push_back_nonphoton',['../classrays.html#a0942b5b9bb2a40ac2ea4755fc5a35aad',1,'rays']]],
+  ['push_5fback_5fphoton',['push_back_photon',['../classrays.html#a870a763e6f5119f91b9076da453defd4',1,'rays']]]
 ];

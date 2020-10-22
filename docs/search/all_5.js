@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['rays',['rays',['../classrays.html',1,'rays'],['../classrays.html#aa942968fb889760e8cc0ae372cfc30d0',1,'rays::rays()']]],
-  ['rays_2ehh',['rays.hh',['../rays_8hh.html',1,'']]],
-  ['retrieve_5fnext',['retrieve_next',['../classrays.html#a581475658ba90d2c344a78c27af8df5d',1,'rays']]]
+  ['size',['size',['../classrays.html#ad5182dd491f37c12dca67e8bf9018538',1,'rays']]],
+  ['store_5fnonphoton',['store_nonphoton',['../classrays.html#a441adcbe4f7949823114959734dc29ae',1,'rays']]],
+  ['store_5fphoton',['store_photon',['../classrays.html#a24f4c8ba17f97d2a52f373c1d802b4cc',1,'rays']]]
 ];
