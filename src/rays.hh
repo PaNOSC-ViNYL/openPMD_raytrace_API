@@ -6,6 +6,9 @@
 /** \class rays
  * \brief stores the rays' properties
  *
+ * This class is meant to keep in memory the rays' quantities before effectively writing them on disk by the store_chunk method, or to load in memory the rays' quantities after reading the openPMD file from disk with the load_chunk method
+ *
+ *
  * \todo add a check that the non-photon polarization is not filled if storing photons
  * \todo check that polarizationAmplitudes are not filled for non-photons
  */
@@ -21,27 +24,27 @@ private:
 	        _wavelength,           // wavelength
 	        _time, _weight,        // ray time, weight
 	        _abs_v, _ekin;         // velocity, kinetic energy
-	size_t _size;                  // number of stored neutrons
+	size_t _size;                  // number of stored rays
 	size_t _read;                  // current index when reading
 
 public:
 	/// \brief default constructor
 	rays();
 
-	/** \brief append a new ray  (\b doing \b conversions)
-	 * \param[in] x,y,z :  position          -> it is converted to cm ( * 100)
+	/** \brief append a new ray to the internal memory 
+	 * \param[in] x,y,z :  position          
 	 * \param[in] dx, dy, dz : direction
 	 * \param[in] sx, sy, sz : non-photon polarization
 	 * \param[in] t : ray time
 	 * \param[in] p : weight
 	 */
 	void
-	add_non_photon(double x, double y, double z,    // position
-	               double dx, double dy, double dz, // direction
-	               double sx, double sy, double sz, // polarization
-	               double t, double p);             // ray time and weight
+	push_back_nonphoton(double x, double y, double z,    // position
+	                    double dx, double dy, double dz, // direction
+	                    double sx, double sy, double sz, // polarization
+	                    double t, double p);             // ray time and weight
 
-	/** \brief append a new photon ray
+	/** \brief append a new photon ray to the internal memory
 	 * \param[in] x,y,z : position
 	 * \param[in] dx,dy,dz : direction
 	 * \param[in] sPx, sPy, sPz : s-polarization
@@ -50,37 +53,50 @@ public:
 	 * \param[in] p : weight
 	 */
 	void
-	add_photon(double x, double y, double z,       // position
-	           double dx, double dy, double dz,    // direction
-	           double sPx, double sPy, double sPz, // s-polarization
-	           double pPx, double pPy, double pPz, // p-polarization
-	           double t, double p);                // ray time and weight
+	push_back_photon(double x, double y, double z,       // position
+	                 double dx, double dy, double dz,    // direction
+	                 double sPx, double sPy, double sPz, // s-polarization
+	                 double pPx, double pPy, double pPz, // p-polarization
+	                 double t, double p);                // ray time and weight
 
 	void
 	push_back(); // this can have all the possible arguments, for photons and
 	             // non-photons
 
-	/** \brief append a new ray reading from *openPMD data*
-	 * \param[in] x,y,z : neutron position in cm
-	 * \param[in] sx, sy, sz : neutron polarization (not working yet)
-	 * \param[in] dx, dy, dz : neutron direction
-	 * \param[in] time : time in ms
-	 * \param[in] weight : weight
-	 * \param[in] ekin : kinetic energy
+	/** \brief append a new ray to the internal memory reading from *openPMD data*
+	 * \param[in] x,y,z :  position          
+	 * \param[in] dx, dy, dz : direction
+	 * \param[in] sx, sy, sz : non-photon polarization
+	 * \param[in] t : ray time
+	 * \param[in] p : weight
 	 */
 	void
-	store(double x, double y, double z,    //  position
-	      double sx, double sy, double sz, //  polarization
-	      double dx, double dy, double dz, //  velocity
-	      double time, double weight,      //  ray time and weight
-	      double ekin);                    //  kinetic energy
+	store_nonphoton(double x, double y, double z,    // position
+	                double dx, double dy, double dz, // direction
+	                double sx, double sy, double sz, // polarization
+	                double t, double p);             // ray time and weight
 
-	/** \brief read a new neutron from openPMD data
+	/** \brief append a new ray reading from *openPMD data*
+	 * \param[in] x,y,z : position
+	 * \param[in] dx,dy,dz : direction
+	 * \param[in] sPx, sPy, sPz : s-polarization
+	 * \param[in] pPx, pPy, pPz : p-polarization
+	 * \param[in] t : ray time
+	 * \param[in] p : weight
+	 */
+	void
+	store_photon(double x, double y, double z,       // position
+	                double dx, double dy, double dz,    // direction
+	                double sPx, double sPy, double sPz, // s-polarization
+	                double pPx, double pPy, double pPz, // p-polarization
+	                double t, double p);                // ray time and weight
+
+	/** \brief read a new ray from openPMD data
 	 * It increaments the reader count
-	 * \param[out] x,y,z : neutron position in m
-	 * \param[out] sx, sy, sz : neutron polarization (not working yet)
-	 * \param[out] vx, vy, vz : neutron velocity in m/s
-	 * \param[out] t : time in s
+	 * \param[out] x,y,z : neutron position 
+	 * \param[out] sx, sy, sz : neutron polarization \todo polarization not working yet
+	 * \param[out] vx, vy, vz : neutron velocity
+	 * \param[out] t : time
 	 * \param[out] p : weight
 	 */
 	void
@@ -98,7 +114,7 @@ public:
 	         double* vx, double* vy, double* vz, // velocity
 	         double* t, double* p);              // ray time and weight //, uint32_t userflag = 0);)
 
-	/** \brief reset the container, removing all the neutrons */
+	/** \brief reset the container, removing all the rays */
 	void
 	clear(void) {
 		_size = 0;
@@ -117,7 +133,7 @@ public:
 		_weight.clear();
 	};
 
-	/** \brief returns the number of stored neutrons */
+	/** \brief returns the number of stored rays */
 	size_t
 	size() const {
 		return _size;
@@ -133,7 +149,7 @@ public:
 	}
 
 	// clang-format off
-/** \name 1D vector quantities of stored neutrons
+/** \name 1D vector quantities of stored rays
 | Variable    | Comment                        | Units                    |
 | ---------   | ----------------               | ------------------------ |
 | x,y,z       | position in                    | [cm]                     |
