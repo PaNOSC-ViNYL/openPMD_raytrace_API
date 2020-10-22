@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CPP-helloworld: rays Class Reference</title>
+<title>openPMD_raytrace_API: rays Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">CPP-helloworld
+   <div id="projectname">openPMD_raytrace_API
    </div>
   </td>
  </tr>
@@ -86,6 +86,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a870a763e6f5119f91b9076da453defd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrays.html#a870a763e6f5119f91b9076da453defd4">push_back_photon</a> (double x, double y, double z, double dx, double dy, double dz, double sPx, double sPy, double sPz, double pPx, double pPy, double pPz, double t, double p)</td></tr>
 <tr class="memdesc:a870a763e6f5119f91b9076da453defd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">append a new photon ray to the internal memory  <a href="#a870a763e6f5119f91b9076da453defd4">More...</a><br /></td></tr>
 <tr class="separator:a870a763e6f5119f91b9076da453defd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c4bd29fead658107f1a74ab126d797"><td class="memItemLeft" align="right" valign="top"><a id="a44c4bd29fead658107f1a74ab126d797"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrays.html#a44c4bd29fead658107f1a74ab126d797">push_back</a> (<a class="el" href="classray.html">ray</a> this_ray)</td></tr>
+<tr class="memdesc:a44c4bd29fead658107f1a74ab126d797"><td class="mdescLeft">&#160;</td><td class="mdescRight">append a new ray <br /></td></tr>
+<tr class="separator:a44c4bd29fead658107f1a74ab126d797"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a441adcbe4f7949823114959734dc29ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrays.html#a441adcbe4f7949823114959734dc29ae">store_nonphoton</a> (double x, double y, double z, double dx, double dy, double dz, double sx, double sy, double sz, double t, double p)</td></tr>
 <tr class="memdesc:a441adcbe4f7949823114959734dc29ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">append a new ray to the internal memory reading from <em>openPMD data</em>  <a href="#a441adcbe4f7949823114959734dc29ae">More...</a><br /></td></tr>
 <tr class="separator:a441adcbe4f7949823114959734dc29ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,11 +172,11 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>stores the rays' properties </p>
 <p>This class is meant to keep in memory the rays' quantities before effectively writing them on disk by the store_chunk method, or to load in memory the rays' quantities after reading the openPMD file from disk with the load_chunk method</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><p class="startdd">add a check that the non-photon polarization is not filled if storing photons </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd><p class="startdd">add a check that the non-photon polarization is not filled if storing photons </p>
 <p class="enddd">check that polarizationAmplitudes are not filled for non-photons </p>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00016">16</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00019">19</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0942b5b9bb2a40ac2ea4755fc5a35aad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0942b5b9bb2a40ac2ea4755fc5a35aad">&#9670;&nbsp;</a></span>push_back_nonphoton()</h2>
@@ -257,8 +261,7 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 <p>append a new ray to the internal memory </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x,y,z</td><td>: position <br />
-</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x,y,z</td><td>: position </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">dx,dy,dz</td><td>: direction </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sx,sy,sz</td><td>: non-photon polarization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>: ray time </td></tr>
@@ -266,6 +269,8 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
   </table>
   </dd>
 </dl>
+
+<p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00017">17</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
 
 </div>
 </div>
@@ -465,8 +470,7 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 <p>append a new ray to the internal memory reading from <em>openPMD data</em> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x,y,z</td><td>: position <br />
-</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x,y,z</td><td>: position </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">dx,dy,dz</td><td>: direction </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sx,sy,sz</td><td>: non-photon polarization </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>: ray time </td></tr>
@@ -686,7 +690,7 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>polarization not working yet </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>polarization not working yet </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">vx,vy,vz</td><td>: neutron velocity </td></tr>
@@ -696,7 +700,7 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00103">103</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00107">107</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
 
 </div>
 </div>
@@ -727,12 +731,13 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 <p>check if all the data have been already retrieved </p>
 <dl class="section return"><dt>Returns</dt><dd>bool : true if all the data stored have been retrieved it return true also if it is empty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00147">147</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00151">151</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/src/<a class="el" href="rays_8hh_source.html">rays.hh</a></li>
+<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/src/<a class="el" href="rays_8cc_source.html">rays.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
