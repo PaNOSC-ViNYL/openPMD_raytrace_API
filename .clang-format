@@ -21,8 +21,8 @@ AlwaysBreakAfterReturnType: None
 SortIncludes: false
 
 
-AlwaysBreakAfterReturnType: All
-#AlwaysBreakAfterReturnType: TopLevel
+#AlwaysBreakAfterReturnType: All
+AlwaysBreakAfterReturnType: TopLevel
 BreakConstructorInitializers: AfterColon
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 SpaceBeforeCtorInitializerColon: false
@@ -42,3 +42,4 @@ ContinuationIndentWidth: 8
 #SpacesBeforeTrailingComments: 2
 AlignTrailingComments: true
 ReflowComments: true
+

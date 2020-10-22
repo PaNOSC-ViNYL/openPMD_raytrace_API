@@ -2,15 +2,15 @@
 # cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF
 cmake_minimum_required(VERSION 3.7.2)
 
-project(CPP-helloworld LANGUAGES CXX)
+project(openPMD_raytrace_API LANGUAGES CXX)
 
 include(GNUInstallDirs)
 
 
-# add_library(component SHARED src/openPMD_io.cc src/particles.cc)
-# set_target_properties(component
-#   PROPERTIES LINKER_LANGUAGE CXX
-#   )
+add_library(api  src/ray.hh src/rays.hh src/rays.cc)
+set_target_properties(api
+   PROPERTIES LINKER_LANGUAGE CXX
+   )
 # target_include_directories(component PUBLIC include/)
 # set_property(TARGET component PROPERTY CXX_STANDARD 17)
 # target_link_libraries(component PUBLIC openPMD::openPMD)

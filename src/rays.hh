@@ -1,23 +1,27 @@
-#ifndef RAY_CLASS_HH
-#define RAY_CLASS_HH
+#ifndef RAYS_CLASS_HH
+#define RAYS_CLASS_HH
 ///\file
 #include <vector>
+#include "ray.hh"
 
-/** \class rays
+/** \class Rays
  * \brief stores the rays' properties
  *
- * This class is meant to keep in memory the rays' quantities before effectively writing them on disk by the store_chunk method, or to load in memory the rays' quantities after reading the openPMD file from disk with the load_chunk method
+ * This class is meant to keep in memory the rays' quantities before effectively writing them on
+ * disk by the store_chunk method, or to load in memory the rays' quantities after reading the
+ * openPMD file from disk with the load_chunk method
  *
  *
  * \todo add a check that the non-photon polarization is not filled if storing photons
  * \todo check that polarizationAmplitudes are not filled for non-photons
  */
 
-class rays {
+class Rays {
 
 private:
-	// the 3d components are in separate vectors because this is the way the openPMD API wants
-	// them to be
+	std::vector<Ray> _rays;
+	// the 3d components are in separate vectors because this is the way the openPMD API
+	// wants them to be
 	std::vector<float> _x, _y, _z, // position
 	        _dx, _dy, _dz,         // direction (vx^2+vy^2+vz^2) = 1
 	        _sx, _sy, _sz,         // non-photon polarization
@@ -29,10 +33,20 @@ private:
 
 public:
 	/// \brief default constructor
-	rays();
+	Rays();
 
-	/** \brief append a new ray to the internal memory 
-	 * \param[in] x,y,z :  position          
+	/** \brief append a new ray
+	 * \param[in] this_ray : a ray object
+	 */
+	void push(Ray this_ray) { _rays.push_back(this_ray); };
+
+	/** \brief pop first ray
+	 * \param[out] ray : a ray object
+	 */
+	Ray pop(void);
+
+	/** \brief append a new ray to the internal memory
+	 * \param[in] x,y,z :  position
 	 * \param[in] dx, dy, dz : direction
 	 * \param[in] sx, sy, sz : non-photon polarization
 	 * \param[in] t : ray time
@@ -59,12 +73,9 @@ public:
 	                 double pPx, double pPy, double pPz, // p-polarization
 	                 double t, double p);                // ray time and weight
 
-	void
-	push_back(); // this can have all the possible arguments, for photons and
-	             // non-photons
 
 	/** \brief append a new ray to the internal memory reading from *openPMD data*
-	 * \param[in] x,y,z :  position          
+	 * \param[in] x,y,z :  position
 	 * \param[in] dx, dy, dz : direction
 	 * \param[in] sx, sy, sz : non-photon polarization
 	 * \param[in] t : ray time
@@ -86,14 +97,14 @@ public:
 	 */
 	void
 	store_photon(double x, double y, double z,       // position
-	                double dx, double dy, double dz,    // direction
-	                double sPx, double sPy, double sPz, // s-polarization
-	                double pPx, double pPy, double pPz, // p-polarization
-	                double t, double p);                // ray time and weight
+	             double dx, double dy, double dz,    // direction
+	             double sPx, double sPy, double sPz, // s-polarization
+	             double pPx, double pPy, double pPz, // p-polarization
+	             double t, double p);                // ray time and weight
 
 	/** \brief read a new ray from openPMD data
 	 * It increaments the reader count
-	 * \param[out] x,y,z : neutron position 
+	 * \param[out] x,y,z : neutron position
 	 * \param[out] sx, sy, sz : neutron polarization \todo polarization not working yet
 	 * \param[out] vx, vy, vz : neutron velocity
 	 * \param[out] t : time
@@ -112,7 +123,7 @@ public:
 	retrieve(double* x, double* y, double* z,    // position
 	         double* sx, double* sy, double* sz, // polarization
 	         double* vx, double* vy, double* vz, // velocity
-	         double* t, double* p);              // ray time and weight //, uint32_t userflag = 0);)
+	         double* t, double* p); // ray time and weight //, uint32_t userflag = 0);)
 
 	/** \brief reset the container, removing all the rays */
 	void
