@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>openPMD_raytrace_API: openPMD_raytrace_API</title>
+<title>openPMD_raytrace_API: Main Page</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,13 +62,14 @@ $(function() {
 
 <div class="header">
   <div class="headertitle">
-<div class="title">openPMD_raytrace_API </div>  </div>
+<div class="title">openPMD_raytrace_API Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>c++ API for the openPMD ray trace extension</p>
-<p>## Devel instructions </p><div class="fragment"><div class="line">git clone --depth 1 git@github.com:openPMD/openPMD-api.git</div><div class="line">cd openPMD-api</div><div class="line">patch -p1 &lt; ../cmake_api.patch</div><div class="line">cd -</div><div class="line">mkdir build/</div><div class="line">cd build/</div><div class="line">cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF</div><div class="line"></div><div class="line"></div><div class="line">cmake --build .</div><div class="line">cmake --build . --target doc</div></div><!-- fragment --><h2>Usage</h2>
-<p>### Writing </p><div class="fragment"><div class="line">include &lt;ray.hh&gt;</div></div><!-- fragment --><p> A <a class="el" href="classRay.html" title="Generic ray, containing all the ray information being stored by the API into the openPMD file...">Ray</a> object should be constructed and filled with all the relevant information.</p>
-<p>The ray is then queued for writing using the <a class="el" href="classopenPMD__io.html" title="I/O API for the ray trace extension of the openPMD format. ">openPMD_io</a> class: </p><div class="fragment"><div class="line">openPMD_io io;</div><div class="line">Ray myray;</div><div class="line"># fill the ray quantities</div><div class="line"># ...</div><div class="line">#</div><div class="line">io.push(myray);</div></div><!-- fragment --><p>The <a class="el" href="classRay.html" title="Generic ray, containing all the ray information being stored by the API into the openPMD file...">Ray</a> class is providing all the conversion/utility operations on the quantities stored in the openPMD file according to the RAYTRACE extension </p>
+<p># Devel instructions </p><div class="fragment"><div class="line">git clone --depth 1 git@github.com:openPMD/openPMD-api.git</div><div class="line">cd openPMD-api</div><div class="line">patch -p1 &lt; ../cmake_api.patch</div><div class="line">cd -</div><div class="line">mkdir build/</div><div class="line">cd build/</div><div class="line">cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF</div><div class="line"></div><div class="line"></div><div class="line">cmake --build .</div><div class="line">cmake --build . --target doc</div></div><!-- fragment --><h1>Usage</h1>
+<p>## Writing </p><div class="fragment"><div class="line">include &lt;ray.hh&gt;</div></div><!-- fragment --><p> A <a class="el" href="classRay.html" title="Generic ray, containing all the ray information being stored by the API into the openPMD file...">Ray</a> object should be constructed and filled with all the relevant information.</p>
+<p>The ray is then queued for writing using the <a class="el" href="classopenPMD__io.html" title="I/O API for the ray trace extension of the openPMD format. ">openPMD_io</a> class: </p><div class="fragment"><div class="line">openPMD_io io;</div><div class="line">Ray myray;</div><div class="line"># fill the ray quantities</div><div class="line"># ...</div><div class="line">#</div><div class="line">io.push(myray);</div></div><!-- fragment --><p>The <a class="el" href="classRay.html" title="Generic ray, containing all the ray information being stored by the API into the openPMD file...">Ray</a> class is providing all the conversion/utility operations on the quantities stored in the openPMD file according to the RAYTRACE extension</p>
+<h2>Reading</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

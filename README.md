@@ -1,7 +1,6 @@
-# openPMD_raytrace_API
 c++ API for the openPMD ray trace extension 
 
-## Devel instructions
+# Devel instructions
 ```
 git clone --depth 1 git@github.com:openPMD/openPMD-api.git
 cd openPMD-api
@@ -16,9 +15,9 @@ cmake --build .
 cmake --build . --target doc
 ```
 
-## Usage
+# Usage
 
-### Writing
+## Writing
 ```
 include <ray.hh>
 ```
@@ -37,3 +36,4 @@ io.push(myray);
 The Ray class is providing all the conversion/utility operations on the quantities stored in the openPMD file according to the RAYTRACE extension
 
 
+## Reading

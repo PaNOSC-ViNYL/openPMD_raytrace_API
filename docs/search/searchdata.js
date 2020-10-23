@@ -1,13 +1,12 @@
 var indexSectionsWithContent =
 {
-  0: "cdinoprstvw",
+  0: "cdinoprstv",
   1: "nopr",
-  2: "orw",
+  2: "or",
   3: "cdioprstv",
   4: "o",
-  5: "o",
-  6: "c",
-  7: "ot"
+  5: "c",
+  6: "t"
 };
 
 var indexSectionNames =
@@ -16,10 +15,9 @@ var indexSectionNames =
   1: "classes",
   2: "files",
   3: "functions",
-  4: "typedefs",
-  5: "enums",
-  6: "defines",
-  7: "pages"
+  4: "enums",
+  5: "defines",
+  6: "pages"
 };
 
 var indexSectionLabels =
@@ -28,9 +26,8 @@ var indexSectionLabels =
   1: "Classes",
   2: "Files",
   3: "Functions",
-  4: "Typedefs",
-  5: "Enumerations",
-  6: "Macros",
-  7: "Pages"
+  4: "Enumerations",
+  5: "Macros",
+  6: "Pages"
 };
 
