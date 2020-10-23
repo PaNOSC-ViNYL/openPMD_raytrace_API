@@ -24,6 +24,10 @@ Rays::push(Ray this_ray) {
 	_dy.push_back(this_ray.dy());
 	_dz.push_back(this_ray.dz());
 
+	_sx.push_back(this_ray.sx());
+	_sy.push_back(this_ray.sy());
+	_sz.push_back(this_ray.sz());
+
 	/// \todo implement the rest
 };
 
