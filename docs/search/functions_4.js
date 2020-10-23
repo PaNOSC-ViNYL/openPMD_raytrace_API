@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['rays',['Rays',['../classRays.html#a838ba66cdc75e83ddea53f5466f3f2e5',1,'Rays']]]
+  ['pop',['pop',['../classRays.html#a70d6422bcd081a1865614752349b0241',1,'Rays']]],
+  ['position',['position',['../classRay.html#a07fe93ed50bab5f7d7808009ffcdc420',1,'Ray']]],
+  ['push',['push',['../classRays.html#a4976d2b18cc59e55321287d1677820ae',1,'Rays']]]
 ];

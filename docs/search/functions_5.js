@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size',['size',['../classRays.html#a6b9d557ce14e30eb944e57c1ce3e2df5',1,'Rays']]]
+  ['rays',['Rays',['../classRays.html#a838ba66cdc75e83ddea53f5466f3f2e5',1,'Rays']]]
 ];

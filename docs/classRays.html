@@ -173,11 +173,14 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 <tr class="memitem:a0d3ad57131b62f226e77920b7979ae26"><td class="memItemLeft" align="right" valign="top"><a id="a0d3ad57131b62f226e77920b7979ae26"></a>
 const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>weight</b> (void) const</td></tr>
 <tr class="separator:a0d3ad57131b62f226e77920b7979ae26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa129f4b4cc0f2d527e4c71267a22c0bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRays.html#aa129f4b4cc0f2d527e4c71267a22c0bb">store</a> (float x, float y, float z, float dx, float dy, float dz, float sx, float sy, float sz, float sPolx, float sPoly, float sPolz, float pPolx, float pPoly, float pPolz, float wavelength, float t, float p)</td></tr>
+<tr class="memdesc:aa129f4b4cc0f2d527e4c71267a22c0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">append a new ray to the internal memory reading from <em>openPMD data</em>  <a href="#aa129f4b4cc0f2d527e4c71267a22c0bb">More...</a><br /></td></tr>
+<tr class="separator:aa129f4b4cc0f2d527e4c71267a22c0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>stores the rays' properties </p>
 <p>This class is meant to keep in memory the rays' quantities before effectively writing them on disk by the store_chunk method, or to load in memory the rays' quantities after reading the openPMD file from disk with the load_chunk method</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd><p class="startdd">add a check that the non-photon polarization is not filled if storing photons </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd><p class="startdd">add a check that the non-photon polarization is not filled if storing photons </p>
 <p class="enddd">check that polarizationAmplitudes are not filled for non-photons</p>
 </dd></dl>
 <div class="dotgraph">
@@ -212,7 +215,7 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>implement the rest </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>implement the rest </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00018">18</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
 
@@ -242,7 +245,7 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ray : a ray object </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>implement the rest </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>implement the rest </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00032">32</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -287,6 +290,147 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 <dl class="section return"><dt>Returns</dt><dd>bool : true if all the data stored have been retrieved it return true also if it is empty </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00100">100</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
+
+</div>
+</div>
+<a id="aa129f4b4cc0f2d527e4c71267a22c0bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa129f4b4cc0f2d527e4c71267a22c0bb">&#9670;&nbsp;</a></span>store()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rays::store </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sPolx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sPoly</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>sPolz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>pPolx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>pPoly</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>pPolz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>wavelength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>append a new ray to the internal memory reading from <em>openPMD data</em> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x,y,z</td><td>: position </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dx,dy,dz</td><td>: direction </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sx,sy,sz</td><td>: non-photon polarization </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sPolx,sPoly,sPolz</td><td>: s-polarization </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pPolx,pPoly,pPolz</td><td>: p-polarization </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">wavelength</td><td>: ray wavelength </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>: ray time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>: weight </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00050">50</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
 
 </div>
 </div>
