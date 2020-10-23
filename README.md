@@ -2,6 +2,8 @@ c++ API for the openPMD ray trace extension
 
 # Devel instructions
 ```
+git clone -b devel git@github.com:PaNOSC-ViNYL/openPMD_raytrace_API.git
+cd openPMD_raytrace_API/
 git clone --depth 1 git@github.com:openPMD/openPMD-api.git
 cd openPMD-api
 patch -p1 < ../cmake_api.patch
