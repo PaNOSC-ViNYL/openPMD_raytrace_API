@@ -1,4 +1,6 @@
 # git clone --depth 1 git@github.com:openPMD/openPMD-api.git
+# cd openPMD-api
+# patch -p1 < ../cmake_api.patch
 # cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF
 cmake_minimum_required(VERSION 3.7.2)
 
@@ -6,14 +8,17 @@ project(openPMD_raytrace_API LANGUAGES CXX)
 
 include(GNUInstallDirs)
 
+#########################################################
+add_subdirectory("openPMD-api")
 
-add_library(api  src/ray.hh src/rays.hh src/rays.cc)
+
+add_library(api  src/openPMD_io.cc src/ray.hh src/rays.hh src/rays.cc)
 set_target_properties(api
    PROPERTIES LINKER_LANGUAGE CXX
    )
-# target_include_directories(component PUBLIC include/)
-# set_property(TARGET component PROPERTY CXX_STANDARD 17)
-# target_link_libraries(component PUBLIC openPMD::openPMD)
+target_include_directories(api PUBLIC include/)
+set_property(TARGET api PROPERTY CXX_STANDARD 17)
+target_link_libraries(api PUBLIC openPMD::openPMD)
 
 # add_library(wrap SHARED src/wrap.cc)
 # target_include_directories(wrap PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
