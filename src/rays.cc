@@ -13,8 +13,9 @@
 
 Rays::Rays(): _size(0), _read(0) {}
 
+//------------------------------
 void
-Rays::push_back(Ray this_ray){
+Rays::push(Ray this_ray) {
 	_x.push_back(this_ray.x());
 	_y.push_back(this_ray.y());
 	_z.push_back(this_ray.z());
@@ -24,8 +25,25 @@ Rays::push_back(Ray this_ray){
 	_dz.push_back(this_ray.dz());
 
 	/// \todo implement the rest
-	
 };
+
+//------------------------------
+Ray
+Rays::pop(bool next) {
+	/// \todo implement the rest
+
+	Ray r;
+	r.position(_x[_read], _y[_read], _z[_read]);
+	r.direction(_dx[_read], _dy[_read], _dz[_read]);
+
+	r.polarization(_sx[_read], _sy[_read], _sz[_read]);
+
+	r.time(_time[_read]);
+	r.weight(_weight[_read]);
+
+	if (next) ++_read;
+	return r;
+}
 
 #ifdef SHERVIN
 void
@@ -59,9 +77,9 @@ Rays::push_back_nonphoton(double x, double y, double z,    //
 
 void
 Rays::store(double x, double y, double z,    //
-                 double sx, double sy, double sz, //
-                 double dx, double dy, double dz, //
-                 double time, double weight, double ekin) {
+            double sx, double sy, double sz, //
+            double dx, double dy, double dz, //
+            double time, double weight, double ekin) {
 
 	_x.push_back(x);
 	_y.push_back(y);
@@ -82,15 +100,15 @@ Rays::store(double x, double y, double z,    //
 	_ekin.push_back(ekin);
 
 	/*
-    // The data is bonkers, z is usually largest as it should be, but completely wrong orders of magnitude
-    std::cout << "x,y,z:" << x << "," << y << "," << z << std::endl;
-    std::cout << "vx,vy,vz:" << dx << "," << dy << "," << dz << std::endl;
+    // The data is bonkers, z is usually largest as it should be, but completely wrong orders of
+    magnitude std::cout << "x,y,z:" << x << "," << y << "," << z << std::endl; std::cout <<
+    "vx,vy,vz:" << dx << "," << dy << "," << dz << std::endl;
     */
 
 	++_size;
 }
 
-/* The unit conversion is done here. This way the content of the object is consistent 
+/* The unit conversion is done here. This way the content of the object is consistent
  * if push_back() is used or if store() is used. This leads to a small
  * inefficiency when re-using the same neutrons multiple times, since
  * the conversion has to be repeated for the same neutrons. It is
@@ -100,9 +118,9 @@ Rays::store(double x, double y, double z,    //
  */
 void
 Rays::retrieve(double* x, double* y, double* z,    //
-                    double* sx, double* sy, double* sz, //
-                    double* vx, double* vy, double* vz, //
-                    double* t, double* p) {             //, uint32_t userflag) {
+               double* sx, double* sy, double* sz, //
+               double* vx, double* vy, double* vz, //
+               double* t, double* p) {             //, uint32_t userflag) {
 
 	assert(_read <= _size);
 	// Convert position from cm to m

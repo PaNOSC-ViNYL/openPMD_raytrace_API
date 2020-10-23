@@ -7,9 +7,14 @@
  * file
  *
  * This is base class provides several methods to set and manipulate the ray information in the
- * appropriate way Other specific ray classes should inherit from this in order to provide more
- * convinient methods for the user. Derived classes can be created from this and used by the users
- * in their programs
+ * appropriate way.
+ * 
+ * Other specific ray classes should inherit from this in order to provide more
+ * convenient methods for the user. Derived classes can be created from this and used by the users
+ * in their programs.
+ *
+ * Unit conversions should be applied here, so that the Rays class stores information in a coherent way.
+ * There is a small inefficiency if rays are used multiple times, but the time spent in unit conversions is anyway negligible w.r.t. the simulation time.
  */
 class Ray {
 public:
@@ -38,9 +43,10 @@ public:
 	float dy() const { return _direction[Y]; };
 	float dz() const { return _direction[Z]; };
 
-	
+	float weight() const { return _weight; };
+
 	/// \brief scale and set the position
-	void position(double x, double y, double z, double scale) {
+	void position(double x, double y, double z, double scale=1) {
 		_position[X] = x * scale;
 		_position[Y] = y * scale;
 		_position[Z] = z * scale;
@@ -48,7 +54,7 @@ public:
 
 	/// \brief scale and set the direction
 	void
-	direction(double x, double y, double z, double scale) {
+	direction(double x, double y, double z, double scale=1) {
 		_direction[X] = x * scale;
 		_direction[Y] = y * scale;
 		_direction[Z] = z * scale;
@@ -63,11 +69,11 @@ public:
 
 	/// \name To implement
 	///@{ \todo to implement
-	void polarization(double x, double y, double z, double scale);
-	void sPolarization(double x, double y, double z, double scale);
-	void pPolarization(double x, double y, double z, double scale);
-	void time(double t);
-	void weigth(double w);
+	void polarization(double x, double y, double z, double scale=1);
+	void sPolarization(double x, double y, double z, double scale=1);
+	void pPolarization(double x, double y, double z, double scale=1);
+	void time(double t) { _time = t; };
+	void weight(double w) { _weight = w; };
 	/// @}
 };
 
