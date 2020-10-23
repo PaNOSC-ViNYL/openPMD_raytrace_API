@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wrap_2eh',['wrap.h',['../wrap_8h.html',1,'']]]
+  ['velocity',['velocity',['../classRay.html#ab2c9cff04b359b5c4179ff66ac47bc19',1,'Ray']]]
 ];

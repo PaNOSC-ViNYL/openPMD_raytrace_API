@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['trace_5fread',['trace_read',['../classopenPMD__io.html#aa65eb51d15e1b7a436dc0c65af37aa46',1,'openPMD_io']]],
-  ['trace_5fwrite',['trace_write',['../classopenPMD__io.html#a4a668b1e217e4c0771ffeacb05030d9f',1,'openPMD_io']]]
+  ['save_5fwrite',['save_write',['../classopenPMD__io.html#a90cf590f7834355125dce034fb6473a5',1,'openPMD_io']]],
+  ['size',['size',['../classRays.html#a6b9d557ce14e30eb944e57c1ce3e2df5',1,'Rays']]],
+  ['spolarization',['sPolarization',['../classRay.html#a83784d08c2dca1928eef715771d8030c',1,'Ray']]],
+  ['store',['store',['../classRays.html#aa129f4b4cc0f2d527e4c71267a22c0bb',1,'Rays']]]
 ];
