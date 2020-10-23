@@ -45,6 +45,48 @@ Rays::pop(bool next) {
 	return r;
 }
 
+//------------------------------
+void
+Rays::store(float x, float y, float z,             // position
+            float dx, float dy, float dz,          // direction
+            float sx, float sy, float sz,          // polarization
+            float sPolx, float sPoly, float sPolz, // s-polarization
+            float pPolx, float pPoly, float pPolz, // p-polarization
+            float wavelength, float time, float weight) {  // ray wavelength, time and weight
+
+	_x.push_back(x);
+	_y.push_back(y);
+	_z.push_back(z);
+
+	_dx.push_back(dx);
+	_dy.push_back(dy);
+	_dz.push_back(dz);
+
+	_sx.push_back(sx);
+	_sy.push_back(sy);
+	_sz.push_back(sz);
+
+	_sPolx.push_back(sPolx);
+	_sPoly.push_back(sPoly);
+	_sPolz.push_back(sPolz);
+
+	_pPolx.push_back(pPolx);
+	_pPoly.push_back(pPoly);
+	_pPolz.push_back(pPolz);
+
+	_wavelength.push_back(wavelength);
+	_time.push_back(time);
+	_weight.push_back(weight);
+
+	/*
+	// The data is bonkers, z is usually largest as it should be, but completely wrong orders of
+	magnitude std::cout << "x,y,z:" << x << "," << y << "," << z << std::endl; std::cout <<
+	"vx,vy,vz:" << dx << "," << dy << "," << dz << std::endl;
+	*/
+
+	++_size;
+}
+
 #ifdef SHERVIN
 void
 Rays::push_back_nonphoton(double x, double y, double z,    //
@@ -72,39 +114,6 @@ Rays::push_back_nonphoton(double x, double y, double z,    //
 
 	_ekin.push_back(ekin);
 	//  _userflag.push_back(userflag);
-	++_size;
-}
-
-void
-Rays::store(double x, double y, double z,    //
-            double sx, double sy, double sz, //
-            double dx, double dy, double dz, //
-            double time, double weight, double ekin) {
-
-	_x.push_back(x);
-	_y.push_back(y);
-	_z.push_back(z);
-
-	_sx.push_back(sx);
-	_sy.push_back(sy);
-	_sz.push_back(sz);
-
-	_vx.push_back(dx);
-	_vy.push_back(dy);
-	_vz.push_back(dz);
-
-	_time.push_back(time);
-
-	_weight.push_back(weight);
-
-	_ekin.push_back(ekin);
-
-	/*
-    // The data is bonkers, z is usually largest as it should be, but completely wrong orders of
-    magnitude std::cout << "x,y,z:" << x << "," << y << "," << z << std::endl; std::cout <<
-    "vx,vy,vz:" << dx << "," << dy << "," << dz << std::endl;
-    */
-
 	++_size;
 }
 

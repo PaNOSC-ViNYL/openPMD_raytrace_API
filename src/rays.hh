@@ -133,7 +133,24 @@ public:
 	const std::vector<float>& time(void) const { return _time; };
 	const std::vector<float>& weight(void) const { return _weight; };
 
-		///@}
+	/** \brief append a new ray to the internal memory reading from *openPMD data*
+	 * \param[in] x,y,z :  position
+	 * \param[in] dx, dy, dz : direction
+	 * \param[in] sx, sy, sz : non-photon polarization
+	 * \param[in] sPolx, sPoly, sPolz : s-polarization
+	 * \param[in] pPolx, pPoly, pPolz : p-polarization
+	 * \param[in] wavelength : ray wavelength
+	 * \param[in] t : ray time
+	 * \param[in] p : weight
+	 */
+	void store(float x, float y, float z,             // position
+	           float dx, float dy, float dz,          // direction
+	           float sx, float sy, float sz,          // polarization
+	           float sPolx, float sPoly, float sPolz, // s-polarization
+	           float pPolx, float pPoly, float pPolz, // p-polarization
+	           float wavelength, float t, float p);   // ray wavelength, time and weight
+
+	///@}
 
 #ifdef SHERVIN
 	/** \brief append a new ray to the internal memory
