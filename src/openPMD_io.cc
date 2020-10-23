@@ -1,3 +1,4 @@
+#include "rays.hh" // helper class that stores the rays and returns 1D vectors
 #include "openPMD_io.hh"
 #include <iostream>
 ///\file

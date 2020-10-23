@@ -12,7 +12,7 @@ include(GNUInstallDirs)
 add_subdirectory("openPMD-api")
 
 
-add_library(api  src/openPMD_io.cc src/ray.hh src/rays.hh src/rays.cc)
+add_library(api  src/openPMD_io.cc src/rays.cc)
 set_target_properties(api
    PROPERTIES LINKER_LANGUAGE CXX
    )

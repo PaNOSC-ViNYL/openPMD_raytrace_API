@@ -2,30 +2,32 @@
 #define RAYTRACE_API_HH
 ///\file
 #include "openpmd_output_formats.h" // enum with the available openPMD backends
-#include "rays.hh"                  // helper class that stores the rays and returns 1D vectors
-#include <openPMD/openPMD.hpp>      // openPMD C++ API
+#include "ray.hh"
+#include <openPMD/openPMD.hpp> // openPMD C++ API
 #include <string>
 
 #define ITER 1
 
+class Rays; // forward declaration of the class
+
 /** \class openPMD_io
  * \brief I/O API for the ray trace extension of the openPMD format
  *
- * This API is a higher level API of the official openPMD API
- * This is meant to be used to save/read a coherent set of rays to/from file.
+ * This API is a higher level API of the official openPMD API. \n
+ * This is meant to be used to save/read a coherent set of rays to/from file. \n
  * Coherent in this case means that a single type of rays (particles) are going to used.
  */
 class openPMD_io {
 public:
 	///\brief constructor
-	explicit openPMD_io(const std::string& filename, ///< filename
-	                    openPMD::Access read_mode,   ///< file access mode (read/write/append)
-	                    std::string mc_code_name    = "", ///< Name of the simulation code name
-	                    std::string mc_code_version = "", ///< Simulation software version
-	                    std::string instrument_name = "", ///< Name of the instrument
-	                    std::string name_current_component =
-	                            "",    ///< current component name along the beamline
-	                    int repeat = 1 ///< number of times a ray should be repeatedly retrieved
+	explicit openPMD_io(
+	        const std::string& filename,             ///< filename
+	        openPMD::Access read_mode,               ///< file access mode (read/write/append)
+	        std::string mc_code_name           = "", ///< Name of the simulation code name
+	        std::string mc_code_version        = "", ///< Simulation software version
+	        std::string instrument_name        = "", ///< Name of the instrument
+	        std::string name_current_component = "", ///< current component name along the beamline
+	        int repeat = 1 ///< number of times a ray should be repeatedly retrieved
 	);
 
 	/***************************************************************/
@@ -34,11 +36,11 @@ public:
 public:
 	/// \brief initializes the "series" object from the openPMD API in WRITE MODE
 	void init_write(openPMD_output_format_t output_format, ///< output format
-	                unsigned long long int n_rays, ///< number of rays being simulated (max)
+	                unsigned long long int n_rays,         ///< number of rays being simulated (max)
 	                unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
 
-	#ifdef SHERVIN
+#ifdef SHERVIN
 	/** \brief save ray properties in a vector
 	 *
 	 * it writes to the file when the number of rays reaches CHUNK_SIZE as defined in the
@@ -55,8 +57,8 @@ public:
 	                 double sx, double sy, double sz, // polarization
 	                 double vx, double vy, double vz, // velocity
 	                 double t, double p);
-	#endif
-	/// \brief save ray properties 
+#endif
+	/// \brief save ray properties
 	void trace_write(Ray this_ray);
 	/** \brief Flushes the output to file before closing it */
 	void save_write(void);
@@ -75,7 +77,7 @@ public:
 	          unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
 
-	#ifdef SHERVIN
+#ifdef SHERVIN
 	/** \brief save ray properties in a vector
 	 *
 	 * Reads ray data from particle instance in format useful for McStas
@@ -89,9 +91,9 @@ public:
 	                double* sx, double* sy, double* sz, // polarization
 	                double* vx, double* vy, double* vz, // velocity
 	                double* t, double* p);
-	#endif
+#endif
 	/** \brief read one ray from file
-	 * 
+	 *
 	 * \returns Ray object
 	 */
 	Ray trace_read(void) const;
@@ -127,10 +129,11 @@ private:
 		return i.particles["ray"];
 	}
 
-	void init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isScalar,
-	                   std::map<openPMD::UnitDimension, double> const& dims =
-	                           {{openPMD::UnitDimension::L, 0.}},
-	                   double unitSI = 0.);
+	void
+	init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isScalar,
+	              std::map<openPMD::UnitDimension, double> const& dims = {{openPMD::UnitDimension::L,
+	                                                                       0.}},
+	              double unitSI                                        = 0.);
 };
 
 #endif

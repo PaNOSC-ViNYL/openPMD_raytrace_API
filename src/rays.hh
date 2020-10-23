@@ -1,6 +1,7 @@
 #ifndef RAYS_CLASS_HH
 #define RAYS_CLASS_HH
 ///\file
+// #include "openpmd_output_formats.h" // enum with the available openPMD backends
 #include <vector>
 #include <utility>
 #include "ray.hh"
