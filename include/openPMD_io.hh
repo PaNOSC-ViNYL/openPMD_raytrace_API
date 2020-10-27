@@ -61,6 +61,7 @@ public:
 	 *
 	 * This function must be called each time the particle species are changed and for each new
 	 * iteration.
+	 * 
 	 **/
 	void init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter);
 

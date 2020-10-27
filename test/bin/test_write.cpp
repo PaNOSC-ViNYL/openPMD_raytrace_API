@@ -1,7 +1,4 @@
 #include <openPMD_io.hh>
-#include <openPMD/openPMD.hpp>
-#include <cstdlib>
-#include <numeric>
 
 int
 main(int argc, char* argv[]) {
