@@ -63,17 +63,23 @@ openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isSc
 }
 
 //------------------------------------------------------------
-/** n_rays is the ncount of McStas, so the number of rays to be
- * simulated */
+/**
+ * \internal \remark 
+ * The openPMD ray tracing extension settings are set here for the rays' properties.\n
+ * n_rays is the ncount of McStas, so the number of rays to be
+ * simulated
+ **/
 void
-openPMD_io::init_rays(unsigned long long int n_rays, unsigned int iter) {
+openPMD_io::init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter) {
 
 	// series.setAttribute("dinner", "Pizza and Coke");
 	// i.setAttribute("vacuum", true);
 
-	auto rays = rays_pmd();
-	rays.setAttribute("speciesType", "2112");
-	rays.setAttribute("PDGID", "2112");
+	auto rays = rays_pmd(particle_species);
+	rays.setAttribute("speciesType", particle_species);
+	rays.setAttribute("PDGID", particle_species);
+	//	rays.setAttribute("speciesType", "2112");
+	//rays.setAttribute("PDGID", "2112");
 	// declare the dataset total size: the final size
 
 	openPMD::Dataset dataset = openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{n_rays});
@@ -87,19 +93,19 @@ openPMD_io::init_rays(unsigned long long int n_rays, unsigned int iter) {
 	init_ray_prop("wavelength", dataset, true,
 	              {{
 	                       openPMD::UnitDimension::M,
-	                       1,
+	                       0,
 	               },
 	               {
 	                       openPMD::UnitDimension::L,
-	                       2,
+	                       -1,
 	               },
-	               {openPMD::UnitDimension::T, -2}},
-	              1.6021766e-13); // MeV
+	               {openPMD::UnitDimension::T, 0}},
+	              0); // 1.6021766e-13); // MeV
 }
 
 void
-openPMD_io::init_write(openPMD_output_format_t extension, unsigned long long int n_rays,
-                       unsigned int iter) {
+openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_species,
+                       unsigned long long int n_rays, unsigned int iter) {
 	_iter = iter;
 	std::string filename = _name;
 	std::string a        = output_format_names.find(extension)->second;
@@ -116,20 +122,19 @@ openPMD_io::init_write(openPMD_output_format_t extension, unsigned long long int
 	// be per particle
 	//
 	std::cout << "Filename: " << filename << std::endl; // remove
-	auto i = _series->iterations[1];
-	// auto i = iter_pmd(iter);
-	i.setAttribute("vacuum", true);
+	//auto i = _series->iterations[1];
+	auto i = iter_pmd(iter);
+
 	// set the mccode, mccode_version, component name, instrument name
 
-	//	init_rays(n_rays, iter);
+	init_rays(particle_species, n_rays, iter);
 
-	// openPMD::Record mass = rays["mass"];
-	// openPMD::RecordComponent mass_scalar =
-	// mass[openPMD::RecordComponent::SCALAR];
+	//openPMD::Record mass = rays["mass"];
+	//openPMD::RecordComponent mass_scalar = mass[openPMD::RecordComponent::SCALAR];
 
-	// mass_scalar.resetDataset(dataset);
+	//	mass_scalar.resetDataset(dataset);
 
-	//_series->flush();
+	_series->flush();
 }
 
 //------------------------------------------------------------

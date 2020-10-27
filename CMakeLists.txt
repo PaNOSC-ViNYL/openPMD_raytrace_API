@@ -37,7 +37,6 @@ set_target_properties(api PROPERTIES
 set_property(TARGET api PROPERTY CXX_STANDARD 11) # with 17 it crashes!
 # it should be due to the openPMD API
 target_link_libraries(api PUBLIC openPMD::openPMD)
-if(ciao)
 
 
 #---------------
@@ -46,7 +45,7 @@ write_basic_package_version_file(${PROJECT_NAME}ConfigVersion.cmake
   COMPATIBILITY SameMajorVersion
   VERSION ${PROJECT_VERSION}
   )
-endif()
+#set(INSTALL True)
 
 if(INSTALL)
 #------------------------------------------------------------
