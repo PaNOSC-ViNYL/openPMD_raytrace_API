@@ -1,0 +1,4 @@
+<map id="raytracing::openPMD_io::save_write" name="raytracing::openPMD_io::save_write">
+<area shape="rect" id="node2" href="$classraytracing_1_1Rays.html#aa27c29fa64fcc5597a6acd4c04d90370" title="returns the number of stored rays " alt="" coords="199,5,349,32"/>
+<area shape="rect" id="node3" href="$classraytracing_1_1Rays.html#a0bc902010ca2ec0252eea6652aa53a88" title="reset the container, removing all the rays " alt="" coords="197,56,351,83"/>
+</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['neutron',['neutron',['../classneutron.html',1,'']]]
+  ['neutron',['neutron',['../classraytracing_1_1neutron.html',1,'raytracing']]]
 ];

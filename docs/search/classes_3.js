@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ray',['Ray',['../classRay.html',1,'']]],
-  ['rays',['Rays',['../classRays.html',1,'']]]
+  ['ray',['Ray',['../classraytracing_1_1Ray.html',1,'raytracing']]],
+  ['rays',['Rays',['../classraytracing_1_1Rays.html',1,'raytracing']]]
 ];

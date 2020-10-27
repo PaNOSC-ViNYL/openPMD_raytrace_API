@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['photon',['photon',['../classphoton.html',1,'']]]
+  ['photon',['photon',['../classraytracing_1_1photon.html',1,'raytracing']]]
 ];
