@@ -27,12 +27,21 @@ A Ray object should be constructed and filled with all the relevant information.
 
 The ray is then queued for writing using the openPMD_io class:
 ```
-openPMD_io io;
-Ray myray;
-# fill the ray quantities
-# ...
-#
-io.push(myray);
+std::string filename = "test_file";
+raytracing::openPMD_io iol(filename, "test code");
+	
+iol.init_write(raytracing::JSON, "2112", 3, 1);
+
+raytracing::Ray myray;
+myray.position(1,2,3);
+//...
+myray.direction(1,1,1,1./sqrt(3));
+
+// append 
+iol.trace_write(myray);
+
+	
+iol.save_write();
 ```
 
 The Ray class is providing all the conversion/utility operations on the quantities stored in the openPMD file according to the RAYTRACE extension
