@@ -1,4 +1,5 @@
-<map id="/opt/panosc/openPMD_extension/openPMD_raytrace_API/src/rays.hh" name="/opt/panosc/openPMD_extension/openPMD_raytrace_API/src/rays.hh">
-<area shape="rect" id="node2" href="$openPMD__io_8cc.html" title="/opt/panosc/openPMD\l_extension/openPMD_raytrace\l_API/src/openPMD_io.cc" alt="" coords="5,109,205,165"/>
-<area shape="rect" id="node3" href="$rays_8cc.html" title="/opt/panosc/openPMD\l_extension/openPMD_raytrace\l_API/src/rays.cc" alt="" coords="229,109,429,165"/>
+<map id="/opt/panosc/openPMD_extension/openPMD_raytrace_API/include/rays.hh" name="/opt/panosc/openPMD_extension/openPMD_raytrace_API/include/rays.hh">
+<area shape="rect" id="node2" href="$openPMD__io_8cc.html" title="/opt/panosc/openPMD\l_extension/openPMD_raytrace\l_API/src/openPMD_io.cc" alt="" coords="69,213,269,269"/>
+<area shape="rect" id="node3" href="$rays_8cc.html" title="/opt/panosc/openPMD\l_extension/openPMD_raytrace\l_API/src/rays.cc" alt="" coords="27,109,227,165"/>
+<area shape="rect" id="node4" href="$openPMD__io_8hh.html" title="/opt/panosc/openPMD\l_extension/openPMD_raytrace\l_API/include/openPMD_io.hh" alt="" coords="251,109,451,165"/>
 </map>

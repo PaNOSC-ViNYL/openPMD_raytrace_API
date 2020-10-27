@@ -7,6 +7,9 @@
 #include <cassert>
 #endif
 ///\file
+
+using raytracing::Rays;
+using raytracing::Ray;
 #ifndef V2SE
 #define VS2E 5.22703725e-6 /* Convert (v[m/s])**2 to E[meV] */
 #endif
@@ -15,7 +18,7 @@ Rays::Rays(): _size(0), _read(0) {}
 
 //------------------------------
 void
-Rays::push(Ray this_ray) {
+Rays::push(const Ray& this_ray) {
 	_x.push_back(this_ray.x());
 	_y.push_back(this_ray.y());
 	_z.push_back(this_ray.z());
@@ -166,3 +169,4 @@ Rays::retrieve(double* x, double* y, double* z,    //
 	//	_read = 0; // Start over if entire dataset is read
 }
 #endif
+

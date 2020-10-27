@@ -1,11 +1,14 @@
 #ifndef RAYS_CLASS_HH
 #define RAYS_CLASS_HH
 ///\file
+
+
+
 // #include "openpmd_output_formats.h" // enum with the available openPMD backends
 #include <vector>
 #include <utility>
 #include "ray.hh"
-
+namespace raytracing{
 /** \class Rays
  * \brief stores the rays' properties
  *
@@ -52,7 +55,7 @@ public:
 	/** \brief append a new ray
 	 * \param[in] this_ray : a ray object
 	 */
-	void push(Ray this_ray);
+	void push(const Ray& this_ray);
 	//_rays.push_back(this_ray); };
 
 	/** \brief pop first ray
@@ -230,5 +233,5 @@ public:
 
 #endif
 };
-
+} // namespace raytracing
 #endif

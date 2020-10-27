@@ -2,6 +2,9 @@
 #define RAY_CLASS_HH
 
 #include <cmath>
+
+namespace raytracing{
+
 /** \class Ray
  * \brief Generic ray, containing all the ray information being stored by the API into the openPMD
  * file
@@ -35,7 +38,8 @@ private:
 	float _weight;
 
 public:
-	Ray();
+	Ray():
+		_position(){};
 
 	/// \name Getters
 	///@{
@@ -112,8 +116,12 @@ public:
 	}
 
 	/// \brief scale and set polarization for non-photons  \todo to implement
-	void polarization(double x, double y, double z, double scale = 1);
-	/// \brief scale and set s-polarization for photons  \todo to implement
+	void polarization(double x, double y, double z, double scale = 1){
+		_polarization[X] = x * scale;
+		_polarization[Y] = y * scale;
+		_polarization[Z] = z * scale;
+	}
+	/// \brief scale and set s-polarization for photons
 	void sPolarization(double x, double y, double z, double scale = 1);
 	/// \brief scale and set p-polarization for photons  \todo to implement
 	void pPolarization(double x, double y, double z, double scale = 1);
@@ -136,5 +144,5 @@ class photon : public Ray {};
  *  \brief helper class for neutrons
  */
 class neutron : public Ray {};
-
+} // namespace raytracing
 #endif

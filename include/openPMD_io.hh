@@ -6,9 +6,12 @@
 #include <openPMD/openPMD.hpp> // openPMD C++ API
 #include <string>
 
-#define ITER 1
 
-class Rays; // forward declaration of the class
+//class Rays; // forward declaration of the class
+#include <rays.hh> // need this because it is a member of openPMD_io class, so the constructor is invoked
+
+namespace raytracing{
+#define ITER 1
 
 /** \class openPMD_io
  * \brief I/O API for the ray trace extension of the openPMD format
@@ -19,15 +22,20 @@ class Rays; // forward declaration of the class
  */
 class openPMD_io {
 public:
-	///\brief constructor
+	/**\brief constructor
+	 *
+	 * 
+	 */
 	explicit openPMD_io(
-	        const std::string& filename,             ///< filename
-	        openPMD::Access read_mode,               ///< file access mode (read/write/append)
-	        std::string mc_code_name           = "", ///< Name of the simulation code name
-	        std::string mc_code_version        = "", ///< Simulation software version
-	        std::string instrument_name        = "", ///< Name of the instrument
-	        std::string name_current_component = "", ///< current component name along the beamline
-	        int repeat = 1 ///< number of times a ray should be repeatedly retrieved
+	        const std::string& filename, ///< filename
+	        //	        openPMD::Access read_mode,        ///< file access mode
+	        //(read/write/append)
+	        std::string mc_code_name    = "", ///< [optional] Name of the simulation code name
+	        std::string mc_code_version = "", ///< [optional] Simulation software version
+	        std::string instrument_name = "", ///< [optional] Name of the instrument
+	        std::string name_current_component =
+	                "",    ///< [optional] current component name along the beamline
+	        int repeat = 1 ///< [optional] Number of times a ray should be repeatedly retrieved
 	);
 
 	/***************************************************************/
@@ -59,7 +67,9 @@ public:
 	                 double t, double p);
 #endif
 	/// \brief save ray properties
-	void trace_write(Ray this_ray);
+	void trace_write(Ray this_ray){
+		_rays.push(this_ray);
+	}
 	/** \brief Flushes the output to file before closing it */
 	void save_write(void);
 
@@ -73,7 +83,7 @@ public:
 	/// \brief initializes the "series" object from the openPMD API in READ MODE
 	unsigned long long int
 	init_read(openPMD_output_format_t output_format, ///< output format
-	          unsigned long long int n_rays,         ///< number of rays being simulated (max)
+	          unsigned long long int n_rays=0,         ///< NOT USED YET 0 = all \todo to fix the maximum number of rays one wants to read from the file
 	          unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
 
@@ -96,7 +106,7 @@ public:
 	 *
 	 * \returns Ray object
 	 */
-	Ray trace_read(void) const;
+	Ray trace_read(void) { return _rays.pop(true); }
 	///@}
 private:
 	void load_chunk(void);
@@ -111,21 +121,22 @@ private:
 	int _i_repeat, _n_repeat;
 
 	// internal usage
-	openPMD::Access _access_mode;
+	//	openPMD::Access _access_mode;
 	openPMD::Offset _offset;
 	bool _isWriteMode;
 	std::unique_ptr<openPMD::Series> _series;
 	Rays _rays;
+	unsigned int _iter;
 
 	static const std::map<openPMD_output_format_t, std::string> output_format_names;
 	/** declare the ray particle species in the file */
-	void init_rays(unsigned int iter, unsigned long long int n_rays);
+	void init_rays(unsigned long long int n_rays, unsigned int iter);
 
 	//------------------------------ set of helper methods
-	inline openPMD::Iteration& iter_pmd(void) { return _series->iterations[ITER]; }
+	inline openPMD::Iteration& iter_pmd(unsigned int iter) { return _series->iterations[iter]; }
 
 	inline openPMD::ParticleSpecies& rays_pmd(void) {
-		auto i = iter_pmd();
+		auto i = iter_pmd(_iter);
 		return i.particles["ray"];
 	}
 
@@ -135,5 +146,5 @@ private:
 	                                                                       0.}},
 	              double unitSI                                        = 0.);
 };
-
+} // namespace raytracing
 #endif

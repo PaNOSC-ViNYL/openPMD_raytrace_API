@@ -1,13 +1,17 @@
 #include "rays.hh" // helper class that stores the rays and returns 1D vectors
 #include "openPMD_io.hh"
 #include <iostream>
-///\file
+#include <openPMD/openPMD.hpp> // openPMD C++ API
 
+///\file
+using namespace raytracing;
 /** \brief defines the maximum number of rays that can be stored in memory before dumping to file
  *\todo The CHUNK_SIZE should not be hardcoded
  * it should also be optimized with tests
  */
-#define CHUNK_SIZE 10000
+namespace raytracing {
+constexpr size_t CHUNK_SIZE = 10000;
+}
 
 /** \todo ekin should be saved according to the openPMD standard */
 /** \todo use particlePatches ... but I don't understand if/how */
@@ -19,9 +23,9 @@ const std::map<openPMD_output_format_t, std::string> openPMD_io::output_format_n
 };
 
 //------------------------------------------------------------
-openPMD_io::openPMD_io(const std::string& filename, openPMD::Access read_mode, std::string mc_code_name,
-                       std::string mc_code_version, std::string instrument_name,
-                       std::string name_current_component, int repeat):
+openPMD_io::openPMD_io(const std::string& filename, // openPMD::Access read_mode,
+                       std::string mc_code_name, std::string mc_code_version,
+                       std::string instrument_name, std::string name_current_component, int repeat):
     _name(filename),
     _mc_code_name(mc_code_name),
     _mc_code_version(mc_code_version),
@@ -29,7 +33,7 @@ openPMD_io::openPMD_io(const std::string& filename, openPMD::Access read_mode, s
     _name_current_component(name_current_component),
     _i_repeat(1),
     _n_repeat(repeat),
-    _access_mode(read_mode),
+    //    _access_mode(openPMD::Access::READ_WRITE),
     _offset({0}),
     _series(nullptr){};
 
@@ -62,9 +66,8 @@ openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isSc
 /** n_rays is the ncount of McStas, so the number of rays to be
  * simulated */
 void
-openPMD_io::init_rays(unsigned int iter, unsigned long long int n_rays) {
+openPMD_io::init_rays(unsigned long long int n_rays, unsigned int iter) {
 
-	// auto i = iter_pmd();
 	// series.setAttribute("dinner", "Pizza and Coke");
 	// i.setAttribute("vacuum", true);
 
@@ -97,6 +100,7 @@ openPMD_io::init_rays(unsigned int iter, unsigned long long int n_rays) {
 void
 openPMD_io::init_write(openPMD_output_format_t extension, unsigned long long int n_rays,
                        unsigned int iter) {
+	_iter = iter;
 	std::string filename = _name;
 	std::string a        = output_format_names.find(extension)->second;
 	filename += std::string(".") + a;
@@ -112,10 +116,12 @@ openPMD_io::init_write(openPMD_output_format_t extension, unsigned long long int
 	// be per particle
 	//
 	std::cout << "Filename: " << filename << std::endl; // remove
-
+	auto i = _series->iterations[1];
+	// auto i = iter_pmd(iter);
+	i.setAttribute("vacuum", true);
 	// set the mccode, mccode_version, component name, instrument name
 
-	init_rays(iter, n_rays);
+	//	init_rays(n_rays, iter);
 
 	// openPMD::Record mass = rays["mass"];
 	// openPMD::RecordComponent mass_scalar =
@@ -123,7 +129,7 @@ openPMD_io::init_write(openPMD_output_format_t extension, unsigned long long int
 
 	// mass_scalar.resetDataset(dataset);
 
-	_series->flush();
+	//_series->flush();
 }
 
 //------------------------------------------------------------
@@ -253,8 +259,9 @@ openPMD_io::init_read(openPMD_output_format_t extension, unsigned long long int 
 	std::string filename = _name;
 
 	// assign the global variable to keep track of it
-	_series = std::unique_ptr<openPMD::Series>(
-	        new openPMD::Series(filename, openPMD::Access::READ_ONLY));
+	_series = std::unique_ptr<openPMD::Series>(new openPMD::Series(
+	        filename, openPMD::Access::READ_ONLY)); ///\todo the file access type was defined in the
+	                                                ///openPMD_io constructor
 
 	std::cout << "File information: " << filename << std::endl;
 	if (_series->containsAttribute("author"))
@@ -312,3 +319,5 @@ openPMD_io::trace_write(double x, double y, double z,    //
 }
 
 #endif
+
+
