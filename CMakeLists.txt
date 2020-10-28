@@ -19,11 +19,10 @@ option(TEST "Do testing" OFF)
 option(EXTERNAL_PYBIND "Use Pybind v2.5.0 from GIT" OFF)
 option(INSTALL "perform the installation" OFF)
 #------------------------------------------------------------
-option(SHERVIN "developing and testing" ON)
-if(SHERVIN)
+if(NOT INSTALL)
   set(CMAKE_INSTALL_PREFIX /tmp/devel)
   set(pybind11_DIR /tmp/devel/)
-endif(SHERVIN)  
+endif()
 
 #------------------------------------------------------------
 find_package(pybind11 2.4.3)  # this is the version that has been used for development and tests
@@ -52,8 +51,8 @@ if(EXTERNAL_openPMD OR NOT openPMD_FOUND)
     #GIT_COMMIT d6820a12b03b7c574a04e8c356a78b66492cb990
     GIT_SHALLOW True
     PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/cmake_api.patch
-    INSTALL_COMMAND "make install"
-    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+#    INSTALL_COMMAND "make install"
+    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     )
   ExternalProject_Get_Property(openPMD-api install_dir)
   set(openPMD_DIR ${install_dir}/src/openPMD-api-build/)
@@ -66,18 +65,23 @@ ExternalProject_Add(openPMDraytrace
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp/
   DEPENDS openPMD-api
   #  DEPENDS pybind11
-  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DopenPMD_DIR=${openPMD_DIR}
+  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DINSTALL=ON #-DopenPMD_DIR=${openPMD_DIR}
   #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+  #INSTALL_COMMAND ""
+  #set(openPMDraytrace_DIR ${install_dir}/src/openPMDraytrace-build/)
   )
 
 
-# ExternalProject_Add(
-#   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/
-#   DEPENDS openPMD-api
-# #  DEPENDS pybind11
-#   CMAKE_ARGS  -Dpybind11_DIR=${pybind11_DIR} -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -Dcameo_DIR=${cameo_DIR}
-#   #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-#   )
+#------------------------------------------------------------
+#set (CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+ExternalProject_Add(openPMDraytracepy
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/python/
+  DEPENDS openPMDraytrace
+  #  DEPENDS pybind11
+  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DopenPMDraytrace_DIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake # -DopenPMD_DIR=${openPMD_pybind11_DIR} -Dcameo_DIR=${cameo_DIR}
+  #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+  INSTALL_COMMAND ""
+  )
 
 ################ Doc
 # find_package(Doxygen)
