@@ -4,109 +4,98 @@
 # cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF
 cmake_minimum_required(VERSION 3.7.2)
 
-project(openPMD_raytrace_API VERSION 0.1.0 LANGUAGES CXX)
+project(openPMD_raytrace_API VERSION 0.1.0)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
+include(ExternalProject)
 
 if(NOT DEFINED BUILD_SHARED_LIBS)
-  set(BUILD_SHARED_LIBS False)
+  set(BUILD_SHARED_LIBS True)
 endif()
 
 ##
 option(TEST "Do testing" OFF)
+option(EXTERNAL_PYBIND "Use Pybind v2.5.0 from GIT" OFF)
+option(INSTALL "perform the installation" OFF)
+#------------------------------------------------------------
+option(SHERVIN "developing and testing" ON)
+if(SHERVIN)
+  set(CMAKE_INSTALL_PREFIX /tmp/devel)
+  set(pybind11_DIR /tmp/devel/)
+endif(SHERVIN)  
+
+#------------------------------------------------------------
+find_package(pybind11 2.4.3)  # this is the version that has been used for development and tests
+if(EXTERNAL_PYBIND OR NOT pybind11_FOUND)
+  message(WARNING "Using PYBIND11 from GIT repository")
+  ExternalProject_Add(pybind11 
+	GIT_REPOSITORY https://github.com/pybind/pybind11.git
+	GIT_TAG v2.5.0
+	GIT_SHALLOW True
+	INSTALL_COMMAND "make install"
+	CMAKE_ARGS -DPYBIND11_TEST=OFF -DPYBIND11_INSTALL=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+	)
+  ExternalProject_Get_Property(pybind11 install_dir)
+  set(pybind11_DIR ${install_dir}/src/pybind11-build/)
+endif()
+
 
 #########################################################
-add_subdirectory("openPMD-api")
-
-
-add_library(api  src/openPMD_io.cc src/rays.cc)
-set_target_properties(api
-   PROPERTIES LINKER_LANGUAGE CXX
-   )
-target_include_directories(api
-  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/ # all the private headers
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> 
-  PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-  )
-set_target_properties(api PROPERTIES
-  SOVERSION ${PROJECT_VERSION_MAJOR}
-  VERSION ${PROJECT_VERSION}
-  )
-
-set_property(TARGET api PROPERTY CXX_STANDARD 11) # with 17 it crashes!
-# it should be due to the openPMD API
-target_link_libraries(api PUBLIC openPMD::openPMD)
-
-
-#---------------
-# Library version
-write_basic_package_version_file(${PROJECT_NAME}ConfigVersion.cmake
-  COMPATIBILITY SameMajorVersion
-  VERSION ${PROJECT_VERSION}
-  )
-#set(INSTALL True)
-
-if(INSTALL)
 #------------------------------------------------------------
-# Install
+find_package(openPMD 0.12.1 QUIET)  # this is the version that has been used for development and tests
+if(EXTERNAL_openPMD OR NOT openPMD_FOUND)
+  message(WARNING "Using openPMD-api from GIT repository")
+  ExternalProject_Add(openPMD-api
+    GIT_REPOSITORY https://github.com/openPMD/openPMD-api.git
+    GIT_TAG dev
+    #GIT_COMMIT d6820a12b03b7c574a04e8c356a78b66492cb990
+    GIT_SHALLOW True
+    PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/cmake_api.patch
+    INSTALL_COMMAND "make install"
+    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    )
+  ExternalProject_Get_Property(openPMD-api install_dir)
+  set(openPMD_DIR ${install_dir}/src/openPMD-api-build/)
+endif()
+
+
 #------------------------------------------------------------
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
-
-# this is to install the headers
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ # don't forget the trailing /
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
-  )
-
-# in CMake 3.14 you just need #install(TARGETS cameo)
-install(TARGETS api
-  EXPORT apiexport
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # windows
-    COMPONENT api_Runtime
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # dynamic
-    COMPONENT api_Runtime
-#    NAMELINK_COMPONENT cameo_Development #from CMake 3.12
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # static
-    COMPONENT api_Development
-  PUBLIC_HEADER  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#find_package(openPMD_raytrace_API 0.1.0)
+ExternalProject_Add(openPMDraytrace
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp/
+  DEPENDS openPMD-api
+  #  DEPENDS pybind11
+  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DopenPMD_DIR=${openPMD_DIR}
+  #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
   )
 
 
-# This makes the project importable from the install directory
-# Put config file in per-project dir (name MUST match), can also
-# just go into 'cmake'.
-install(EXPORT apiexport
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
-  FILE ${PROJECT_NAME}Config.cmake 
-  )
-# makes the project importable from the build directory
-export(TARGETS api FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake)
-endif(INSTALL)
-
-enable_testing()
-add_subdirectory(test)
+# ExternalProject_Add(
+#   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/
+#   DEPENDS openPMD-api
+# #  DEPENDS pybind11
+#   CMAKE_ARGS  -Dpybind11_DIR=${pybind11_DIR} -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -Dcameo_DIR=${cameo_DIR}
+#   #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+#   )
 
 ################ Doc
-find_package(Doxygen)
-if (DOXYGEN_FOUND)
-  # set input and output files
-  set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
-  set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+# find_package(Doxygen)
+# if (DOXYGEN_FOUND)
+#   # set input and output files
+#   set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+#   set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
   
-  # request to configure the file
-  configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-  message("Doxygen build started")
+#   # request to configure the file
+#   configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+#   message("Doxygen build started")
   
-  # note the option ALL which allows to build the docs together with the application
-  add_custom_target( doc 
-    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Generating API documentation with Doxygen"
-    VERBATIM )
-else (DOXYGEN_FOUND)
-  message("Doxygen need to be installed to generate the doxygen documentation")
-endif (DOXYGEN_FOUND)
-
-
+#   # note the option ALL which allows to build the docs together with the application
+#   add_custom_target( doc 
+#     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#     COMMENT "Generating API documentation with Doxygen"
+#     VERBATIM )
+# else (DOXYGEN_FOUND)
+#   message("Doxygen need to be installed to generate the doxygen documentation")
+# endif (DOXYGEN_FOUND)
