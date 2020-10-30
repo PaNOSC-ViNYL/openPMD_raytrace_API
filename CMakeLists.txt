@@ -84,6 +84,22 @@ ExternalProject_Add(openPMDraytracepy
   INSTALL_COMMAND ""
   )
 
+#------------------------------------------------------------
+#set (CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+ExternalProject_Add(tests
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test/
+  DEPENDS openPMDraytrace
+  #  DEPENDS pybind11
+  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DopenPMDraytrace_DIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake # -DopenPMD_DIR=${openPMD_pybind11_DIR} -Dcameo_DIR=${cameo_DIR}
+  #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+  INSTALL_COMMAND ""
+  )
+
+enable_testing()
+
+add_test(NAME write COMMAND  tests-prefix/src/tests-build/test_write.exe)
+
+
 ################ Doc
 # find_package(Doxygen)
 # if (DOXYGEN_FOUND)

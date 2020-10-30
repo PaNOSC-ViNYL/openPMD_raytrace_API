@@ -16,10 +16,19 @@ using raytracing::Ray;
 
 Rays::Rays(): _size(0), _read(0) {}
 
+template<typename T>
+void push_val(std::vector<T>& vec, T val, T *min, T *max){
+	vec.push_back(val);
+	if(*min > val)  (*min)  = val;
+	if(*max < val)  (*max)  = val;
+}
+
 //------------------------------
 void
 Rays::push(const Ray& this_ray) {
-	_x.push_back(this_ray.x());
+	//	_x.push_back(this_ray.x());
+	push_val(_x, this_ray.x(), &_xmin, &_xmax);
+	
 	_y.push_back(this_ray.y());
 	_z.push_back(this_ray.z());
 
@@ -31,6 +40,7 @@ Rays::push(const Ray& this_ray) {
 	_sy.push_back(this_ray.sy());
 	_sz.push_back(this_ray.sz());
 
+	_weight.push_back(this_ray.weight());
 	/// \todo implement the rest
 };
 

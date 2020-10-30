@@ -82,25 +82,30 @@ openPMD_io::init_rays(std::string particle_species, unsigned long long int n_ray
 	//rays.setAttribute("PDGID", "2112");
 	// declare the dataset total size: the final size
 
-	openPMD::Dataset dataset = openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{n_rays});
+	openPMD::Dataset dataset_float =
+	        openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{n_rays});
 
-	init_ray_prop("position", dataset, false, {{openPMD::UnitDimension::L, 1.}}, 1e-2);
-	init_ray_prop("direction", dataset, false);
-	init_ray_prop("polarization", dataset, false);
+	init_ray_prop("position", dataset_float, false, {{openPMD::UnitDimension::L, 1.}}, 1e-2);
+	init_ray_prop("direction", dataset_float, false);
+	init_ray_prop("nonPhotonPolarization", dataset_float, false);
+	init_ray_prop("photonSPolarizationAmplitude", dataset_float, false);
+	init_ray_prop("photonSPolarizationPhase", dataset_float, true);
+	init_ray_prop("photonPPolarizationAmplitude", dataset_float, false);
+	init_ray_prop("photonPPolarizationPhase", dataset_float, true);
+	
 	// now set the scalars
-	init_ray_prop("weight", dataset, true);
-	init_ray_prop("time", dataset, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3);
-	init_ray_prop("wavelength", dataset, true,
+	init_ray_prop("weight", dataset_float, true);
+	init_ray_prop("rayTime", dataset_float, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3);
+	init_ray_prop("wavelength", dataset_float, true,
 	              {{
-	                       openPMD::UnitDimension::M,
-	                       0,
-	               },
-	               {
-	                       openPMD::UnitDimension::L,
-	                       -1,
-	               },
-	               {openPMD::UnitDimension::T, 0}},
+	                      openPMD::UnitDimension::L,
+	                      -1,
+	              }},
 	              0); // 1.6021766e-13); // MeV
+
+	openPMD::Dataset dataset_int = openPMD::Dataset(openPMD::Datatype::INT, openPMD::Extent{n_rays});
+	init_ray_prop("id", dataset_int, true);
+	init_ray_prop("particleStatus", dataset_int, true);
 }
 
 void
@@ -145,9 +150,11 @@ openPMD_io::save_write(void) {
 	std::cout << "Number of saved rays: " << _rays.size() << "\t" << _rays.x().size() << std::endl;
 #endif
 	auto rays = rays_pmd();
-
+	///\todo set minValue and maxValue
 	openPMD::Extent extent = {_rays.size()};
 	rays["position"]["x"].storeChunk(openPMD::shareRaw(_rays.x()), _offset, extent);
+	//	rays["position"]["x"].setAttribute("minValue", _rays.min_x());
+	// rays["position"]["x"].setAttribute("minValue", _rays.max_x());
 	rays["position"]["y"].storeChunk(openPMD::shareRaw(_rays.y()), _offset, extent);
 	rays["position"]["z"].storeChunk(openPMD::shareRaw(_rays.z()), _offset, extent);
 
@@ -165,6 +172,7 @@ openPMD_io::save_write(void) {
 	                                                            _offset, extent);
 	rays["weight"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays.weight()),
 	                                                            _offset, extent);
+
 
 	_series->flush();
 	_rays.clear();

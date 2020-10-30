@@ -10,9 +10,16 @@ if(NOT DEFINED BUILD_SHARED_LIBS)
   set(BUILD_SHARED_LIBS True)
 endif()
 
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+  # specify the C++ standard
+  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD_REQUIRED True)
+endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 ##
 option(TEST "Do testing" OFF)
-option(EXTERNAL_PYBIND "Use Pybind v2.5.0 from GIT" OFF)
 option(INSTALL "perform the installation" OFF)
 #------------------------------------------------------------
 
@@ -33,7 +40,7 @@ set_target_properties(raytrace PROPERTIES
   VERSION ${PROJECT_VERSION}
   )
 
-set_property(TARGET raytrace PROPERTY CXX_STANDARD 11) # with 17 it crashes!
+set_property(TARGET raytrace PROPERTY CXX_STANDARD 17) # with 17 it crashes!
 # it should be due to the openPMD RAYTRACE
 target_link_libraries(raytrace PUBLIC openPMD::openPMD)
 
