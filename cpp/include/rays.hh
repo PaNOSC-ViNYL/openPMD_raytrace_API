@@ -61,21 +61,21 @@ private:
 		const T operator[](size_t i) const { return _vals[i]; }; // cannot modify
 	};
 
-private:
+public:
+	// I make the Recors public members to avoid writing methods to access them
 	// the 3d components are in separate vectors because this is the way the openPMD API
 	// wants them to be
 	Record<float> _x, _y, _z,             // position
 	        _dx, _dy, _dz,                // direction (vx^2+vy^2+vz^2) = 1
 	        _sx, _sy, _sz,                // non-photon polarization
-	        _sPolAx, _sPolAy, _sPolAz,    // photon s-polarization amplitude
-	        _pPolAx, _pPolAy, _pPolAz,    // photon p-polarization amplitude
-	        _sPolPhx, _sPolPhy, _sPolPhz, // photon s-polarization Phase
-	        _pPolPhx, _pPolPhy, _pPolPhz, // photon p-polarization Phase
+	        _sPolAx, _sPolAy, _sPolAz, _sPolPh,    // photon s-polarization amplitude
+	        _pPolAx, _pPolAy, _pPolAz, _pPolPh,    // photon p-polarization amplitude
 	        _wavelength,                  // wavelength
 	        _time, _weight;               // ray time, weight
 
 	Record<unsigned long long int> _id; // id
 	Record<particleStatus_t> _status;   // alive status
+private:
 	size_t _size;                       // number of stored rays
 	size_t _read;                       // current index when reading
 
@@ -119,12 +119,8 @@ public:
 		_pPolAy.clear();
 		_pPolAz.clear();
 
-		_sPolPhx.clear();
-		_sPolPhy.clear();
-		_sPolPhz.clear();
-		_pPolPhx.clear();
-		_pPolPhy.clear();
-		_pPolPhz.clear();
+		_sPolPh.clear();
+		_pPolPh.clear();
 
 		_wavelength.clear();
 
@@ -160,34 +156,6 @@ public:
 | weight      | weight                         |                          |
 */
 	// clang-format on
-	auto x(void) const { return _x.vals(); };
-	auto y(void) const { return _y.vals(); };
-	auto z(void) const { return _z.vals(); };
-	auto dx(void) const { return _dx.vals(); };
-	auto dy(void) const { return _dy.vals(); };
-	auto dz(void) const { return _dz.vals(); };
-	auto sx(void) const { return _sx.vals(); };
-	auto sy(void) const { return _sy.vals(); };
-	auto sz(void) const { return _sz.vals(); };
-	auto sPolAx(void) const { return _sPolAx.vals(); };
-	auto sPolAy(void) const { return _sPolAy.vals(); };
-	auto sPolAz(void) const { return _sPolAz.vals(); };
-	auto pPolAx(void) const { return _pPolAx.vals(); };
-	auto pPolAy(void) const { return _pPolAy.vals(); };
-	auto pPolAz(void) const { return _pPolAz.vals(); };
-	auto sPolPhx(void) const { return _sPolPhx.vals(); };
-	auto sPolPhy(void) const { return _sPolPhy.vals(); };
-	auto sPolPhz(void) const { return _sPolPhz.vals(); };
-	auto pPolPhx(void) const { return _pPolPhx.vals(); };
-	auto pPolPhy(void) const { return _pPolPhy.vals(); };
-	auto pPolPhz(void) const { return _pPolPhz.vals(); };
-
-	auto wavelength(void) const { return _wavelength.vals(); };
-	auto time(void) const { return _time.vals(); };
-	auto weight(void) const { return _weight.vals(); };
-
-	auto id(void) const { return _id.vals(); };
-	auto status(void) const { return _status.vals(); };
 	
 #ifdef SHERVIN
 	/** \brief append a new ray to the internal memory reading from *openPMD data*

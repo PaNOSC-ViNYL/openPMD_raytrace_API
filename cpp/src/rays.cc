@@ -34,18 +34,12 @@ Rays::push(const Ray& this_ray) {
 	_sPolAx.push_back(this_ray.sPolAx());
 	_sPolAy.push_back(this_ray.sPolAy());
 	_sPolAz.push_back(this_ray.sPolAz());
-
-	_sPolPhx.push_back(this_ray.sPolPhx());
-	_sPolPhy.push_back(this_ray.sPolPhy());
-	_sPolPhz.push_back(this_ray.sPolPhz());
+	_sPolPh.push_back(this_ray.sPolPh());
 
 	_pPolAx.push_back(this_ray.pPolAx());
 	_pPolAy.push_back(this_ray.pPolAy());
 	_pPolAz.push_back(this_ray.pPolAz());
-
-	_pPolPhx.push_back(this_ray.pPolPhx());
-	_pPolPhy.push_back(this_ray.pPolPhy());
-	_pPolPhz.push_back(this_ray.pPolPhz());
+	_pPolPh.push_back(this_ray.pPolPh());
 
 	_wavelength.push_back(this_ray.wavelength());
 	_time.push_back(this_ray.time());
@@ -58,7 +52,6 @@ Rays::push(const Ray& this_ray) {
 //------------------------------
 Ray
 Rays::pop(bool next) {
-	/// \todo implement the rest
 
 	Ray r;
 	r.position(_x[_read], _y[_read], _z[_read]);
@@ -66,9 +59,16 @@ Rays::pop(bool next) {
 
 	r.polarization(_sx[_read], _sy[_read], _sz[_read]);
 
+	r.sPolarization(_sPolAx[_read], _sPolAy[_read], _sPolAz[_read], _sPolPh[_read]);
+	r.pPolarization(_pPolAx[_read], _pPolAy[_read], _pPolAz[_read], _pPolPh[_read]);
+
+	r.wavelength(_wavelength[_read]);
 	r.time(_time[_read]);
 	r.weight(_weight[_read]);
 
+	r.id(_id[_read]);
+	r.status(_status[_read]);
+	
 	if (next) ++_read;
 	return r;
 }

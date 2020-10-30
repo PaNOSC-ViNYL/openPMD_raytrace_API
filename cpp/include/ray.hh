@@ -170,13 +170,18 @@ public:
 	}
 	/// \brief scale and set s-polarization for photons
 	void sPolarization(double x, double y, double z, double phase, double scale = 1){
-		_sPolarizationAmpl[X] = x * scale;
-		_sPolarizationAmpl[Y] = y * scale;
-		_sPolarizationAmpl[Z] = z * scale;
-		_sPolarizationPhase = phase;
+		_sPolarization[X] = x * scale;
+		_sPolarization[Y] = y * scale;
+		_sPolarization[Z] = z * scale;
+		_sPolarization[PHASE] = phase;
 	};
 	/// \brief scale and set p-polarization for photons  \todo to implement
-	void pPolarization(double x, double y, double z, double scale = 1);
+	void pPolarization(double x, double y, double z, double phase, double scale = 1){
+		_pPolarization[X] = x * scale;
+		_pPolarization[Y] = y * scale;
+		_pPolarization[Z] = z * scale;
+		_pPolarization[PHASE] = phase;
+	};
 	/// \brief set wavelength
 	void wavelength(double w) { _wavelength = w; };
 	/// \brief set time

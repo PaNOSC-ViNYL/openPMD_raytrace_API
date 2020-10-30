@@ -92,20 +92,20 @@ openPMD_io::init_rays(std::string particle_species, unsigned long long int n_ray
 	init_ray_prop("photonSPolarizationPhase", dataset_float, true);
 	init_ray_prop("photonPPolarizationAmplitude", dataset_float, false);
 	init_ray_prop("photonPPolarizationPhase", dataset_float, true);
-	
-	// now set the scalars
-	init_ray_prop("weight", dataset_float, true);
-	init_ray_prop("rayTime", dataset_float, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3);
+
 	init_ray_prop("wavelength", dataset_float, true,
 	              {{
 	                      openPMD::UnitDimension::L,
 	                      -1,
 	              }},
 	              0); // 1.6021766e-13); // MeV
+	init_ray_prop("weight", dataset_float, true);
+	init_ray_prop("rayTime", dataset_float, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3);
 
 	openPMD::Dataset dataset_int = openPMD::Dataset(openPMD::Datatype::INT, openPMD::Extent{n_rays});
 	init_ray_prop("id", dataset_int, true);
-	init_ray_prop("particleStatus", dataset_int, true);
+	openPMD::Dataset dataset_ulongint = openPMD::Dataset(openPMD::Datatype::ULONGLONG, openPMD::Extent{n_rays});
+	init_ray_prop("particleStatus", dataset_ulongint, true);
 }
 
 void
@@ -152,25 +152,25 @@ openPMD_io::save_write(void) {
 	auto rays = rays_pmd();
 	///\todo set minValue and maxValue
 	openPMD::Extent extent = {_rays.size()};
-	rays["position"]["x"].storeChunk(openPMD::shareRaw(_rays.x()), _offset, extent);
-	//	rays["position"]["x"].setAttribute("minValue", _rays.min_x());
-	// rays["position"]["x"].setAttribute("minValue", _rays.max_x());
-	rays["position"]["y"].storeChunk(openPMD::shareRaw(_rays.y()), _offset, extent);
-	rays["position"]["z"].storeChunk(openPMD::shareRaw(_rays.z()), _offset, extent);
+	rays["position"]["x"].storeChunk(openPMD::shareRaw(_rays._x.vals()), _offset, extent);
+	rays["position"]["x"].setAttribute("minValue", _rays._x.min());
+	rays["position"]["x"].setAttribute("maxValue", _rays._x.max());
+	rays["position"]["y"].storeChunk(openPMD::shareRaw(_rays._y.vals()), _offset, extent);
+	rays["position"]["z"].storeChunk(openPMD::shareRaw(_rays._z.vals()), _offset, extent);
 
-	rays["direction"]["x"].storeChunk(openPMD::shareRaw(_rays.dx()), _offset, extent);
-	rays["direction"]["y"].storeChunk(openPMD::shareRaw(_rays.dy()), _offset, extent);
-	rays["direction"]["z"].storeChunk(openPMD::shareRaw(_rays.dz()), _offset, extent);
+	rays["direction"]["x"].storeChunk(openPMD::shareRaw(_rays._dx.vals()), _offset, extent);
+	rays["direction"]["y"].storeChunk(openPMD::shareRaw(_rays._dy.vals()), _offset, extent);
+	rays["direction"]["z"].storeChunk(openPMD::shareRaw(_rays._dz.vals()), _offset, extent);
 
-	rays["polarization"]["x"].storeChunk(openPMD::shareRaw(_rays.sx()), _offset, extent);
-	rays["polarization"]["y"].storeChunk(openPMD::shareRaw(_rays.sy()), _offset, extent);
-	rays["polarization"]["z"].storeChunk(openPMD::shareRaw(_rays.sz()), _offset, extent);
+	rays["polarization"]["x"].storeChunk(openPMD::shareRaw(_rays._sx.vals()), _offset, extent);
+	rays["polarization"]["y"].storeChunk(openPMD::shareRaw(_rays._sy.vals()), _offset, extent);
+	rays["polarization"]["z"].storeChunk(openPMD::shareRaw(_rays._sz.vals()), _offset, extent);
 
-	rays["rayTime"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays.time()),
+	rays["rayTime"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays._time.vals()),
 	                                                          _offset, extent);
-	rays["wavelength"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays.wavelength()),
+	rays["wavelength"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays._wavelength.vals()),
 	                                                            _offset, extent);
-	rays["weight"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays.weight()),
+	rays["weight"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays._weight.vals()),
 	                                                            _offset, extent);
 
 
