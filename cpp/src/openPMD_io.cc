@@ -155,8 +155,14 @@ openPMD_io::save_write(void) {
 	rays["position"]["x"].storeChunk(openPMD::shareRaw(_rays._x.vals()), _offset, extent);
 	rays["position"]["x"].setAttribute("minValue", _rays._x.min());
 	rays["position"]["x"].setAttribute("maxValue", _rays._x.max());
+
 	rays["position"]["y"].storeChunk(openPMD::shareRaw(_rays._y.vals()), _offset, extent);
+	rays["position"]["y"].setAttribute("minValue", _rays._y.min());
+	rays["position"]["y"].setAttribute("maxValue", _rays._y.max());
+
 	rays["position"]["z"].storeChunk(openPMD::shareRaw(_rays._z.vals()), _offset, extent);
+	rays["position"]["z"].setAttribute("minValue", _rays._z.min());
+	rays["position"]["z"].setAttribute("maxValue", _rays._z.max());
 
 	rays["direction"]["x"].storeChunk(openPMD::shareRaw(_rays._dx.vals()), _offset, extent);
 	rays["direction"]["y"].storeChunk(openPMD::shareRaw(_rays._dy.vals()), _offset, extent);
