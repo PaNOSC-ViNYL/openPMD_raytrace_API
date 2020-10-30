@@ -177,7 +177,12 @@ public:
 		_polarization[Z] = z * scale;
 	}
 	/// \brief scale and set s-polarization for photons
-	void sPolarization(double x, double y, double z, double scale = 1);
+	void sPolarization(double x, double y, double z, double phase, double scale = 1){
+		_sPolarizationAmpl[X] = x * scale;
+		_sPolarizationAmpl[Y] = y * scale;
+		_sPolarizationAmpl[Z] = z * scale;
+		_sPolarizationPhase = phase;
+	};
 	/// \brief scale and set p-polarization for photons  \todo to implement
 	void pPolarization(double x, double y, double z, double scale = 1);
 	/// \brief set wavelength

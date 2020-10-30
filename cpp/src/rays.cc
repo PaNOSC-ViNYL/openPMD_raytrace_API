@@ -8,27 +8,18 @@
 #endif
 ///\file
 
-using raytracing::Rays;
 using raytracing::Ray;
+using raytracing::Rays;
 #ifndef V2SE
 #define VS2E 5.22703725e-6 /* Convert (v[m/s])**2 to E[meV] */
 #endif
 
 Rays::Rays(): _size(0), _read(0) {}
 
-template<typename T>
-void push_val(std::vector<T>& vec, T val, T *min, T *max){
-	vec.push_back(val);
-	if(*min > val)  (*min)  = val;
-	if(*max < val)  (*max)  = val;
-}
-
 //------------------------------
 void
 Rays::push(const Ray& this_ray) {
-	//	_x.push_back(this_ray.x());
-	push_val(_x, this_ray.x(), &_xmin, &_xmax);
-	
+	_x.push_back(this_ray.x());
 	_y.push_back(this_ray.y());
 	_z.push_back(this_ray.z());
 
@@ -40,8 +31,28 @@ Rays::push(const Ray& this_ray) {
 	_sy.push_back(this_ray.sy());
 	_sz.push_back(this_ray.sz());
 
+	_sPolAx.push_back(this_ray.sPolAx());
+	_sPolAy.push_back(this_ray.sPolAy());
+	_sPolAz.push_back(this_ray.sPolAz());
+
+	_sPolPhx.push_back(this_ray.sPolPhx());
+	_sPolPhy.push_back(this_ray.sPolPhy());
+	_sPolPhz.push_back(this_ray.sPolPhz());
+
+	_pPolAx.push_back(this_ray.pPolAx());
+	_pPolAy.push_back(this_ray.pPolAy());
+	_pPolAz.push_back(this_ray.pPolAz());
+
+	_pPolPhx.push_back(this_ray.pPolPhx());
+	_pPolPhy.push_back(this_ray.pPolPhy());
+	_pPolPhz.push_back(this_ray.pPolPhz());
+
+	_wavelength.push_back(this_ray.wavelength());
+	_time.push_back(this_ray.time());
 	_weight.push_back(this_ray.weight());
-	/// \todo implement the rest
+
+	_id.push_back(this_ray.id());
+	_status.push_back(this_ray.status());
 };
 
 //------------------------------
@@ -62,14 +73,15 @@ Rays::pop(bool next) {
 	return r;
 }
 
+#ifdef SHERVIN
 //------------------------------
 void
-Rays::store(float x, float y, float z,             // position
-            float dx, float dy, float dz,          // direction
-            float sx, float sy, float sz,          // polarization
-            float sPolx, float sPoly, float sPolz, // s-polarization
-            float pPolx, float pPoly, float pPolz, // p-polarization
-            float wavelength, float time, float weight) {  // ray wavelength, time and weight
+Rays::store(float x, float y, float z,                    // position
+            float dx, float dy, float dz,                 // direction
+            float sx, float sy, float sz,                 // polarization
+            float sPolx, float sPoly, float sPolz,        // s-polarization
+            float pPolx, float pPoly, float pPolz,        // p-polarization
+            float wavelength, float time, float weight) { // ray wavelength, time and weight
 
 	_x.push_back(x);
 	_y.push_back(y);
@@ -99,11 +111,12 @@ Rays::store(float x, float y, float z,             // position
 	// The data is bonkers, z is usually largest as it should be, but completely wrong orders of
 	magnitude std::cout << "x,y,z:" << x << "," << y << "," << z << std::endl; std::cout <<
 	"vx,vy,vz:" << dx << "," << dy << "," << dz << std::endl;
-	*/
+*/
 
 	++_size;
 }
 
+#endif
 #ifdef SHERVIN
 void
 Rays::push_back_nonphoton(double x, double y, double z,    //
@@ -179,4 +192,3 @@ Rays::retrieve(double* x, double* y, double* z,    //
 	//	_read = 0; // Start over if entire dataset is read
 }
 #endif
-

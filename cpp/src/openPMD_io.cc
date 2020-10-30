@@ -250,6 +250,7 @@ openPMD_io::load_chunk(void) {
 	_series->flush();
 
 	// Store openPMD data in rays particle instance
+#ifdef SHERVIN
 	for (size_t index = 0; index < chunk_size[0]; index++) {
 		_rays.store(all_x_data.get()[index], all_y_data.get()[index],
 		            all_z_data.get()[index], //
@@ -264,6 +265,7 @@ openPMD_io::load_chunk(void) {
 		            wavelength_data.get()[index], time_data.get()[index],
 		            weight_data.get()[index] );
 	}
+#endif
 }
 
 unsigned long long int

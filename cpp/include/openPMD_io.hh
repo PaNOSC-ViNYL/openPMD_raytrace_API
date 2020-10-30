@@ -6,11 +6,10 @@
 #include <openPMD/openPMD.hpp> // openPMD C++ API
 #include <string>
 
-
-//class Rays; // forward declaration of the class
+// class Rays; // forward declaration of the class
 #include <rays.hh> // need this because it is a member of openPMD_io class, so the constructor is invoked
 
-namespace raytracing{
+namespace raytracing {
 #define ITER 1
 
 /** \class openPMD_io
@@ -23,8 +22,8 @@ namespace raytracing{
 class openPMD_io {
 public:
 	/**\brief constructor
-	 * At construction, no file is created. The init_write() or init_read() methods should be called to
-	 * performed the desired operations.
+	 * At construction, no file is created. The init_write() or init_read() methods should be called
+	 * to performed the desired operations.
 	 *
 	 */
 	explicit openPMD_io(
@@ -48,11 +47,11 @@ public:
 	 * It is extremely important to set the n_rays as the maximum number of rays to save in the file.
 	 * If it is not known in advance, the user should guess it. The file size increases according to
 	 * this value, so it should be kept the lowest possible.
-	 * 
+	 *
 	 * This method calls init_rays() a first time.
 	 */
 	void init_write(openPMD_output_format_t output_format, ///< output format
-			std::string pdgId, ///< PDG ID of the particles
+	                std::string pdgId,                     ///< PDG ID of the particles
 	                unsigned long long int n_rays,         ///< number of rays being simulated (max)
 	                unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
@@ -61,7 +60,7 @@ public:
 	 *
 	 * This function must be called each time the particle species are changed and for each new
 	 * iteration.
-	 * 
+	 *
 	 **/
 	void init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter);
 
@@ -84,10 +83,8 @@ public:
 	                 double t, double p);
 #endif
 	/// \brief save ray properties
-	void trace_write(Ray this_ray){
-		_rays.push(this_ray);
-	}
-	/** \brief Flushes the output to file before closing it 
+	void trace_write(Ray this_ray) { _rays.push(this_ray); }
+	/** \brief Flushes the output to file before closing it
 	 * It writes the current particle species of the current iteration.
 	 *
 	 **/
@@ -103,7 +100,8 @@ public:
 	/// \brief initializes the "series" object from the openPMD API in READ MODE
 	unsigned long long int
 	init_read(openPMD_output_format_t output_format, ///< output format
-	          unsigned long long int n_rays=0,         ///< NOT USED YET 0 = all \todo to fix the maximum number of rays one wants to read from the file
+	          unsigned long long int n_rays = 0, ///< NOT USED YET 0 = all \todo to fix the maximum
+	                                             ///< number of rays one wants to read from the file
 	          unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
 
@@ -148,15 +146,14 @@ private:
 	Rays _rays;
 	unsigned int _iter;
 	std::string _particle_species;
-	
+
 	static const std::map<openPMD_output_format_t, std::string> output_format_names;
 
 	//------------------------------ set of helper methods
 	inline openPMD::Iteration& iter_pmd(unsigned int iter) { return _series->iterations[iter]; }
 
-
 	// returns the current particle species from the current iteration
-	inline openPMD::ParticleSpecies& rays_pmd(void){
+	inline openPMD::ParticleSpecies& rays_pmd(void) {
 		auto i = iter_pmd(_iter);
 		return i.particles[_particle_species];
 	}
@@ -164,7 +161,7 @@ private:
 	// returns the given particle species from the current iteration
 	inline openPMD::ParticleSpecies& rays_pmd(std::string particle_species) {
 		_particle_species = particle_species;
-		auto i = iter_pmd(_iter);
+		auto i            = iter_pmd(_iter);
 		return i.particles[particle_species];
 	}
 

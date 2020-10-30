@@ -31,52 +31,53 @@ namespace raytracing {
  *  }
  *  \enddot
  */
-template <typename T> class Record {
-	std::vector<T> _vals;
-	T _min, _max;
-
-public:
-	Record():
-		_vals(), _min(), _max(){
-		std::numeric_limits<T> lim;
-		_max =lim.min();
-		_min = lim.max();
-	}
-	const std::vector<T>& vals(void) const { return _vals; };
-	T min(void) const { return _min; };
-	T max(void) const { return _max; };
-	void push_back(T val) {
-		_vals.push_back(val);
-		if (_min > val) (_min) = val;
-		if (_max < val) (_max) = val;
-	}
-	void clear(void) {
-		_vals.clear();
-		_min = 0;
-		_max = 0;
-	}
-	const T operator[](size_t i) const { return _vals[i];}; //cannot modify
-};
 
 class Rays {
+private:
+	/**\class Record
+	 * \brief template utility class to simplify implementation
+	 * It is a vector that also stores min and max values while filling
+	 */
+	template <typename T> class Record {
+		std::vector<T> _vals;
+		T _min, _max;
+
+	public:
+		Record(): _vals(), _min(), _max() { clear(); }
+		const std::vector<T>& vals(void) const { return _vals; };
+		T min(void) const { return _min; };
+		T max(void) const { return _max; };
+		void push_back(T val) {
+			_vals.push_back(val);
+			if (_min > val) (_min) = val;
+			if (_max < val) (_max) = val;
+		}
+		void clear(void) {
+			std::numeric_limits<T> lim;
+			_max = lim.min();
+			_min = lim.max();
+			_vals.clear();
+		}
+		const T operator[](size_t i) const { return _vals[i]; }; // cannot modify
+	};
 
 private:
 	// the 3d components are in separate vectors because this is the way the openPMD API
 	// wants them to be
-	Record<float> _x, _y, _z,           // position
-	        _dx, _dy, _dz,                   // direction (vx^2+vy^2+vz^2) = 1
-	        _sx, _sy, _sz,                   // non-photon polarization
-	        _sPolx, _sPoly, _sPolz,          // photon s-polarization amplitude
-	        _pPolx, _pPoly, _pPolz,          // photon p-polarization amplitude
-	        _sPolPhx, _sPolPhy, _sPolPhz,    // photon s-polarization Phase
-	        _pPolPhx, _pPolPhy, _pPolPhz,    // photon p-polarization Phase
-	        _wavelength,                     // wavelength
-	        _time, _weight;                  // ray time, weight
+	Record<float> _x, _y, _z,             // position
+	        _dx, _dy, _dz,                // direction (vx^2+vy^2+vz^2) = 1
+	        _sx, _sy, _sz,                // non-photon polarization
+	        _sPolAx, _sPolAy, _sPolAz,    // photon s-polarization amplitude
+	        _pPolAx, _pPolAy, _pPolAz,    // photon p-polarization amplitude
+	        _sPolPhx, _sPolPhy, _sPolPhz, // photon s-polarization Phase
+	        _pPolPhx, _pPolPhy, _pPolPhz, // photon p-polarization Phase
+	        _wavelength,                  // wavelength
+	        _time, _weight;               // ray time, weight
 
-	std::vector<unsigned long long int> _id; // id
-	std::vector<particleStatus_t> _status;   // alive status
-	size_t _size;                            // number of stored rays
-	size_t _read;                            // current index when reading
+	Record<unsigned long long int> _id; // id
+	Record<particleStatus_t> _status;   // alive status
+	size_t _size;                       // number of stored rays
+	size_t _read;                       // current index when reading
 
 public:
 	/// \brief default constructor
@@ -111,12 +112,12 @@ public:
 		_sy.clear();
 		_sz.clear();
 
-		_sPolx.clear();
-		_sPoly.clear();
-		_sPolz.clear();
-		_pPolx.clear();
-		_pPoly.clear();
-		_pPolz.clear();
+		_sPolAx.clear();
+		_sPolAy.clear();
+		_sPolAz.clear();
+		_pPolAx.clear();
+		_pPolAy.clear();
+		_pPolAz.clear();
 
 		_sPolPhx.clear();
 		_sPolPhy.clear();
@@ -129,9 +130,9 @@ public:
 
 		_time.clear();
 		_weight.clear();
+
 		_id.clear();
 		_status.clear();
-
 	};
 
 	/** \brief returns the number of stored rays */
@@ -150,8 +151,8 @@ public:
 | x,y,z       | position in                    | [cm]                     |
 | dx,dy,dz    | direction                      | (normalized velocity)    |
 | sx,sy,sz    | polarization of non-photons    |                          |
-| sPolx,sPoly,sPolz | s-polarization amplitude of photons      |                          |
-| pPolx,pPoly,pPolz | p-polarization amplitude of photons      |                          |
+| sPolAx,sPolAy,sPolAz | s-polarization amplitude of photons      |                          |
+| pPolAx,pPolAy,pPolAz | p-polarization amplitude of photons      |                          |
 | sPolx,sPoly,sPolz | s-polarization amplitude of photons      |                          |
 | pPolx,pPoly,pPolz | p-polarization amplitude of photons      |                          |
 | time        | ray time w.r.t. ray generation | [ms]                     |
@@ -168,16 +169,27 @@ public:
 	auto sx(void) const { return _sx.vals(); };
 	auto sy(void) const { return _sy.vals(); };
 	auto sz(void) const { return _sz.vals(); };
-	auto sPolx(void) const { return _sPolx.vals(); };
-	auto sPoly(void) const { return _sPoly.vals(); };
-	auto sPolz(void) const { return _sPolz.vals(); };
-	auto pPolx(void) const { return _pPolx.vals(); };
-	auto pPoly(void) const { return _pPoly.vals(); };
-	auto pPolz(void) const { return _pPolz.vals(); };
+	auto sPolAx(void) const { return _sPolAx.vals(); };
+	auto sPolAy(void) const { return _sPolAy.vals(); };
+	auto sPolAz(void) const { return _sPolAz.vals(); };
+	auto pPolAx(void) const { return _pPolAx.vals(); };
+	auto pPolAy(void) const { return _pPolAy.vals(); };
+	auto pPolAz(void) const { return _pPolAz.vals(); };
+	auto sPolPhx(void) const { return _sPolPhx.vals(); };
+	auto sPolPhy(void) const { return _sPolPhy.vals(); };
+	auto sPolPhz(void) const { return _sPolPhz.vals(); };
+	auto pPolPhx(void) const { return _pPolPhx.vals(); };
+	auto pPolPhy(void) const { return _pPolPhy.vals(); };
+	auto pPolPhz(void) const { return _pPolPhz.vals(); };
+
 	auto wavelength(void) const { return _wavelength.vals(); };
 	auto time(void) const { return _time.vals(); };
-        auto weight(void) const { return _weight.vals(); };
+	auto weight(void) const { return _weight.vals(); };
 
+	auto id(void) const { return _id.vals(); };
+	auto status(void) const { return _status.vals(); };
+	
+#ifdef SHERVIN
 	/** \brief append a new ray to the internal memory reading from *openPMD data*
 	 * \param[in] x,y,z :  position
 	 * \param[in] dx, dy, dz : direction
@@ -194,7 +206,7 @@ public:
 	           float sPolx, float sPoly, float sPolz, // s-polarization
 	           float pPolx, float pPoly, float pPolz, // p-polarization
 	           float wavelength, float t, float p);   // ray wavelength, time and weight
-
+#endif
 	///@}
 
 #ifdef SHERVIN
