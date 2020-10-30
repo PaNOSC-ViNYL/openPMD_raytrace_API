@@ -27,15 +27,15 @@ public:
 	static const size_t X   = 0;
 	static const size_t Y   = 1;
 	static const size_t Z   = 2;
+	static const size_t PHASEDIM = DIM + 1;
+	static const size_t PHASE = 3;
 
 private:
 	float _position[DIM];
 	float _direction[DIM];
 	float _polarization[DIM]; // for non-photons
-	float _sPolarizationAmpl[DIM];
-	float _sPolarizationPhase[DIM];
-	float _pPolarizationAmpl[DIM];
-	float _pPolarizationPhase[DIM];
+	float _sPolarization[PHASEDIM];
+	float _pPolarization[PHASEDIM];
 	float _wavelength;
 	float _time;
 	float _weight;
@@ -47,10 +47,8 @@ public:
 	    _position(),
 	    _direction(),
 	    _polarization(),
-	    _sPolarizationAmpl(),
-	    _sPolarizationPhase(),
-	    _pPolarizationAmpl(),
-	    _pPolarizationPhase(),
+	    _sPolarization(),
+	    _pPolarization(),
 	    _wavelength(0),
 	    _time(0),
 	    _weight(1),
@@ -98,20 +96,16 @@ public:
 
 	/// \name Get s-polarization amplituded and phase for photons
 	///@{
-	float sPolAx() const { return _sPolarizationAmpl[X]; };
-	float sPolAy() const { return _sPolarizationAmpl[Y]; };
-	float sPolAz() const { return _sPolarizationAmpl[Z]; };
-	float sPolPhx() const { return _sPolarizationPhase[X]; };
-	float sPolPhy() const { return _sPolarizationPhase[Y]; };
-	float sPolPhz() const { return _sPolarizationPhase[Z]; };
+	float sPolAx() const { return _sPolarization[X]; };
+	float sPolAy() const { return _sPolarization[Y]; };
+	float sPolAz() const { return _sPolarization[Z]; };
+	float sPolPh() const { return _sPolarization[PHASE]; };
 	///@}
 	/// \name Get p-polarization amplitude and phase for photons
-	float pPolAx() const { return _pPolarizationAmpl[X]; };
-	float pPolAy() const { return _pPolarizationAmpl[Y]; };
-	float pPolAz() const { return _pPolarizationAmpl[Z]; };
-	float pPolPhx() const { return _pPolarizationPhase[X]; };
-	float pPolPhy() const { return _pPolarizationPhase[Y]; };
-	float pPolPhz() const { return _pPolarizationPhase[Z]; };
+	float pPolAx() const { return _pPolarization[X]; };
+	float pPolAy() const { return _pPolarization[Y]; };
+	float pPolAz() const { return _pPolarization[Z]; };
+	float pPolPh() const { return _pPolarization[PHASE]; };
 
 	void get_sPolarizationAmplitude(float* x, float* y, float* z) const {
 		*x = sPolAx();
@@ -124,15 +118,13 @@ public:
 		*z = pPolAz();
 	}
 
-	void get_sPolarizationPhase(float* x, float* y, float* z) const {
-		*x = sPolPhx();
-		*y = sPolPhy();
-		*z = sPolPhz();
+	void get_sPolarization(float* x, float* y, float* z, float* phase) const {
+		get_sPolarizationAmplitude(x,y,z);
+		*phase = sPolPh();
 	}
-	void get_pPolarizationPhase(float* x, float* y, float* z) const {
-		*x = pPolPhx();
-		*y = pPolPhy();
-		*z = pPolPhz();
+	void get_pPolarization(float* x, float* y, float* z, float* phase) const {
+		get_pPolarizationAmplitude(x,y,z);
+		*phase = pPolPh();
 	}
 
 	///@}
