@@ -2,13 +2,11 @@
 #define RAYS_CLASS_HH
 ///\file
 
-
-
 // #include "openpmd_output_formats.h" // enum with the available openPMD backends
 #include <vector>
 #include <utility>
 #include "ray.hh"
-namespace raytracing{
+namespace raytracing {
 /** \class Rays
  * \brief stores the rays' properties
  *
@@ -38,15 +36,19 @@ class Rays {
 private:
 	// the 3d components are in separate vectors because this is the way the openPMD API
 	// wants them to be
-	std::vector<float> _x, _y, _z,  // position
-	        _dx, _dy, _dz,          // direction (vx^2+vy^2+vz^2) = 1
-	        _sx, _sy, _sz,          // non-photon polarization
-	        _sPolx, _sPoly, _sPolz, // photon s-polarization amplitude
-	        _pPolx, _pPoly, _pPolz, // photon p-polarization amplitude
-	        _wavelength,            // wavelength
-	        _time, _weight;         // ray time, weight
-	size_t _size;                   // number of stored rays
-	size_t _read;                   // current index when reading
+	std::vector<float> _x, _y, _z,           // position
+	        _dx, _dy, _dz,                   // direction (vx^2+vy^2+vz^2) = 1
+	        _sx, _sy, _sz,                   // non-photon polarization
+	        _sPolx, _sPoly, _sPolz,          // photon s-polarization amplitude
+	        _pPolx, _pPoly, _pPolz,          // photon p-polarization amplitude
+	        _sPolPhx, _sPolPhy, _sPolPhz,    // photon s-polarization Phase
+	        _pPolPhx, _pPolPhy, _pPolPhz,    // photon p-polarization Phase
+	        _wavelength,                     // wavelength
+	        _time, _weight;                  // ray time, weight
+	std::vector<unsigned long long int> _id; // id
+	std::vector<particleStatus_t> _status;   // alive status
+	size_t _size;                            // number of stored rays
+	size_t _read;                            // current index when reading
 
 public:
 	/// \brief default constructor
@@ -88,10 +90,19 @@ public:
 		_pPoly.clear();
 		_pPolz.clear();
 
+		_sPolPhx.clear();
+		_sPolPhy.clear();
+		_sPolPhz.clear();
+		_pPolPhx.clear();
+		_pPolPhy.clear();
+		_pPolPhz.clear();
+
 		_wavelength.clear();
-		
+
 		_time.clear();
 		_weight.clear();
+		_id.clear();
+		_status.clear();
 	};
 
 	/** \brief returns the number of stored rays */
@@ -110,8 +121,10 @@ public:
 | x,y,z       | position in                    | [cm]                     |
 | dx,dy,dz    | direction                      | (normalized velocity)    |
 | sx,sy,sz    | polarization of non-photons    |                          |
-| sPx,sPy,sPz | s-polarization of photons      |                          |
-| pPx,pPy,pPz | p-polarization of photons      |                          |
+| sPolx,sPoly,sPolz | s-polarization amplitude of photons      |                          |
+| pPolx,pPoly,pPolz | p-polarization amplitude of photons      |                          |
+| sPolx,sPoly,sPolz | s-polarization amplitude of photons      |                          |
+| pPolx,pPoly,pPolz | p-polarization amplitude of photons      |                          |
 | time        | ray time w.r.t. ray generation | [ms]                     |
 | wavelength  |                                | [Ang]                    |
 | weight      | weight                         |                          |
@@ -217,11 +230,10 @@ public:
 	 * \param[out] t : time
 	 * \param[out] p : weight
 	 */
-	void
-	retrieve_next(double* x, double* y, double* z,    // position
-	              double* sx, double* sy, double* sz, // polarization
-	              double* vx, double* vy, double* vz, // velocity
-	              double* t, double* p) { // ray time and weight //, uint32_t userflag = 0);)
+	void retrieve_next(double* x, double* y, double* z,    // position
+	                   double* sx, double* sy, double* sz, // polarization
+	                   double* vx, double* vy, double* vz, // velocity
+	                   double* t, double* p) { // ray time and weight //, uint32_t userflag = 0);)
 		retrieve(x, y, z, sx, sy, sz, vx, vy, vz, t, p);
 		++_read;
 	}

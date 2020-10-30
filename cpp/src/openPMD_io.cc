@@ -159,7 +159,7 @@ openPMD_io::save_write(void) {
 	rays["polarization"]["y"].storeChunk(openPMD::shareRaw(_rays.sy()), _offset, extent);
 	rays["polarization"]["z"].storeChunk(openPMD::shareRaw(_rays.sz()), _offset, extent);
 
-	rays["time"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays.time()),
+	rays["rayTime"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays.time()),
 	                                                          _offset, extent);
 	rays["wavelength"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays.wavelength()),
 	                                                            _offset, extent);

@@ -3,7 +3,8 @@
 
 #include <cmath>
 
-namespace raytracing{
+namespace raytracing {
+enum particleStatus_t { kDead = 0, kAlive = 1 };
 
 /** \class Ray
  * \brief Generic ray, containing all the ray information being stored by the API into the openPMD
@@ -31,28 +32,43 @@ private:
 	float _position[DIM];
 	float _direction[DIM];
 	float _polarization[DIM]; // for non-photons
-	float _sPolarization[DIM];
-	float _pPolarization[DIM];
+	float _sPolarizationAmpl[DIM];
+	float _sPolarizationPhase[DIM];
+	float _pPolarizationAmpl[DIM];
+	float _pPolarizationPhase[DIM];
 	float _wavelength;
 	float _time;
 	float _weight;
+	unsigned long long int _id;
+	particleStatus_t _status;
 
 public:
 	Ray():
-		_position(){};
+	    _position(),
+	    _direction(),
+	    _polarization(),
+	    _sPolarizationAmpl(),
+	    _sPolarizationPhase(),
+	    _pPolarizationAmpl(),
+	    _pPolarizationPhase(),
+	    _wavelength(0),
+	    _time(0),
+	    _weight(1),
+	    _id(0),
+	    _status(kAlive){};
 
 	/// \name Getters
 	///@{
-	
+
 	/// \name Get position
 	///@{
 	float x() const { return _position[X]; };
 	float y() const { return _position[Y]; };
 	float z() const { return _position[Z]; };
-	void get_position(float* x, float* y, float*z) const{
-		*x = _position[X];
-		*y = _position[Y];
-		*z = _position[Z];
+	void get_position(float* xx, float* yy, float* zz) const {
+		(*xx) = x();
+		(*yy) = y();
+		(*zz) = z();
 	}
 	///@}
 
@@ -61,7 +77,11 @@ public:
 	float dx() const { return _direction[X]; };
 	float dy() const { return _direction[Y]; };
 	float dz() const { return _direction[Z]; };
-	void get_direction(float* x, float* y, float*z) const; ///< \todo implement
+	void get_direction(float* x, float* y, float* z) const {
+		*x = dx();
+		*y = dy();
+		*z = dz();
+	}
 	///@}
 
 	/// \name Get polarization for non-photons
@@ -69,32 +89,67 @@ public:
 	float sx() const { return _polarization[X]; };
 	float sy() const { return _polarization[Y]; };
 	float sz() const { return _polarization[Z]; };
-	void get_polarization(float* x, float* y, float* z) const; ///< \todo implement
+	void get_polarization(float* x, float* y, float* z) const {
+		*x = sx();
+		*y = sy();
+		*z = sz();
+	}
 	///@}
 
-	/// \name Get s-polarization and p-polarization for photons
+	/// \name Get s-polarization amplituded and phase for photons
 	///@{
-	float sPolx() const { return _sPolarization[X]; };
-	float sPoly() const { return _sPolarization[Y]; };
-	float sPolz() const { return _sPolarization[Z]; };
-	float pPolx() const { return _pPolarization[X]; };
-	float pPoly() const { return _pPolarization[Y]; };
-	float pPolz() const { return _pPolarization[Z]; };
-	void get_sPolarization(float* x, float* y, float* z) const; ///< \todo implement
-	void get_pPolarization(float* x, float* y, float* z) const; ///< \todo implement
+	float sPolAx() const { return _sPolarizationAmpl[X]; };
+	float sPolAy() const { return _sPolarizationAmpl[Y]; };
+	float sPolAz() const { return _sPolarizationAmpl[Z]; };
+	float sPolPhx() const { return _sPolarizationPhase[X]; };
+	float sPolPhy() const { return _sPolarizationPhase[Y]; };
+	float sPolPhz() const { return _sPolarizationPhase[Z]; };
+	///@}
+	/// \name Get p-polarization amplitude and phase for photons
+	float pPolAx() const { return _pPolarizationAmpl[X]; };
+	float pPolAy() const { return _pPolarizationAmpl[Y]; };
+	float pPolAz() const { return _pPolarizationAmpl[Z]; };
+	float pPolPhx() const { return _pPolarizationPhase[X]; };
+	float pPolPhy() const { return _pPolarizationPhase[Y]; };
+	float pPolPhz() const { return _pPolarizationPhase[Z]; };
+
+	void get_sPolarizationAmplitude(float* x, float* y, float* z) const {
+		*x = sPolAx();
+		*y = sPolAy();
+		*z = sPolAz();
+	}
+	void get_pPolarizationAmplitude(float* x, float* y, float* z) const {
+		*x = pPolAx();
+		*y = pPolAy();
+		*z = pPolAz();
+	}
+
+	void get_sPolarizationPhase(float* x, float* y, float* z) const {
+		*x = sPolPhx();
+		*y = sPolPhy();
+		*z = sPolPhz();
+	}
+	void get_pPolarizationPhase(float* x, float* y, float* z) const {
+		*x = pPolPhx();
+		*y = pPolPhy();
+		*z = pPolPhz();
+	}
+
 	///@}
 
-	/// \name Get wavelength, ray time and weight
+	/// \name Get wavelength, ray time, weight, id
 	///@{
 	float wavelength() const { return _wavelength; };
 	float time() const { return _time; };
 	float weight() const { return _weight; };
+	unsigned long long int id(void) const { return _id; };
+	particleStatus_t status(void) const { return _status; };
 	///@}
 	///@}
 
 	/// \name Setters
 	/// @{
-	
+
 	/// \brief scale and set the position
 	void position(double x, double y, double z, double scale = 1) {
 		_position[X] = x * scale;
@@ -116,7 +171,7 @@ public:
 	}
 
 	/// \brief scale and set polarization for non-photons  \todo to implement
-	void polarization(double x, double y, double z, double scale = 1){
+	void polarization(double x, double y, double z, double scale = 1) {
 		_polarization[X] = x * scale;
 		_polarization[Y] = y * scale;
 		_polarization[Z] = z * scale;
@@ -132,6 +187,9 @@ public:
 	/// \brief set weight
 	void weight(double w) { _weight = w; };
 
+	void id(unsigned long long int id) { _id = id; };
+
+	void status(particleStatus_t s) { _status = s; };
 	///@}
 };
 
