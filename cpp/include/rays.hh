@@ -63,7 +63,7 @@ class Rays {
 private:
 	// the 3d components are in separate vectors because this is the way the openPMD API
 	// wants them to be
-	std::vector<float> _x, _y, _z,           // position
+	Record<float> _x, _y, _z,           // position
 	        _dx, _dy, _dz,                   // direction (vx^2+vy^2+vz^2) = 1
 	        _sx, _sy, _sz,                   // non-photon polarization
 	        _sPolx, _sPoly, _sPolz,          // photon s-polarization amplitude
@@ -71,20 +71,7 @@ private:
 	        _sPolPhx, _sPolPhy, _sPolPhz,    // photon s-polarization Phase
 	        _pPolPhx, _pPolPhy, _pPolPhz,    // photon p-polarization Phase
 	        _wavelength,                     // wavelength
-	        _time; //, _weight;                  // ray time, weight
-
-	Record<float> _weight;
-
-	float _xmin, _xmax, _ymin, _ymax, _zmin, _zmax,                                       //
-	        _dxmin, _dxmax, _dymin, _dymax, _dzmin, _dzmax,                               //
-	        _sxmin, _sxmax, _symin, _symax, _szmin, _szmax,                               //
-	        _sPolxmin, _sPolxmax, _sPolymin, _sPolymax, _sPolzmin, _sPolzmax,             //
-	        _pPolxmin, _pPolxmax, _pPolymin, _pPolymax, _pPolzmin, _pPolzmax,             //
-	        _sPolPhxmin, _sPolPhxmax, _sPolPhymin, _sPolPhymax, _sPolPhdmin, _sPolPhzmax, //
-	        _pPolPhxmin, _pPolPhxmax, _pPolPhymin, _pPolPhymax, _pPolPhdmin, _pPolPhzmax, //
-	        _wavelengthmin, _wavelengthmax,                                               //
-	        _timemin, _timemax,                                                           //
-	        _weightmin, _weightmax;
+	        _time, _weight;                  // ray time, weight
 
 	std::vector<unsigned long long int> _id; // id
 	std::vector<particleStatus_t> _status;   // alive status
@@ -172,55 +159,23 @@ public:
 | weight      | weight                         |                          |
 */
 	// clang-format on
-	const std::vector<float>& x(void) const { return _x; };
-	float x_min() const { return _xmin; };
-	float x_max() const { return _xmax; };
-	const std::vector<float>& y(void) const { return _y; };
-	float y_min() const { return _ymin; };
-	float y_max() const { return _ymax; };
-	const std::vector<float>& z(void) const { return _z; };
-	float z_min() const { return _zmin; };
-	float z_max() const { return _zmax; };
-	const std::vector<float>& dx(void) const { return _dx; };
-	float dx_min() const { return _dxmin; };
-	float dx_max() const { return _dxmax; };
-	const std::vector<float>& dy(void) const { return _dy; };
-	float dy_min() const { return _dymin; };
-	float dy_max() const { return _dymax; };
-	const std::vector<float>& dz(void) const { return _dz; };
-	float dz_min() const { return _dzmin; };
-	float dz_max() const { return _dzmax; };
-	const std::vector<float>& sx(void) const { return _sx; };
-	float sx_min() const { return _sxmin; };
-	float sx_max() const { return _sxmax; };
-	const std::vector<float>& sy(void) const { return _sy; };
-	float sy_min() const { return _symin; };
-	float sy_max() const { return _symax; };
-	const std::vector<float>& sz(void) const { return _sz; };
-	float sz_min() const { return _szmin; };
-	float sz_max() const { return _szmax; };
-	const std::vector<float>& sPolx(void) const { return _sPolx; };
-	float sPolx_min() const { return _sPolxmin; };
-	float sPolx_max() const { return _sPolxmax; };
-	const std::vector<float>& sPoly(void) const { return _sPoly; };
-	float sPoly_min() const { return _sPolymin; };
-	float sPoly_max() const { return _sPolymax; };
-	const std::vector<float>& sPolz(void) const { return _sPolz; };
-	float sPolz_min() const { return _sPolzmin; };
-	float sPolz_max() const { return _sPolzmax; };
-	const std::vector<float>& pPolx(void) const { return _pPolx; };
-	float pPolx_min() const { return _pPolxmin; };
-	float pPolx_max() const { return _pPolxmax; };
-	const std::vector<float>& pPoly(void) const { return _pPoly; };
-	float pPoly_min() const { return _pPolymin; };
-	float pPoly_max() const { return _pPolymax; };
-	const std::vector<float>& pPolz(void) const { return _pPolz; };
-	float pPolz_min() const { return _pPolzmin; };
-	float pPolz_max() const { return _pPolzmax; };
-	const std::vector<float>& wavelength(void) const { return _wavelength; };
-	float wavelength_min() const { return _wavelengthmin; };
-	float wavelength_max() const { return _wavelengthmax; };
-	auto time(void) const { return _time; };
+	auto x(void) const { return _x.vals(); };
+	auto y(void) const { return _y.vals(); };
+	auto z(void) const { return _z.vals(); };
+	auto dx(void) const { return _dx.vals(); };
+	auto dy(void) const { return _dy.vals(); };
+	auto dz(void) const { return _dz.vals(); };
+	auto sx(void) const { return _sx.vals(); };
+	auto sy(void) const { return _sy.vals(); };
+	auto sz(void) const { return _sz.vals(); };
+	auto sPolx(void) const { return _sPolx.vals(); };
+	auto sPoly(void) const { return _sPoly.vals(); };
+	auto sPolz(void) const { return _sPolz.vals(); };
+	auto pPolx(void) const { return _pPolx.vals(); };
+	auto pPoly(void) const { return _pPoly.vals(); };
+	auto pPolz(void) const { return _pPolz.vals(); };
+	auto wavelength(void) const { return _wavelength.vals(); };
+	auto time(void) const { return _time.vals(); };
         auto weight(void) const { return _weight.vals(); };
 
 	/** \brief append a new ray to the internal memory reading from *openPMD data*
