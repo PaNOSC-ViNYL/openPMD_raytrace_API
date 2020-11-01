@@ -1,4 +1,4 @@
-#include "rays.hh" // helper class that stores the rays and returns 1D vectors
+//#include "rays.hh" // helper class that stores the rays and returns 1D vectors
 #include "openPMD_io.hh"
 #include <iostream>
 #include <openPMD/openPMD.hpp> // openPMD C++ API
@@ -149,7 +149,7 @@ openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_s
 template <typename T>
 void
 save_write_single(openPMD::ParticleSpecies& rays, std::string field, std::string record,
-                  Rays::Record<T>& rec, openPMD::Offset& offset, openPMD::Extent& extent) {
+                  openPMD_io::Rays::Record<T>& rec, openPMD::Offset& offset, openPMD::Extent& extent) {
 	rays[field][record].storeChunk(openPMD::shareRaw(rec.vals()), offset, extent);
 	rays[field][record].setAttribute("minValue", rec.min());
 	rays[field][record].setAttribute("maxValue", rec.max());
@@ -327,4 +327,12 @@ openPMD_io::init_read(openPMD_output_format_t extension, unsigned long long int 
 	return extent[0];
 }
 
+void
+openPMD_io::trace_write(Ray this_ray) {
+	_rays.push(this_ray);
+}
 
+Ray
+openPMD_io::trace_read(void) {
+	return _rays.pop(true);
+}

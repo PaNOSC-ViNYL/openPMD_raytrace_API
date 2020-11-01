@@ -1,25 +1,4 @@
 var searchData=
 [
-  ['detail',['detail',['../namespacenlohmann_1_1detail.html',1,'nlohmann']]],
-  ['dtoa_5fimpl',['dtoa_impl',['../namespacenlohmann_1_1detail_1_1dtoa__impl.html',1,'nlohmann::detail']]],
-  ['n',['N',['../namespaceopenPMD.html#a5bd35872ff3aaacc1ec2700443d89c40a8d9c307cb7f3c4a32822a51922d1ceaa',1,'openPMD']]],
-  ['name',['name',['../structname.html',1,'name'],['../structargument__record.html#ac9bb5bf320b8eb1de1ef5f9dcc808269',1,'argument_record::name()'],['../structfunction__record.html#a55d760eb0046c3beec8a20d94ed1d07c',1,'function_record::name()'],['../structtype__record.html#aaf93cf029bb1a9686fd5e72c16ea81a8',1,'type_record::name()'],['../structarg.html#a19d6eebdcc5e2c4679c5f77760adb5dc',1,'arg::name()'],['../classopenPMD_1_1Series.html#ae045dcfe12292f5c5edeef37ea594336',1,'openPMD::Series::name()'],['../classcpp__function.html#a5d8bcdd6781aa6da434299589c68013e',1,'cpp_function::name()']]],
-  ['name_5fseparator',['name_separator',['../classnlohmann_1_1detail_1_1lexer.html#a3f313cdbe187cababfc5e06f0b69b098acc3c64f8ae08c00de1b33f19a4d2913a',1,'nlohmann::detail::lexer']]],
-  ['nargs',['nargs',['../structfunction__record.html#a8082876641e039386647a6b6b5118d41',1,'function_record']]],
-  ['nbytes',['nbytes',['../classunchecked__reference.html#a9c15e1b4f748ca5d8396e637c4d9abb4',1,'unchecked_reference']]],
-  ['ndim',['ndim',['../classunchecked__reference.html#a732200223a8d47f248fb9bab843dbe7a',1,'unchecked_reference']]],
-  ['neutron',['neutron',['../classraytracing_1_1neutron.html',1,'raytracing']]],
-  ['next',['next',['../structfunction__record.html#a141b30999d54286b04d06ad6180dbf99',1,'function_record']]],
-  ['nlohmann',['nlohmann',['../namespacenlohmann.html',1,'']]],
-  ['noconvert',['noconvert',['../structarg.html#affdcf2c99a2f27cb539efd6853335d4b',1,'arg::noconvert()'],['../structarg__v.html#a018e928b16cc3e83065740a92a490d07',1,'arg_v::noconvert()']]],
-  ['nodelete',['nodelete',['../structnodelete.html',1,'']]],
-  ['none',['none',['../structargument__record.html#a62c9d868218688cd4abde4634646848c',1,'argument_record::none()'],['../structarg.html#a99082d77a1a365593a16939f03194e5e',1,'arg::none()'],['../structarg__v.html#a3d487f117dc8f3af6555519ab160716a',1,'arg_v::none()']]],
-  ['null',['null',['../structnlohmann_1_1json__sax.html#a0ad26edef3f8d530dcec3192bba82df6',1,'nlohmann::json_sax::null()'],['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985a37a6259cc0c1dae299a7866489dff0bd',1,'nlohmann::detail::null()']]],
-  ['numattributes',['numAttributes',['../classopenPMD_1_1Attributable.html#a7b840a8b766e1babc2c73d6f964a7df5',1,'openPMD::Attributable']]],
-  ['number_5ffloat',['number_float',['../structnlohmann_1_1json__sax.html#ae7c31614e8a82164d2d7f8dbf4671b25',1,'nlohmann::json_sax::number_float()'],['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985ad9966ecb59667235a57b4b999a649eef',1,'nlohmann::detail::number_float()']]],
-  ['number_5ffloat_5ft',['number_float_t',['../structnlohmann_1_1json__sax.html#a390c209bffd8c4800c8f3076dc465a20',1,'nlohmann::json_sax::number_float_t()'],['../classnlohmann_1_1basic__json.html#a88d6103cb3620410b35200ee8e313d97',1,'nlohmann::basic_json::number_float_t()']]],
-  ['number_5finteger',['number_integer',['../structnlohmann_1_1json__sax.html#affa7a78b8e9cc9cc3ac99927143142a5',1,'nlohmann::json_sax::number_integer()'],['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985a5763da164f8659d94a56e29df64b4bcc',1,'nlohmann::detail::number_integer()']]],
-  ['number_5finteger_5ft',['number_integer_t',['../structnlohmann_1_1json__sax.html#a0cef30121f02b7fee85e9708148ea0aa',1,'nlohmann::json_sax::number_integer_t()'],['../classnlohmann_1_1basic__json.html#a98e611d67b7bd75307de99c9358ab2dc',1,'nlohmann::basic_json::number_integer_t()']]],
-  ['number_5funsigned',['number_unsigned',['../structnlohmann_1_1json__sax.html#ad9b253083e0509923ba195136f49face',1,'nlohmann::json_sax::number_unsigned()'],['../namespacenlohmann_1_1detail.html#a1ed8fc6239da25abcaf681d30ace4985adce7cc8ec29055c4158828921f2f265e',1,'nlohmann::detail::number_unsigned()']]],
-  ['number_5funsigned_5ft',['number_unsigned_t',['../structnlohmann_1_1json__sax.html#a32028cc056ae0f43aaae331cdbbbf856',1,'nlohmann::json_sax::number_unsigned_t()'],['../classnlohmann_1_1basic__json.html#ab906e29b5d83ac162e823ada2156b989',1,'nlohmann::basic_json::number_unsigned_t()']]]
+  ['y',['y',['../classraytracing_1_1Ray.html#a87f23ddba158eb2609edfd29eaac801d',1,'raytracing::Ray']]]
 ];

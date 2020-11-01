@@ -6,9 +6,6 @@
 #include <openPMD/openPMD.hpp> // openPMD C++ API
 #include <string>
 
-// class Rays; // forward declaration of the class
-#include <rays.hh> // need this because it is a member of openPMD_io class, so the constructor is invoked
-
 namespace raytracing {
 #define ITER 1
 
@@ -20,6 +17,164 @@ namespace raytracing {
  * Coherent in this case means that a single type of rays (particles) are going to used.
  */
 class openPMD_io {
+	// Auxiliary classes that are private, so not part of the public API
+private:
+	/** \class Rays
+	 * \brief stores the rays' properties
+	 *
+	 * This class is meant to keep in memory the rays' quantities before effectively writing them on
+	 * disk by the store_chunk method, or to load in memory the rays' quantities after reading the
+	 * openPMD file from disk with the load_chunk method
+	 *
+	 *
+	 * \todo add a check that the non-photon polarization is not filled if storing photons
+	 * \todo check that polarizationAmplitudes are not filled for non-photons
+	 *
+	 *  \dot
+	 *  digraph example {
+	 *      rankdir="LR";
+	 *      node [shape=record, fontname=Helvetica, fontsize=10];
+	 *      Rays [  URL="\ref Rays"];
+	 *      u    [label="User's program" shape=ellipse URL="\ref Ray"];
+	 *      pmd  [ label="openPMD file", shape=ellipse];
+	 *      u    -> Rays [ arrowhead="", style="",label="push Ray" ];
+	 *      Rays -> u  [ label="pop Ray", dir=""];
+	 *  }
+	 *  \enddot
+	 */
+
+	class Rays {
+	public: //public to make it available to openPMD_io methods
+		/**\class Record
+		 * \brief template utility class to simplify implementation
+		 * It is a vector that also stores min and max values while filling
+		 */
+		template <typename T> class Record {
+			std::vector<T> _vals;
+			T _min, _max;
+
+		public:
+			Record(): _vals(), _min(), _max() { clear(); }
+			const std::vector<T>& vals(void) const { return _vals; };
+			T min(void) const { return _min; };
+			T max(void) const { return _max; };
+			void push_back(T val) {
+				_vals.push_back(val);
+				if (_min > val) (_min) = val;
+				if (_max < val) (_max) = val;
+			}
+			void clear(void) {
+				std::numeric_limits<T> lim;
+				_max = lim.min();
+				_min = lim.max();
+				_vals.clear();
+			}
+			const T operator[](size_t i) const { return _vals[i]; }; // cannot modify
+		};
+
+		//------------------------------ public memebers
+	public: 
+		// I make the Recors public members to avoid writing methods to access them
+		//
+		// the 3d components are in separate vectors because this is the way the openPMD API
+		// wants them to be
+		Record<float> _x, _y, _z,                   // position
+		        _dx, _dy, _dz,                      // direction (vx^2+vy^2+vz^2) = 1
+		        _sx, _sy, _sz,                      // non-photon polarization
+		        _sPolAx, _sPolAy, _sPolAz, _sPolPh, // photon s-polarization amplitude
+		        _pPolAx, _pPolAy, _pPolAz, _pPolPh, // photon p-polarization amplitude
+		        _wavelength,                        // wavelength
+		        _time, _weight;                     // ray time, weight
+
+		Record<unsigned long long int> _id; // id
+		Record<int> _status;                // alive status
+
+		//------------------------------ private memebers
+	private:
+		size_t _size; // number of stored rays
+		size_t _read; // current index when reading
+
+		//------------------------------ public methods
+	public:
+		/// \brief default constructor
+		Rays();
+
+		/** \brief append a new ray
+		 * \param[in] this_ray : a ray object
+		 */
+		void push(const Ray& this_ray);
+
+		/** \brief pop first ray
+		 * \param[in] next : if true, it returns the current ray and advance the counter by one
+		 *     if false, at the next pop() it will retrieve the same ray
+		 * \return ray : a ray object
+		 */
+		Ray pop(bool next = false);
+		/** \brief reset the container, removing all the rays */
+		void clear(void) {
+			_size = 0;
+			_read = 0;
+
+			_x.clear();
+			_y.clear();
+			_z.clear();
+
+			_dx.clear();
+			_dy.clear();
+			_dz.clear();
+
+			_sx.clear();
+			_sy.clear();
+			_sz.clear();
+
+			_sPolAx.clear();
+			_sPolAy.clear();
+			_sPolAz.clear();
+			_pPolAx.clear();
+			_pPolAy.clear();
+			_pPolAz.clear();
+
+			_sPolPh.clear();
+			_pPolPh.clear();
+
+			_wavelength.clear();
+
+			_time.clear();
+			_weight.clear();
+
+			_id.clear();
+			_status.clear();
+		};
+
+		/** \brief returns the number of stored rays */
+		size_t size() const { return _size; };
+
+		/** \brief check if all the data have been already retrieved
+		 * \return bool : true if all the data stored have been retrieved
+		 * it return true also if it is empty
+		 */
+		bool is_chunk_finished(void) { return _read == _size; }
+
+		// clang-format off
+/** \name 1D vector quantities of stored rays
+| Variable    | Comment                        | Units                    |
+| ---------   | ----------------               | ------------------------ |
+| x,y,z       | position in                    | [cm]                     |
+| dx,dy,dz    | direction                      | (normalized velocity)    |
+| sx,sy,sz    | polarization of non-photons    |                          |
+| sPolAx,sPolAy,sPolAz | s-polarization amplitude of photons      |                          |
+| pPolAx,pPolAy,pPolAz | p-polarization amplitude of photons      |                          |
+| sPolx,sPoly,sPolz | s-polarization amplitude of photons      |                          |
+| pPolx,pPoly,pPolz | p-polarization amplitude of photons      |                          |
+| time        | ray time w.r.t. ray generation | [ms]                     |
+| wavelength  |                                | [Ang]                    |
+| weight      | weight                         |                          |
+*/
+		// clang-format on
+
+		///@}
+	};
+
 public:
 	/**\brief constructor
 	 * At construction, no file is created. The init_write() or init_read() methods should be called
@@ -41,7 +196,6 @@ public:
 	/***************************************************************/
 	/// \name Writing mode
 	///@{
-public:
 	/** \brief initializes the "series" object from the openPMD API in WRITE MODE
 	 *
 	 * It is extremely important to set the n_rays as the maximum number of rays to save in the file.
@@ -64,40 +218,19 @@ public:
 	 **/
 	void init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter);
 
-#ifdef SHERVIN
-	/** \brief save ray properties in a vector
-	 *
-	 * it writes to the file when the number of rays reaches CHUNK_SIZE as defined in the
-	 * openPMD_io.cc file
-	 * clang-format off
-	 * \param[in] x,y,z : ray position          -> it is converted to cm ( * 100)
-	 * \param[in] sx, sy, sz : ray polarization
-	 * \param[in] vx, vy, vz : ray velocity     -> only the direction is stored
-	 * \param[in] t : time
-	 * \param[in] p : weight
-	 * clang-format off
-	 */
-	void trace_write(double x, double y, double z,    // position
-	                 double sx, double sy, double sz, // polarization
-	                 double vx, double vy, double vz, // velocity
-	                 double t, double p);
-#endif
 	/// \brief save ray properties
-	void trace_write(Ray this_ray) { _rays.push(this_ray); }
-	
+	void trace_write(Ray this_ray);
+
 	/** \brief Flushes the output to file before closing it
 	 * It writes the current particle species of the current iteration.
 	 *
 	 **/
 	void save_write(void);
-
-private:
 	///@}
 
 	/***************************************************************/
 	/// \name Reading mode
 	///@{
-public:
 	/// \brief initializes the "series" object from the openPMD API in READ MODE
 	unsigned long long int
 	init_read(openPMD_output_format_t output_format, ///< output format
@@ -106,26 +239,11 @@ public:
 	          unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
 
-#ifdef SHERVIN
-	/** \brief save ray properties in a vector
-	 *
-	 * Reads ray data from particle instance in format useful for McStas
-	 * \param[out] x,y,z : ray position in m
-	 * \param[out] sx, sy, sz : ray polarization (not working yet)
-	 * \param[out] vx, vy, vz : ray velocity m/s
-	 * \param[out] t : time [s]
-	 * \param[out] p : weight
-	 */
-	void trace_read(double* x, double* y, double* z,    // position
-	                double* sx, double* sy, double* sz, // polarization
-	                double* vx, double* vy, double* vz, // velocity
-	                double* t, double* p);
-#endif
 	/** \brief read one ray from file
 	 *
 	 * \returns Ray object
 	 */
-	Ray trace_read(void) { return _rays.pop(true); }
+	Ray trace_read(void);
 	///@}
 private:
 	void load_chunk(void);
@@ -171,6 +289,7 @@ private:
 	              std::map<openPMD::UnitDimension, double> const& dims = {{openPMD::UnitDimension::L,
 	                                                                       0.}},
 	              double unitSI                                        = 0.);
+
 };
 } // namespace raytracing
 #endif

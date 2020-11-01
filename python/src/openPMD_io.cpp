@@ -3,6 +3,7 @@
 namespace py = pybind11;
 
 #include <openPMD_io.hh>
+#include <rays.hh>
 using namespace raytracing;
 
 PYBIND11_MODULE(raytracing, m) {

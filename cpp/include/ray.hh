@@ -11,7 +11,8 @@ namespace raytracing {
  *  - 1: active/alive particle
  *  - other: any other value is used for "dead" particles, the effective value and meaining
  * depends on the simulation software used
- * In the ray tracing extension only 0 and 1 values are used
+ *
+ * In the ray tracing extension only raytracing::kDead and raytracing::kAlive values are used
  */
 typedef int particleStatus_t;
 constexpr int kDead  = 0; ///<  particleStatus_t: dead ray
@@ -80,7 +81,7 @@ public:
 		(*yy) = y();
 		(*zz) = z();
 	}
-	///@}
+	//@}
 
 	/// \name Get direction
 	///@{
@@ -141,12 +142,17 @@ public:
 
 	///@}
 
-	/// \name Get wavelength, ray time, weight, id
+	/** \name Get wavelength, ray time, weight, id and status
+	 * Allowed status values are raytracing::kAlive and raytracing::kDead
+	 */
 	///@{
 	float wavelength() const { return _wavelength; };
 	float time() const { return _time; };
 	float weight() const { return _weight; };
 	unsigned long long int id(void) const { return _id; };
+	/** \brief return the particle status
+	 * \return raytracing::kAlive or raytracing::kDead
+	 */
 	particleStatus_t status(void) const { return _status; };
 	///@}
 	///@}
@@ -207,6 +213,7 @@ public:
 	///@}
 };
 
+#ifdef DD
 /** \class photon
  * \brief helper class for photons
  */
@@ -216,5 +223,7 @@ class photon : public Ray {};
  *  \brief helper class for neutrons
  */
 class neutron : public Ray {};
+#endif
 } // namespace raytracing
+
 #endif

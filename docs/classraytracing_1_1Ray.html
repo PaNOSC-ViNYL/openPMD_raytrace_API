@@ -76,17 +76,6 @@ $(function() {
  <a href="classraytracing_1_1Ray.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ray_8hh_source.html">ray.hh</a>&gt;</code></p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for raytracing::Ray:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classraytracing_1_1Ray__inherit__graph.png" border="0" usemap="#raytracing_1_1Ray_inherit__map" alt="Inheritance graph"/></div>
-<map name="raytracing_1_1Ray_inherit__map" id="raytracing_1_1Ray_inherit__map">
-<area shape="rect" id="node2" href="classraytracing_1_1neutron.html" title="helper class for neutrons " alt="" coords="5,80,136,107"/>
-<area shape="rect" id="node3" href="classraytracing_1_1photon.html" title="helper class for photons " alt="" coords="161,80,287,107"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -167,6 +156,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>get_pPolarizationAmpl
 <tr class="memitem:ab86581d1b4b4fcbd9c71a45f2be9e29e"><td class="memItemLeft" align="right" valign="top"><a id="ab86581d1b4b4fcbd9c71a45f2be9e29e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>get_pPolarization</b> (float *x, float *y, float *z, float *phase) const</td></tr>
 <tr class="separator:ab86581d1b4b4fcbd9c71a45f2be9e29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Get wavelength, ray time, weight, id and status</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Allowed status values are <a class="el" href="namespaceraytracing.html#a57e78a789925757c2eae3a495d2ddae1" title="alive ray ">raytracing::kAlive</a> and <a class="el" href="namespaceraytracing.html#a914c09e1dd7082a964c1713ee2e3ce49" title="particleStatus_t: dead ray ">raytracing::kDead</a> </p>
+</div></td></tr>
 <tr class="memitem:a0dc0ba25bdc6b91358b76a38e1a48178"><td class="memItemLeft" align="right" valign="top"><a id="a0dc0ba25bdc6b91358b76a38e1a48178"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b> () const</td></tr>
 <tr class="separator:a0dc0ba25bdc6b91358b76a38e1a48178"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,8 +171,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>weight</b> () const<
 <tr class="memitem:a1622a0ba50099a2f23d3626b11e5bd06"><td class="memItemLeft" align="right" valign="top"><a id="a1622a0ba50099a2f23d3626b11e5bd06"></a>
 unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> (void) const</td></tr>
 <tr class="separator:a1622a0ba50099a2f23d3626b11e5bd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af39fc0b2db3c75616b75828a56a75c71"><td class="memItemLeft" align="right" valign="top"><a id="af39fc0b2db3c75616b75828a56a75c71"></a>
-<a class="el" href="namespaceraytracing.html#a8a73b05a449eaa8c485e67e9acef2001">particleStatus_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>status</b> (void) const</td></tr>
+<tr class="memitem:af39fc0b2db3c75616b75828a56a75c71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceraytracing.html#a8a73b05a449eaa8c485e67e9acef2001">particleStatus_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#af39fc0b2db3c75616b75828a56a75c71">status</a> (void) const</td></tr>
+<tr class="memdesc:af39fc0b2db3c75616b75828a56a75c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">return the particle status  <a href="#af39fc0b2db3c75616b75828a56a75c71">More...</a><br /></td></tr>
 <tr class="separator:af39fc0b2db3c75616b75828a56a75c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Setters</div></td></tr>
 <tr class="memitem:a21906dc119aeedb0c4551e5ea1d1709c"><td class="memItemLeft" align="right" valign="top"><a id="a21906dc119aeedb0c4551e5ea1d1709c"></a>
@@ -230,8 +222,39 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>status</b> (<a class=
 <p>Other specific ray classes should inherit from this in order to provide more convenient methods for the user. Derived classes can be created from this and used by the users in their programs.</p>
 <p>Unit conversions should be applied here, so that the <a class="el" href="classraytracing_1_1Rays.html" title="stores the rays&#39; properties ">Rays</a> class stores information in a coherent way. There is a small inefficiency if rays are used multiple times, but the time spent in unit conversions is anyway negligible w.r.t. the simulation time. </p>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00035">35</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00036">36</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="af39fc0b2db3c75616b75828a56a75c71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af39fc0b2db3c75616b75828a56a75c71">&#9670;&nbsp;</a></span>status()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceraytracing.html#a8a73b05a449eaa8c485e67e9acef2001">particleStatus_t</a> raytracing::Ray::status </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return the particle status </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="namespaceraytracing.html#a57e78a789925757c2eae3a495d2ddae1" title="alive ray ">raytracing::kAlive</a> or <a class="el" href="namespaceraytracing.html#a914c09e1dd7082a964c1713ee2e3ce49" title="particleStatus_t: dead ray ">raytracing::kDead</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00156">156</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+
+</div>
+</div>
 <a id="aff7dc41f019b8646e30b479efae0687b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aff7dc41f019b8646e30b479efae0687b">&#9670;&nbsp;</a></span>polarization()</h2>
 
@@ -279,20 +302,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>status</b> (<a class=
 </div><div class="memdoc">
 
 <p>scale and set polarization for non-photons </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>to implement </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>to implement </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00178">178</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classraytracing_1_1Ray_aff7dc41f019b8646e30b479efae0687b_icgraph.png" border="0" usemap="#classraytracing_1_1Ray_aff7dc41f019b8646e30b479efae0687b_icgraph" alt=""/></div>
-<map name="classraytracing_1_1Ray_aff7dc41f019b8646e30b479efae0687b_icgraph" id="classraytracing_1_1Ray_aff7dc41f019b8646e30b479efae0687b_icgraph">
-<area shape="rect" id="node2" href="classraytracing_1_1Rays.html#a70d6422bcd081a1865614752349b0241" title="pop first ray " alt="" coords="237,13,384,39"/>
-<area shape="rect" id="node3" href="classraytracing_1_1openPMD__io.html#a6ba095753224e80a95abfec8816e0a5e" title="read one ray from file " alt="" coords="432,5,576,47"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00184">184</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 
 </div>
 </div>
@@ -349,20 +361,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>status</b> (<a class=
 </div><div class="memdoc">
 
 <p>scale and set p-polarization for photons </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>to implement </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>to implement </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00191">191</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
-<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph.png" border="0" usemap="#classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph" alt=""/></div>
-<map name="classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph" id="classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph">
-<area shape="rect" id="node2" href="classraytracing_1_1Rays.html#a70d6422bcd081a1865614752349b0241" title="pop first ray " alt="" coords="247,13,393,39"/>
-<area shape="rect" id="node3" href="classraytracing_1_1openPMD__io.html#a6ba095753224e80a95abfec8816e0a5e" title="read one ray from file " alt="" coords="441,5,585,47"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00197">197</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 
 </div>
 </div>

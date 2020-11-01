@@ -1,19 +1,21 @@
-#include "rays.hh"
+//#include "rays.hh"
+#include "openPMD_io.hh"
 #include <array>
 #include <cmath>
 ///\file
 
 using raytracing::Ray;
-using raytracing::Rays;
+using raytracing::openPMD_io;
+//using raytracing::openPMD_io::Rays;
 #ifndef V2SE
 #define VS2E 5.22703725e-6 /* Convert (v[m/s])**2 to E[meV] */
 #endif
 
-Rays::Rays(): _size(0), _read(0) {}
+openPMD_io::Rays::Rays(): _size(0), _read(0) {}
 
 //------------------------------
 void
-Rays::push(const Ray& this_ray) {
+openPMD_io::Rays::push(const Ray& this_ray) {
 	_x.push_back(this_ray.x());
 	_y.push_back(this_ray.y());
 	_z.push_back(this_ray.z());
@@ -47,7 +49,7 @@ Rays::push(const Ray& this_ray) {
 
 //------------------------------
 Ray
-Rays::pop(bool next) {
+openPMD_io::Rays::pop(bool next) {
 
 	Ray r;
 	r.position(_x[_read], _y[_read], _z[_read]);
@@ -72,7 +74,7 @@ Rays::pop(bool next) {
 #ifdef SHERVIN
 //------------------------------
 void
-Rays::store(float x, float y, float z,                    // position
+openPMD_io::Rays::store(float x, float y, float z,                    // position
             float dx, float dy, float dz,                 // direction
             float sx, float sy, float sz,                 // polarization
             float sPolx, float sPoly, float sPolz,        // s-polarization
@@ -115,7 +117,7 @@ Rays::store(float x, float y, float z,                    // position
 #endif
 #ifdef SHERVIN
 void
-Rays::push_back_nonphoton(double x, double y, double z,    //
+openPMD_io::Rays::push_back_nonphoton(double x, double y, double z,    //
                           double dx, double dy, double dz, //
                           double sx, double sy, double sz, //
                           double t, double p) {
@@ -152,7 +154,7 @@ Rays::push_back_nonphoton(double x, double y, double z,    //
  * performance in this case.
  */
 void
-Rays::retrieve(double* x, double* y, double* z,    //
+openPMD_io::Rays::retrieve(double* x, double* y, double* z,    //
                double* sx, double* sy, double* sz, //
                double* vx, double* vy, double* vz, //
                double* t, double* p) {             //, uint32_t userflag) {
