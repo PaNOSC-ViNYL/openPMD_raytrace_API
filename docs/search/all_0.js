@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['clear',['clear',['../classraytracing_1_1Rays.html#a0bc902010ca2ec0252eea6652aa53a88',1,'raytracing::Rays']]]
+  ['direction',['direction',['../classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06',1,'raytracing::Ray']]]
 ];

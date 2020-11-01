@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['velocity',['velocity',['../classraytracing_1_1Ray.html#a7eda6a6b540c21e69e9eca496be8a0a2',1,'raytracing::Ray']]]
+  ['wavelength',['wavelength',['../classraytracing_1_1Ray.html#a4f8e952b7298b84377b31f2548ef69be',1,'raytracing::Ray']]],
+  ['weight',['weight',['../classraytracing_1_1Ray.html#a3f5320b18f7cc366bf46137fe889915b',1,'raytracing::Ray']]]
 ];

@@ -22,9 +22,9 @@ private:
 	/** \class Rays
 	 * \brief stores the rays' properties
 	 *
-	 * This class is meant to keep in memory the rays' quantities before effectively writing them on
-	 * disk by the store_chunk method, or to load in memory the rays' quantities after reading the
-	 * openPMD file from disk with the load_chunk method
+	 * This class is meant to keep in memory the rays' quantities before effectively writing
+	 * them on disk by the store_chunk method, or to load in memory the rays' quantities after
+	 * reading the openPMD file from disk with the load_chunk method
 	 *
 	 *
 	 * \todo add a check that the non-photon polarization is not filled if storing photons
@@ -44,7 +44,7 @@ private:
 	 */
 
 	class Rays {
-	public: //public to make it available to openPMD_io methods
+	public: // public to make it available to openPMD_io methods
 		/**\class Record
 		 * \brief template utility class to simplify implementation
 		 * It is a vector that also stores min and max values while filling
@@ -73,7 +73,7 @@ private:
 		};
 
 		//------------------------------ public memebers
-	public: 
+	public:
 		// I make the Recors public members to avoid writing methods to access them
 		//
 		// the 3d components are in separate vectors because this is the way the openPMD API
@@ -105,9 +105,9 @@ private:
 		void push(const Ray& this_ray);
 
 		/** \brief pop first ray
-		 * \param[in] next : if true, it returns the current ray and advance the counter by one
-		 *     if false, at the next pop() it will retrieve the same ray
-		 * \return ray : a ray object
+		 * \param[in] next : if true, it returns the current ray and advance the counter by
+		 * one if false, at the next pop() it will retrieve the same ray \return ray : a ray
+		 * object
 		 */
 		Ray pop(bool next = false);
 		/** \brief reset the container, removing all the rays */
@@ -177,8 +177,9 @@ private:
 
 public:
 	/**\brief constructor
-	 * At construction, no file is created. The init_write() or init_read() methods should be called
-	 * to performed the desired operations.
+	 *
+	 * At construction, no file is created. The init_write() or init_read() methods should be
+	 * called to performed the desired operations.
 	 *
 	 */
 	explicit openPMD_io(
@@ -198,15 +199,15 @@ public:
 	///@{
 	/** \brief initializes the "series" object from the openPMD API in WRITE MODE
 	 *
-	 * It is extremely important to set the n_rays as the maximum number of rays to save in the file.
-	 * If it is not known in advance, the user should guess it. The file size increases according to
-	 * this value, so it should be kept the lowest possible.
+	 * It is extremely important to set the n_rays as the maximum number of rays to save in the
+	 * file. If it is not known in advance, the user should guess it. The file size increases
+	 * according to this value, so it should be kept the lowest possible.
 	 *
 	 * This method calls init_rays() a first time.
 	 */
 	void init_write(openPMD_output_format_t output_format, ///< output format
 	                std::string pdgId,                     ///< PDG ID of the particles
-	                unsigned long long int n_rays,         ///< number of rays being simulated (max)
+	                unsigned long long int n_rays, ///< number of rays being simulated (max)
 	                unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
 
@@ -216,7 +217,8 @@ public:
 	 * iteration.
 	 *
 	 **/
-	void init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter);
+	void
+	init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter);
 
 	/// \brief save ray properties
 	void trace_write(Ray this_ray);
@@ -234,8 +236,9 @@ public:
 	/// \brief initializes the "series" object from the openPMD API in READ MODE
 	unsigned long long int
 	init_read(openPMD_output_format_t output_format, ///< output format
-	          unsigned long long int n_rays = 0, ///< NOT USED YET 0 = all \todo to fix the maximum
-	                                             ///< number of rays one wants to read from the file
+	          unsigned long long int n_rays =
+	                  0,            ///< NOT USED YET 0 = all \todo to fix the maximum
+	                                ///< number of rays one wants to read from the file
 	          unsigned int iter = 1 ///< openPMD iteration, always using the default value
 	);
 
@@ -284,12 +287,17 @@ private:
 		return i.particles[particle_species];
 	}
 
-	void
-	init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isScalar,
-	              std::map<openPMD::UnitDimension, double> const& dims = {{openPMD::UnitDimension::L,
-	                                                                       0.}},
-	              double unitSI                                        = 0.);
-
+	/** \brief Sets a new Record for the current particles of the current iteration
+	 * \param[in] isScalar : bool indicating if it is scalar
+	 * \param[in] dims : Unit dimensions
+	 * \param[in]
+	 */
+	void init_ray_prop(std::string name,          ///< name : name of the field/property
+	                   openPMD::Dataset& dataset, ///< dataset definition
+	                   bool isScalar,             ///< true if it is a scalar
+	                   std::map<openPMD::UnitDimension, double> const& dims =
+	                           {{openPMD::UnitDimension::L, 0.}}, ///< dimensions
+	                   double unitSI = 0.);                       ///< scale w.r.t. SI
 };
 } // namespace raytracing
 #endif

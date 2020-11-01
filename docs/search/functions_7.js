@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['time',['time',['../classraytracing_1_1Ray.html#af9b72d6b8fd7a9a73e318d7281737443',1,'raytracing::Ray']]],
-  ['trace_5fread',['trace_read',['../classraytracing_1_1openPMD__io.html#a821c5080922d79dac21220a3d9ea6cd0',1,'raytracing::openPMD_io']]],
-  ['trace_5fwrite',['trace_write',['../classraytracing_1_1openPMD__io.html#a4a668b1e217e4c0771ffeacb05030d9f',1,'raytracing::openPMD_io']]]
+  ['wavelength',['wavelength',['../classraytracing_1_1Ray.html#a4f8e952b7298b84377b31f2548ef69be',1,'raytracing::Ray']]],
+  ['weight',['weight',['../classraytracing_1_1Ray.html#a3f5320b18f7cc366bf46137fe889915b',1,'raytracing::Ray']]]
 ];

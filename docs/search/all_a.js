@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['time',['time',['../classraytracing_1_1Ray.html#af9b72d6b8fd7a9a73e318d7281737443',1,'raytracing::Ray']]],
-  ['todo_20list',['Todo List',['../todo.html',1,'']]],
-  ['trace_5fread',['trace_read',['../classraytracing_1_1openPMD__io.html#a821c5080922d79dac21220a3d9ea6cd0',1,'raytracing::openPMD_io']]],
-  ['trace_5fwrite',['trace_write',['../classraytracing_1_1openPMD__io.html#a4a668b1e217e4c0771ffeacb05030d9f',1,'raytracing::openPMD_io']]]
+  ['velocity',['velocity',['../classraytracing_1_1Ray.html#a7eda6a6b540c21e69e9eca496be8a0a2',1,'raytracing::Ray']]]
 ];

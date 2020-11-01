@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['json',['JSON',['../namespaceraytracing.html#a246cdad8af88382c1837ca3edaa6f613ae3e9e1e326f049021037f97737214c7e',1,'raytracing']]]
+  ['kalive',['kAlive',['../namespaceraytracing.html#a57e78a789925757c2eae3a495d2ddae1',1,'raytracing']]],
+  ['kdead',['kDead',['../namespaceraytracing.html#a914c09e1dd7082a964c1713ee2e3ce49',1,'raytracing']]]
 ];

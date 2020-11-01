@@ -7,14 +7,13 @@
 ///\file
 using namespace raytracing;
 /** \brief defines the maximum number of rays that can be stored in memory before dumping to file
- *\todo The CHUNK_SIZE should not be hardcoded
+ * \todo The CHUNK_SIZE should not be hardcoded
  * it should also be optimized with tests
  */
 namespace raytracing {
 constexpr size_t CHUNK_SIZE = 10000;
 }
 
-/** \todo ekin should be saved according to the openPMD standard */
 /** \todo use particlePatches ... but I don't understand if/how */
 
 //------------------------------------------------------------
@@ -34,16 +33,10 @@ openPMD_io::openPMD_io(const std::string& filename, // openPMD::Access read_mode
     _name_current_component(name_current_component),
     _i_repeat(1),
     _n_repeat(repeat),
-    //    _access_mode(openPMD::Access::READ_WRITE),
     _offset({0}),
     _series(nullptr){};
 
 //------------------------------------------------------------
-/** \brief
- * \param[in] name : name of the field/property
- * \param[in] isScalar : bool indicating if it is scalar
- * \param[in] dims : Unit dimensions
- */
 void
 openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isScalar,
                           std::map<openPMD::UnitDimension, double> const& dims, double unitSI) {
@@ -65,83 +58,89 @@ openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isSc
 
 //------------------------------------------------------------
 /**
- * \internal \remark 
+ * \internal \remark
  * The openPMD ray tracing extension settings are set here for the rays' properties.\n
  * n_rays is the ncount of McStas, so the number of rays to be
  * simulated
  **/
 void
-openPMD_io::init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter) {
-
-	// series.setAttribute("dinner", "Pizza and Coke");
-	// i.setAttribute("vacuum", true);
-
+openPMD_io::init_rays(std::string particle_species, unsigned long long int n_rays,
+                      unsigned int iter) {
+#ifdef DEBUG
+	std::cout << "--------------- [INIT RAYS]" << std::endl;
+#endif
 	auto rays = rays_pmd(particle_species);
-	rays.setAttribute("speciesType", particle_species);
-	rays.setAttribute("PDGID", particle_species);
-	//	rays.setAttribute("speciesType", "2112");
-	//rays.setAttribute("PDGID", "2112");
-	// declare the dataset total size: the final size
-
+	//rays.setAttribute("speciesType", particle_species);
+	//rays.setAttribute("PDGID", particle_species);
+	//rays.setAttribute("directionOfGravityX", 0.);
+	
 	openPMD::Dataset dataset_float =
 	        openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{n_rays});
-	openPMD::Dataset dataset_int = openPMD::Dataset(openPMD::Datatype::INT, openPMD::Extent{n_rays});
-	openPMD::Dataset dataset_ulongint = openPMD::Dataset(openPMD::Datatype::ULONGLONG, openPMD::Extent{n_rays});
+	openPMD::Dataset dataset_int =
+	        openPMD::Dataset(openPMD::Datatype::INT, openPMD::Extent{n_rays});
+	openPMD::Dataset dataset_ulongint =
+	        openPMD::Dataset(openPMD::Datatype::ULONGLONG, openPMD::Extent{n_rays});
 
 	init_ray_prop("position", dataset_float, false, {{openPMD::UnitDimension::L, 1.}}, 1e-2);
 	init_ray_prop("direction", dataset_float, false);
+
 	init_ray_prop("nonPhotonPolarization", dataset_float, false);
 	init_ray_prop("photonSPolarizationAmplitude", dataset_float, false);
 	init_ray_prop("photonSPolarizationPhase", dataset_float, true);
 	init_ray_prop("photonPPolarizationAmplitude", dataset_float, false);
 	init_ray_prop("photonPPolarizationPhase", dataset_float, true);
 
-	init_ray_prop("wavelength", dataset_float, true,
-	              {{
-	                      openPMD::UnitDimension::L,
-	                      -1,
-	              }},
+	init_ray_prop("wavelength", dataset_float, true, {{openPMD::UnitDimension::L, -1}},
 	              0); // 1.6021766e-13); // MeV
 	init_ray_prop("weight", dataset_float, true);
 	init_ray_prop("rayTime", dataset_float, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3);
 
-
 	init_ray_prop("id", dataset_ulongint, true);
 	init_ray_prop("particleStatus", dataset_int, true);
+#ifdef DEBUG
+	std::cout << "------------------------------ [INIT RAYS] Done" << std::endl;
+#endif
+
 }
 
 void
 openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_species,
                        unsigned long long int n_rays, unsigned int iter) {
-	_iter = iter;
+	_iter                = iter;
 	std::string filename = _name;
 	std::string a        = output_format_names.find(extension)->second;
 	filename += std::string(".") + a;
-       
+
 	// assign the global variable to keep track of it
-	_series =
-	        std::unique_ptr<openPMD::Series>(new openPMD::Series(filename, openPMD::Access::CREATE));
+	_series = std::unique_ptr<openPMD::Series>(
+	        new openPMD::Series(filename, openPMD::Access::CREATE));
 
 	_series->setAuthor("openPMD raytracing API");
 	// latticeName: name of the instrument
 	// latticeFile: name of the instrument file
-	// branchIndex: unique index number assigned to the latice branch the[article is in. (it should
-	// be per particle
+	// branchIndex: unique index number assigned to the latice branch the[article is in. (it
+	// should be per particle
 	//
 	std::cout << "Filename: " << filename << std::endl; // remove
-	//auto i = _series->iterations[1];
+	// auto i = _series->iterations[1];
 	auto i = iter_pmd(iter);
+	_series->flush();
+
+	//	openPMD::Record directionOfGravity;
+	//	_series->setAttribute("directionOfGravity_X", 0.);
+	//_series->setAttribute("directionOfGravity_Y", 0.);
+	//_series->setAttribute("directionOfGravity_Z", 0.);
 	std::cout << "Iter: " << _iter << std::endl;
 	// set the mccode, mccode_version, component name, instrument name
 
 	init_rays(particle_species, n_rays, iter);
 	std::cout << "init rays done" << std::endl;
-	//openPMD::Record mass = rays["mass"];
-	//openPMD::RecordComponent mass_scalar = mass[openPMD::RecordComponent::SCALAR];
+	// openPMD::Record mass = rays["mass"];
+	// openPMD::RecordComponent mass_scalar = mass[openPMD::RecordComponent::SCALAR];
 
 	//	mass_scalar.resetDataset(dataset);
 
-	//	_series->flush();
+	_series->flush();
 	std::cout << "flush done" << std::endl;
 }
 
@@ -149,7 +148,8 @@ openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_s
 template <typename T>
 void
 save_write_single(openPMD::ParticleSpecies& rays, std::string field, std::string record,
-                  openPMD_io::Rays::Record<T>& rec, openPMD::Offset& offset, openPMD::Extent& extent) {
+                  openPMD_io ::Rays::Record<T>& rec, openPMD::Offset& offset,
+                  openPMD::Extent& extent) {
 	rays[field][record].storeChunk(openPMD::shareRaw(rec.vals()), offset, extent);
 	rays[field][record].setAttribute("minValue", rec.min());
 	rays[field][record].setAttribute("maxValue", rec.max());
@@ -161,7 +161,8 @@ openPMD_io::save_write(void) {
 	if (_rays.size() == 0) return;
 
 #ifdef DEBUG
-	std::cout << "Number of saved rays: " << _rays.size() << "\t" << _rays._x.vals().size() << std::endl;
+	std::cout << "Number of saved rays: " << _rays.size() << "\t" << _rays._x.vals().size()
+	          << std::endl;
 #endif
 	auto rays = rays_pmd();
 	///\todo set minValue and maxValue
@@ -179,15 +180,21 @@ openPMD_io::save_write(void) {
 	save_write_single(rays, "nonPhotonPolarization", "y", _rays._sy, _offset, extent);
 	save_write_single(rays, "nonPhotonPolarization", "z", _rays._sz, _offset, extent);
 
-	save_write_single(rays, "photonSPolarizationAmplitude", "x", _rays._sPolAx, _offset, extent);
-	save_write_single(rays, "photonSPolarizationAmplitude", "y", _rays._sPolAy, _offset, extent);
-	save_write_single(rays, "photonSPolarizationAmplitude", "z", _rays._sPolAz, _offset, extent);
+	save_write_single(rays, "photonSPolarizationAmplitude", "x", _rays._sPolAx, _offset,
+	                  extent);
+	save_write_single(rays, "photonSPolarizationAmplitude", "y", _rays._sPolAy, _offset,
+	                  extent);
+	save_write_single(rays, "photonSPolarizationAmplitude", "z", _rays._sPolAz, _offset,
+	                  extent);
 	save_write_single(rays, "photonSPolarizationPhase", openPMD::RecordComponent::SCALAR,
 	                  _rays._sPolPh, _offset, extent);
 
-	save_write_single(rays, "photonPPolarizationAmplitude", "x", _rays._pPolAx, _offset, extent);
-	save_write_single(rays, "photonPPolarizationAmplitude", "y", _rays._pPolAy, _offset, extent);
-	save_write_single(rays, "photonPPolarizationAmplitude", "z", _rays._pPolAz, _offset, extent);
+	save_write_single(rays, "photonPPolarizationAmplitude", "x", _rays._pPolAx, _offset,
+	                  extent);
+	save_write_single(rays, "photonPPolarizationAmplitude", "y", _rays._pPolAy, _offset,
+	                  extent);
+	save_write_single(rays, "photonPPolarizationAmplitude", "z", _rays._pPolAz, _offset,
+	                  extent);
 	save_write_single(rays, "photonPPolarizationPhase", openPMD::RecordComponent::SCALAR,
 	                  _rays._pPolPh, _offset, extent);
 
@@ -207,7 +214,6 @@ openPMD_io::save_write(void) {
 
 	for (size_t i = 0; i < extent.size(); ++i)
 		_offset[i] += extent[i];
-
 }
 
 //------------------------------------------------------------
@@ -226,24 +232,24 @@ openPMD_io::load_chunk(void) {
 		std::cout << "[STATUS][LoadChunk] No more data to read" << std::endl;
 		return;
 	}
-	auto y_dat      = ray_data["position"]["y"];
-	auto z_dat      = ray_data["position"]["z"];
-	auto dx_dat     = ray_data["direction"]["x"];
-	auto dy_dat     = ray_data["direction"]["y"];
-	auto dz_dat     = ray_data["direction"]["z"];
-	auto sx_dat     = ray_data["polarization"]["x"];
-	auto sy_dat     = ray_data["polarization"]["y"];
-	auto sz_dat     = ray_data["polarization"]["z"];
-	auto sPolx_dat     = ray_data["sPolarization"]["x"];
-	auto sPoly_dat     = ray_data["sPolarization"]["y"];
-	auto sPolz_dat     = ray_data["sPolarization"]["z"];
-	auto pPolx_dat     = ray_data["pPolarization"]["x"];
-	auto pPoly_dat     = ray_data["pPolarization"]["y"];
-	auto pPolz_dat     = ray_data["pPolarization"]["z"];
+	auto y_dat     = ray_data["position"]["y"];
+	auto z_dat     = ray_data["position"]["z"];
+	auto dx_dat    = ray_data["direction"]["x"];
+	auto dy_dat    = ray_data["direction"]["y"];
+	auto dz_dat    = ray_data["direction"]["z"];
+	auto sx_dat    = ray_data["polarization"]["x"];
+	auto sy_dat    = ray_data["polarization"]["y"];
+	auto sz_dat    = ray_data["polarization"]["z"];
+	auto sPolx_dat = ray_data["sPolarization"]["x"];
+	auto sPoly_dat = ray_data["sPolarization"]["y"];
+	auto sPolz_dat = ray_data["sPolarization"]["z"];
+	auto pPolx_dat = ray_data["pPolarization"]["x"];
+	auto pPoly_dat = ray_data["pPolarization"]["y"];
+	auto pPolz_dat = ray_data["pPolarization"]["z"];
 
-	auto time_dat   = ray_data["time"][openPMD::RecordComponent::SCALAR];
+	auto time_dat       = ray_data["time"][openPMD::RecordComponent::SCALAR];
 	auto wavelength_dat = ray_data["wavelength"][openPMD::RecordComponent::SCALAR];
-	auto weight_dat = ray_data["weight"][openPMD::RecordComponent::SCALAR];
+	auto weight_dat     = ray_data["weight"][openPMD::RecordComponent::SCALAR];
 	// Missing polarization vector
 
 	openPMD::Extent chunk_size = {(extent[0] > CHUNK_SIZE) ? CHUNK_SIZE : extent[0]};
@@ -252,18 +258,19 @@ openPMD_io::load_chunk(void) {
 	          << " entries of type " << x_dat.getDatatype() << std::endl;
 #endif
 	/* I don't understand....
-	 * the data type info is embedded in the data... so why do we need to declare loadChunk<float>?
-	 * it should overload to the right function... and return the correct datatype.
+	 * the data type info is embedded in the data... so why do we need to declare
+	 * loadChunk<float>? it should overload to the right function... and return the correct
+	 * datatype.
 	 */
-	auto all_x_data  = x_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_y_data  = y_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_z_data  = z_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_dx_data = dx_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_dy_data = dy_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_dz_data = dz_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_sx_data = sx_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_sy_data = sy_dat.loadChunk<float>(_offset, chunk_size);
-	auto all_sz_data = sz_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_x_data     = x_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_y_data     = y_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_z_data     = z_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_dx_data    = dx_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_dy_data    = dy_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_dz_data    = dz_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_sx_data    = sx_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_sy_data    = sy_dat.loadChunk<float>(_offset, chunk_size);
+	auto all_sz_data    = sz_dat.loadChunk<float>(_offset, chunk_size);
 	auto all_sPolx_data = sPolx_dat.loadChunk<float>(_offset, chunk_size);
 	auto all_sPoly_data = sPoly_dat.loadChunk<float>(_offset, chunk_size);
 	auto all_sPolz_data = sPolz_dat.loadChunk<float>(_offset, chunk_size);
@@ -271,9 +278,9 @@ openPMD_io::load_chunk(void) {
 	auto all_pPoly_data = pPoly_dat.loadChunk<float>(_offset, chunk_size);
 	auto all_pPolz_data = pPolz_dat.loadChunk<float>(_offset, chunk_size);
 
-	auto time_data   = time_dat.loadChunk<float>(_offset, chunk_size);
+	auto time_data       = time_dat.loadChunk<float>(_offset, chunk_size);
 	auto wavelength_data = wavelength_dat.loadChunk<float>(_offset, chunk_size);
-	auto weight_data = weight_dat.loadChunk<float>(_offset, chunk_size);
+	auto weight_data     = weight_dat.loadChunk<float>(_offset, chunk_size);
 	// Missing polarization vector
 
 	_series->flush();
@@ -292,7 +299,7 @@ openPMD_io::load_chunk(void) {
 		            all_pPolx_data.get()[index], all_pPoly_data.get()[index],
 		            all_pPolz_data.get()[index], //
 		            wavelength_data.get()[index], time_data.get()[index],
-		            weight_data.get()[index] );
+		            weight_data.get()[index]);
 	}
 #endif
 }
@@ -304,8 +311,8 @@ openPMD_io::init_read(openPMD_output_format_t extension, unsigned long long int 
 
 	// assign the global variable to keep track of it
 	_series = std::unique_ptr<openPMD::Series>(new openPMD::Series(
-	        filename, openPMD::Access::READ_ONLY)); ///\todo the file access type was defined in the
-	                                                ///openPMD_io constructor
+	        filename, openPMD::Access::READ_ONLY)); ///\todo the file access type was defined in
+	                                                ///the openPMD_io constructor
 
 	std::cout << "File information: " << filename << std::endl;
 	if (_series->containsAttribute("author"))
@@ -316,8 +323,9 @@ openPMD_io::init_read(openPMD_output_format_t extension, unsigned long long int 
 	if (_series->iterations.size() == 0)
 		std::cout << "  ERROR, no iterations found in openPMD series" << std::endl;
 	if (_series->iterations.size() > 1)
-		std::cout << "  WARNING, several iterations found in openPMD series, only 1 is used."
-		          << std::endl;
+		std::cout
+		        << "  WARNING, several iterations found in openPMD series, only 1 is used."
+		        << std::endl;
 
 	// check the maximum number of rays stored
 	auto ray_data          = rays_pmd();
