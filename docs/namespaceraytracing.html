@@ -63,7 +63,9 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">raytracing Namespace Reference</div>  </div>
 </div><!--header-->
@@ -90,16 +92,53 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">stores the rays' properties  <a href="classraytracing_1_1Rays.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a8a73b05a449eaa8c485e67e9acef2001"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceraytracing.html#a8a73b05a449eaa8c485e67e9acef2001">particleStatus_t</a></td></tr>
+<tr class="separator:a8a73b05a449eaa8c485e67e9acef2001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a246cdad8af88382c1837ca3edaa6f613"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceraytracing.html#a246cdad8af88382c1837ca3edaa6f613">openPMD_output_format_t</a> </td></tr>
 <tr class="memdesc:a246cdad8af88382c1837ca3edaa6f613"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of implemented openPMD backends/extensions  <a href="namespaceraytracing.html#a246cdad8af88382c1837ca3edaa6f613">More...</a><br /></td></tr>
 <tr class="separator:a246cdad8af88382c1837ca3edaa6f613"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a914c09e1dd7082a964c1713ee2e3ce49"><td class="memItemLeft" align="right" valign="top"><a id="a914c09e1dd7082a964c1713ee2e3ce49"></a>
+constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceraytracing.html#a914c09e1dd7082a964c1713ee2e3ce49">kDead</a> = 0</td></tr>
+<tr class="memdesc:a914c09e1dd7082a964c1713ee2e3ce49"><td class="mdescLeft">&#160;</td><td class="mdescRight">particleStatus_t: dead ray <br /></td></tr>
+<tr class="separator:a914c09e1dd7082a964c1713ee2e3ce49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e78a789925757c2eae3a495d2ddae1"><td class="memItemLeft" align="right" valign="top"><a id="a57e78a789925757c2eae3a495d2ddae1"></a>
+constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceraytracing.html#a57e78a789925757c2eae3a495d2ddae1">kAlive</a> = 1</td></tr>
+<tr class="memdesc:a57e78a789925757c2eae3a495d2ddae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">alive ray <br /></td></tr>
+<tr class="separator:a57e78a789925757c2eae3a495d2ddae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>defines the maximum number of rays that can be stored in memory before dumping to file </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>The CHUNK_SIZE should not be hardcoded it should also be optimized with tests </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>The CHUNK_SIZE should not be hardcoded it should also be optimized with tests </dd></dl>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="a8a73b05a449eaa8c485e67e9acef2001"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a73b05a449eaa8c485e67e9acef2001">&#9670;&nbsp;</a></span>particleStatus_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceraytracing.html#a8a73b05a449eaa8c485e67e9acef2001">raytracing::particleStatus_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>particle statues are defined by the openPMD extension as integers with</p><ul>
+<li>1: active/alive particle</li>
+<li>other: any other value is used for "dead" particles, the effective value and meaining depends on the simulation software used In the ray tracing extension only 0 and 1 values are used </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00016">16</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a246cdad8af88382c1837ca3edaa6f613"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a246cdad8af88382c1837ca3edaa6f613">&#9670;&nbsp;</a></span>openPMD_output_format_t</h2>
 

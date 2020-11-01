@@ -1,5 +1,7 @@
 <map id="raytracing::Rays::pop" name="raytracing::Rays::pop">
-<area shape="rect" id="node2" href="$classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="211,5,373,32"/>
-<area shape="rect" id="node3" href="$classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="209,56,375,83"/>
-<area shape="rect" id="node4" href="$classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="200,107,384,133"/>
+<area shape="rect" id="node2" href="$classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="215,5,378,32"/>
+<area shape="rect" id="node3" href="$classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="213,56,380,83"/>
+<area shape="rect" id="node4" href="$classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="205,107,389,133"/>
+<area shape="rect" id="node5" href="$classraytracing_1_1Ray.html#a52c8682552409e4b659409b6c6306f87" title="scale and set s&#45;polarization for photons " alt="" coords="200,157,393,184"/>
+<area shape="rect" id="node6" href="$classraytracing_1_1Ray.html#a551ddc0c1188b07b16ba85f9d2d4778f" title="scale and set p&#45;polarization for photons " alt="" coords="200,208,393,235"/>
 </map>

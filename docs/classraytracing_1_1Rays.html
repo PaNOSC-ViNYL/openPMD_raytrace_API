@@ -66,6 +66,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classraytracing_1_1Rays-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -77,7 +78,25 @@ $(function() {
  <a href="classraytracing_1_1Rays.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="rays_8hh_source.html">rays.hh</a>&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for raytracing::Rays:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classraytracing_1_1Rays__coll__graph.png" border="0" usemap="#raytracing_1_1Rays_coll__map" alt="Collaboration graph"/></div>
+<map name="raytracing_1_1Rays_coll__map" id="raytracing_1_1Rays_coll__map">
+<area shape="rect" id="node2" href="classraytracing_1_1Rays_1_1Record.html" title="raytracing::Rays::Record\l\&lt; unsigned long long int \&gt;" alt="" coords="5,5,177,47"/>
+<area shape="rect" id="node3" href="classraytracing_1_1Rays_1_1Record.html" title="raytracing::Rays::Record\l\&lt; float \&gt;" alt="" coords="8,197,175,239"/>
+<area shape="rect" id="node4" href="classraytracing_1_1Rays_1_1Record.html" title="raytracing::Rays::Record\l\&lt; int \&gt;" alt="" coords="8,263,175,304"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Rays_1_1Record.html">Record</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">template utility class to simplify implementation It is a vector that also stores min and max values while filling  <a href="classraytracing_1_1Rays_1_1Record.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a838ba66cdc75e83ddea53f5466f3f2e5"><td class="memItemLeft" align="right" valign="top"><a id="a838ba66cdc75e83ddea53f5466f3f2e5"></a>
@@ -101,90 +120,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memitem:ab3c7a0e5fb46d35c96e2e3e821766e40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Rays.html#ab3c7a0e5fb46d35c96e2e3e821766e40">is_chunk_finished</a> (void)</td></tr>
 <tr class="memdesc:ab3c7a0e5fb46d35c96e2e3e821766e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if all the data have been already retrieved  <a href="#ab3c7a0e5fb46d35c96e2e3e821766e40">More...</a><br /></td></tr>
 <tr class="separator:ab3c7a0e5fb46d35c96e2e3e821766e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">1D vector quantities of stored rays</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Variable  </th><th class="markdownTableHeadNone">Comment  </th><th class="markdownTableHeadNone">Units   </th></tr>
-<tr class="markdownTableBody" class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">x,y,z  </td><td class="markdownTableBodyNone">position in  </td><td class="markdownTableBodyNone">[cm]   </td></tr>
-<tr class="markdownTableBody" class="markdownTableRowEven">
-<td class="markdownTableBodyNone">dx,dy,dz  </td><td class="markdownTableBodyNone">direction  </td><td class="markdownTableBodyNone">(normalized velocity)   </td></tr>
-<tr class="markdownTableBody" class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">sx,sy,sz  </td><td class="markdownTableBodyNone">polarization of non-photons  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableBody" class="markdownTableRowEven">
-<td class="markdownTableBodyNone">sPx,sPy,sPz  </td><td class="markdownTableBodyNone">s-polarization of photons  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableBody" class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">pPx,pPy,pPz  </td><td class="markdownTableBodyNone">p-polarization of photons  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableBody" class="markdownTableRowEven">
-<td class="markdownTableBodyNone">time  </td><td class="markdownTableBodyNone">ray time w.r.t. ray generation  </td><td class="markdownTableBodyNone">[ms]   </td></tr>
-<tr class="markdownTableBody" class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">wavelength  </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">[Ang]   </td></tr>
-<tr class="markdownTableBody" class="markdownTableRowEven">
-<td class="markdownTableBodyNone">weight  </td><td class="markdownTableBodyNone">weight  </td><td class="markdownTableBodyNone"></td></tr>
-</table>
-</div></td></tr>
-<tr class="memitem:aa48d613cca661a5cd62692b902bcc437"><td class="memItemLeft" align="right" valign="top"><a id="aa48d613cca661a5cd62692b902bcc437"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>x</b> (void) const</td></tr>
-<tr class="separator:aa48d613cca661a5cd62692b902bcc437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7053c5fd91969b927e3e035b2f2d75cd"><td class="memItemLeft" align="right" valign="top"><a id="a7053c5fd91969b927e3e035b2f2d75cd"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>y</b> (void) const</td></tr>
-<tr class="separator:a7053c5fd91969b927e3e035b2f2d75cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d74f4e284195592f5b184599a5aa57b"><td class="memItemLeft" align="right" valign="top"><a id="a6d74f4e284195592f5b184599a5aa57b"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>z</b> (void) const</td></tr>
-<tr class="separator:a6d74f4e284195592f5b184599a5aa57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e59127986142fc8454c4599a0494b44"><td class="memItemLeft" align="right" valign="top"><a id="a5e59127986142fc8454c4599a0494b44"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>dx</b> (void) const</td></tr>
-<tr class="separator:a5e59127986142fc8454c4599a0494b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34af2bf73ffb20a2984263420fab9cee"><td class="memItemLeft" align="right" valign="top"><a id="a34af2bf73ffb20a2984263420fab9cee"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>dy</b> (void) const</td></tr>
-<tr class="separator:a34af2bf73ffb20a2984263420fab9cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11a9f0f5bf1ebfa41cce5599972ce647"><td class="memItemLeft" align="right" valign="top"><a id="a11a9f0f5bf1ebfa41cce5599972ce647"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>dz</b> (void) const</td></tr>
-<tr class="separator:a11a9f0f5bf1ebfa41cce5599972ce647"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae83ee33b158b265bb18b29b455fccc93"><td class="memItemLeft" align="right" valign="top"><a id="ae83ee33b158b265bb18b29b455fccc93"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sx</b> (void) const</td></tr>
-<tr class="separator:ae83ee33b158b265bb18b29b455fccc93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf17172bf2e8ad873b35141eb957b8c3"><td class="memItemLeft" align="right" valign="top"><a id="adf17172bf2e8ad873b35141eb957b8c3"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sy</b> (void) const</td></tr>
-<tr class="separator:adf17172bf2e8ad873b35141eb957b8c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9374bb564cc1a137c00a25d402313993"><td class="memItemLeft" align="right" valign="top"><a id="a9374bb564cc1a137c00a25d402313993"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sz</b> (void) const</td></tr>
-<tr class="separator:a9374bb564cc1a137c00a25d402313993"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b2710bae4f3d083f6f60f10a3cebec4"><td class="memItemLeft" align="right" valign="top"><a id="a5b2710bae4f3d083f6f60f10a3cebec4"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sPolx</b> (void) const</td></tr>
-<tr class="separator:a5b2710bae4f3d083f6f60f10a3cebec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a308ca9722ef1b75a7dfeb0acabb2bacc"><td class="memItemLeft" align="right" valign="top"><a id="a308ca9722ef1b75a7dfeb0acabb2bacc"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sPoly</b> (void) const</td></tr>
-<tr class="separator:a308ca9722ef1b75a7dfeb0acabb2bacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f283a07419b75df959621ecfefe2f4c"><td class="memItemLeft" align="right" valign="top"><a id="a5f283a07419b75df959621ecfefe2f4c"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sPolz</b> (void) const</td></tr>
-<tr class="separator:a5f283a07419b75df959621ecfefe2f4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2f0634fe682c9148f7d0531798539fc"><td class="memItemLeft" align="right" valign="top"><a id="aa2f0634fe682c9148f7d0531798539fc"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>pPolx</b> (void) const</td></tr>
-<tr class="separator:aa2f0634fe682c9148f7d0531798539fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab8a4c3a42f7637a5127eb0a328368c1"><td class="memItemLeft" align="right" valign="top"><a id="aab8a4c3a42f7637a5127eb0a328368c1"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>pPoly</b> (void) const</td></tr>
-<tr class="separator:aab8a4c3a42f7637a5127eb0a328368c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc4a378437a590cce738e20efe128fc7"><td class="memItemLeft" align="right" valign="top"><a id="acc4a378437a590cce738e20efe128fc7"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>pPolz</b> (void) const</td></tr>
-<tr class="separator:acc4a378437a590cce738e20efe128fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adac893235b27ce7e7b9195a8ac8117d5"><td class="memItemLeft" align="right" valign="top"><a id="adac893235b27ce7e7b9195a8ac8117d5"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b> (void) const</td></tr>
-<tr class="separator:adac893235b27ce7e7b9195a8ac8117d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f17bcc6852abe3a7ca8c67f072c9db1"><td class="memItemLeft" align="right" valign="top"><a id="a0f17bcc6852abe3a7ca8c67f072c9db1"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>time</b> (void) const</td></tr>
-<tr class="separator:a0f17bcc6852abe3a7ca8c67f072c9db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b7ac44bc08e2f982087dac0f05c723b"><td class="memItemLeft" align="right" valign="top"><a id="a3b7ac44bc08e2f982087dac0f05c723b"></a>
-const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>weight</b> (void) const</td></tr>
-<tr class="separator:a3b7ac44bc08e2f982087dac0f05c723b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa129f4b4cc0f2d527e4c71267a22c0bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Rays.html#aa129f4b4cc0f2d527e4c71267a22c0bb">store</a> (float x, float y, float z, float dx, float dy, float dz, float sx, float sy, float sz, float sPolx, float sPoly, float sPolz, float pPolx, float pPoly, float pPolz, float wavelength, float t, float p)</td></tr>
-<tr class="memdesc:aa129f4b4cc0f2d527e4c71267a22c0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">append a new ray to the internal memory reading from <em>openPMD data</em>  <a href="#aa129f4b4cc0f2d527e4c71267a22c0bb">More...</a><br /></td></tr>
-<tr class="separator:aa129f4b4cc0f2d527e4c71267a22c0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>stores the rays' properties </p>
 <p>This class is meant to keep in memory the rays' quantities before effectively writing them on disk by the store_chunk method, or to load in memory the rays' quantities after reading the openPMD file from disk with the load_chunk method</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd><p class="startdd">add a check that the non-photon polarization is not filled if storing photons </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd><p class="startdd">add a check that the non-photon polarization is not filled if storing photons </p>
 <p class="enddd">check that polarizationAmplitudes are not filled for non-photons</p>
 </dd></dl>
 <div class="dotgraph">
@@ -194,7 +134,7 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 </map>
 </div>
  
-<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00036">36</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00035">35</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a03980fdbca2c654be2c92fa9198b54c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a03980fdbca2c654be2c92fa9198b54c7">&#9670;&nbsp;</a></span>push()</h2>
@@ -219,9 +159,8 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>implement the rest </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00021">21</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00016">16</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
 
 </div>
 </div>
@@ -249,26 +188,27 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ray : a ray object </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>implement the rest </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00039">39</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><img src="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph.png" border="0" usemap="#classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph" alt=""/></div>
-<map name="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph" id="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph">
-<area shape="rect" id="node2" href="classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="211,5,373,32"/>
-<area shape="rect" id="node3" href="classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="209,56,375,83"/>
-<area shape="rect" id="node4" href="classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="200,107,384,133"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00050">50</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph.png" border="0" usemap="#classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph" alt=""/></div>
+<map name="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph" id="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_cgraph">
+<area shape="rect" id="node2" href="classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="215,5,378,32"/>
+<area shape="rect" id="node3" href="classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="213,56,380,83"/>
+<area shape="rect" id="node4" href="classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="205,107,389,133"/>
+<area shape="rect" id="node5" href="classraytracing_1_1Ray.html#a52c8682552409e4b659409b6c6306f87" title="scale and set s&#45;polarization for photons " alt="" coords="200,157,393,184"/>
+<area shape="rect" id="node6" href="classraytracing_1_1Ray.html#a551ddc0c1188b07b16ba85f9d2d4778f" title="scale and set p&#45;polarization for photons " alt="" coords="200,208,393,235"/>
+</map>
+</div>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_icgraph.png" border="0" usemap="#classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_icgraph" alt=""/></div>
 <map name="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_icgraph" id="classraytracing_1_1Rays_a70d6422bcd081a1865614752349b0241_icgraph">
 <area shape="rect" id="node2" href="classraytracing_1_1openPMD__io.html#a6ba095753224e80a95abfec8816e0a5e" title="read one ray from file " alt="" coords="200,5,344,47"/>
@@ -304,154 +244,13 @@ const std::vector&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign
 <p>check if all the data have been already retrieved </p>
 <dl class="section return"><dt>Returns</dt><dd>bool : true if all the data stored have been retrieved it return true also if it is empty </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00104">104</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
-
-</div>
-</div>
-<a id="aa129f4b4cc0f2d527e4c71267a22c0bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa129f4b4cc0f2d527e4c71267a22c0bb">&#9670;&nbsp;</a></span>store()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Rays::store </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>z</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dz</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>sx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>sy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>sz</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>sPolx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>sPoly</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>sPolz</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>pPolx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>pPoly</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>pPolz</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>wavelength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>p</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>append a new ray to the internal memory reading from <em>openPMD data</em> </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x,y,z</td><td>: position </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dx,dy,dz</td><td>: direction </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sx,sy,sz</td><td>: non-photon polarization </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sPolx,sPoly,sPolz</td><td>: s-polarization </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">pPolx,pPoly,pPolz</td><td>: p-polarization </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">wavelength</td><td>: ray wavelength </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>: ray time </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>: weight </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="rays_8cc_source.html#l00057">57</a> of file <a class="el" href="rays_8cc_source.html">rays.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rays_8hh_source.html#l00141">141</a> of file <a class="el" href="rays_8hh_source.html">rays.hh</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/include/<a class="el" href="rays_8hh_source.html">rays.hh</a></li>
-<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/src/<a class="el" href="rays_8cc_source.html">rays.cc</a></li>
+<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/cpp/include/<a class="el" href="rays_8hh_source.html">rays.hh</a></li>
+<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/cpp/src/<a class="el" href="rays_8cc_source.html">rays.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,0 +1,4 @@
+<map id="unchecked_reference::nbytes" name="unchecked_reference::nbytes">
+<area shape="rect" id="node2" href="$classunchecked__reference.html#af1713056b2abec0c2b0fa62e78464537" title="Returns the total number of elements in the referenced array, i.e. the product of the shapes..." alt="" coords="200,5,347,47"/>
+<area shape="rect" id="node3" href="$classunchecked__reference.html#aef7c3ce5d4353713c19e71fe2afb8ff6" title="Returns the item size, i.e. sizeof(T) " alt="" coords="200,71,347,112"/>
+</map>

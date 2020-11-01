@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classraytracing_1_1Ray.html" title="Generic ray, containing all the ray information being stored by the API into the openPMD file..." alt="" coords="5,31,116,57"/>
+<area shape="rect" id="node2" href="$classraytracing_1_1neutron.html" title="helper class for neutrons " alt="" coords="164,5,295,32"/>
+<area shape="rect" id="node3" href="$classraytracing_1_1photon.html" title="helper class for photons " alt="" coords="166,56,293,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classtype__caster__base.html" title="Generic type caster for objects stored on the heap. " alt="" coords="5,13,180,39"/>
+<area shape="rect" id="node2" href="$structcopyable__holder__caster.html" title="Type caster for holder types like std::shared_ptr, etc. " alt="" coords="228,5,387,47"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="globals" name="globals">
+<area shape="rect" id="node2" href="$classmodule.html#a40817edef0ded5727701534bcded9982" title="Import and return a module or throws error_already_set. " alt="" coords="116,5,224,32"/>
+<area shape="rect" id="node3" href="$classhandle.html#afcd412ba4cbffd7d1e3c9338746b2682" title="Return the underlying PyObject * pointer. " alt="" coords="129,56,211,83"/>
+</map>

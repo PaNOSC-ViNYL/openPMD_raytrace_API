@@ -1,11 +1,6 @@
 #include "rays.hh"
 #include <array>
 #include <cmath>
-#define DEBUG
-#ifdef DEBUG
-#include <iostream> // for debug
-#include <cassert>
-#endif
 ///\file
 
 using raytracing::Ray;
@@ -47,6 +42,7 @@ Rays::push(const Ray& this_ray) {
 
 	_id.push_back(this_ray.id());
 	_status.push_back(this_ray.status());
+	++_size;
 };
 
 //------------------------------

@@ -100,9 +100,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>y</b> () const</td><
 <tr class="memitem:a2767598c2c5f140b5e923256551fc084"><td class="memItemLeft" align="right" valign="top"><a id="a2767598c2c5f140b5e923256551fc084"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>z</b> () const</td></tr>
 <tr class="separator:a2767598c2c5f140b5e923256551fc084"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b8d3fceb9780b3eb66cf10f29871638"><td class="memItemLeft" align="right" valign="top"><a id="a8b8d3fceb9780b3eb66cf10f29871638"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>get_position</b> (float *x, float *y, float *z) const</td></tr>
-<tr class="separator:a8b8d3fceb9780b3eb66cf10f29871638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cacf409578dfded7dc2d459a7ae331b"><td class="memItemLeft" align="right" valign="top"><a id="a1cacf409578dfded7dc2d459a7ae331b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_position</b> (float *xx, float *yy, float *zz) const</td></tr>
+<tr class="separator:a1cacf409578dfded7dc2d459a7ae331b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Get direction</div></td></tr>
 <tr class="memitem:a1723dc0d9579dd0732f84123607d2f06"><td class="memItemLeft" align="right" valign="top"><a id="a1723dc0d9579dd0732f84123607d2f06"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>dx</b> () const</td></tr>
@@ -113,7 +113,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>dy</b> () const</td>
 <tr class="memitem:aa6a25942a8a7c3cf598f1853ad2d7816"><td class="memItemLeft" align="right" valign="top"><a id="aa6a25942a8a7c3cf598f1853ad2d7816"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>dz</b> () const</td></tr>
 <tr class="separator:aa6a25942a8a7c3cf598f1853ad2d7816"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05cb8495787a5312d36bafc769ff932b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a05cb8495787a5312d36bafc769ff932b">get_direction</a> (float *x, float *y, float *z) const</td></tr>
+<tr class="memitem:a05cb8495787a5312d36bafc769ff932b"><td class="memItemLeft" align="right" valign="top"><a id="a05cb8495787a5312d36bafc769ff932b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_direction</b> (float *x, float *y, float *z) const</td></tr>
 <tr class="separator:a05cb8495787a5312d36bafc769ff932b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Get polarization for non-photons</div></td></tr>
 <tr class="memitem:aa895834d647d495ca7c67d68fb52207f"><td class="memItemLeft" align="right" valign="top"><a id="aa895834d647d495ca7c67d68fb52207f"></a>
@@ -125,32 +126,47 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>sy</b> () const</td>
 <tr class="memitem:a0e622f2428fa0a2d90e569c9d8e0558b"><td class="memItemLeft" align="right" valign="top"><a id="a0e622f2428fa0a2d90e569c9d8e0558b"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>sz</b> () const</td></tr>
 <tr class="separator:a0e622f2428fa0a2d90e569c9d8e0558b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a734d237c9b344c6c521b57c140556151"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a734d237c9b344c6c521b57c140556151">get_polarization</a> (float *x, float *y, float *z) const</td></tr>
+<tr class="memitem:a734d237c9b344c6c521b57c140556151"><td class="memItemLeft" align="right" valign="top"><a id="a734d237c9b344c6c521b57c140556151"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_polarization</b> (float *x, float *y, float *z) const</td></tr>
 <tr class="separator:a734d237c9b344c6c521b57c140556151"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Get s-polarization and p-polarization for photons</div></td></tr>
-<tr class="memitem:ad5755475198c22416e1f9576b894e394"><td class="memItemLeft" align="right" valign="top"><a id="ad5755475198c22416e1f9576b894e394"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>sPolx</b> () const</td></tr>
-<tr class="separator:ad5755475198c22416e1f9576b894e394"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ca5b7bd8500b26ea3b4f71ba8b6cec0"><td class="memItemLeft" align="right" valign="top"><a id="a4ca5b7bd8500b26ea3b4f71ba8b6cec0"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>sPoly</b> () const</td></tr>
-<tr class="separator:a4ca5b7bd8500b26ea3b4f71ba8b6cec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32d03e0782172a00a88977c00ad9009f"><td class="memItemLeft" align="right" valign="top"><a id="a32d03e0782172a00a88977c00ad9009f"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>sPolz</b> () const</td></tr>
-<tr class="separator:a32d03e0782172a00a88977c00ad9009f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68defd69f933f6cae41a617156c67899"><td class="memItemLeft" align="right" valign="top"><a id="a68defd69f933f6cae41a617156c67899"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>pPolx</b> () const</td></tr>
-<tr class="separator:a68defd69f933f6cae41a617156c67899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a739af4e0f591d8db05a2bf54c773741f"><td class="memItemLeft" align="right" valign="top"><a id="a739af4e0f591d8db05a2bf54c773741f"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>pPoly</b> () const</td></tr>
-<tr class="separator:a739af4e0f591d8db05a2bf54c773741f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5bf706645e54f3f1215687338f7b1df"><td class="memItemLeft" align="right" valign="top"><a id="ac5bf706645e54f3f1215687338f7b1df"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>pPolz</b> () const</td></tr>
-<tr class="separator:ac5bf706645e54f3f1215687338f7b1df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec832caef6510fd387fe374dcd4ab824"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#aec832caef6510fd387fe374dcd4ab824">get_sPolarization</a> (float *x, float *y, float *z) const</td></tr>
-<tr class="separator:aec832caef6510fd387fe374dcd4ab824"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a962622ad18ed48aab711e9b26e077a8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a962622ad18ed48aab711e9b26e077a8a">get_pPolarization</a> (float *x, float *y, float *z) const</td></tr>
-<tr class="separator:a962622ad18ed48aab711e9b26e077a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Get wavelength, ray time and weight</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Get s-polarization amplituded and phase for photons</div></td></tr>
+<tr class="memitem:ab88ee9d24adf6ee5278e0e3b1343113d"><td class="memItemLeft" align="right" valign="top"><a id="ab88ee9d24adf6ee5278e0e3b1343113d"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>sPolAx</b> () const</td></tr>
+<tr class="separator:ab88ee9d24adf6ee5278e0e3b1343113d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa25181d354b2c820f764462e86ab0e45"><td class="memItemLeft" align="right" valign="top"><a id="aa25181d354b2c820f764462e86ab0e45"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>sPolAy</b> () const</td></tr>
+<tr class="separator:aa25181d354b2c820f764462e86ab0e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef917feaa4319a60cfa6bdb1b1ac13b6"><td class="memItemLeft" align="right" valign="top"><a id="aef917feaa4319a60cfa6bdb1b1ac13b6"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>sPolAz</b> () const</td></tr>
+<tr class="separator:aef917feaa4319a60cfa6bdb1b1ac13b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad03013ca3f3c0f0af8297003b7937c20"><td class="memItemLeft" align="right" valign="top"><a id="ad03013ca3f3c0f0af8297003b7937c20"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>sPolPh</b> () const</td></tr>
+<tr class="separator:ad03013ca3f3c0f0af8297003b7937c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a9a7dcf7208e379274085eac759166"><td class="memItemLeft" align="right" valign="top"><a id="ad1a9a7dcf7208e379274085eac759166"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_sPolarizationAmplitude</b> (float *x, float *y, float *z) const</td></tr>
+<tr class="separator:ad1a9a7dcf7208e379274085eac759166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a312720cebc81f40629ee843dc7ad3a98"><td class="memItemLeft" align="right" valign="top"><a id="a312720cebc81f40629ee843dc7ad3a98"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_sPolarization</b> (float *x, float *y, float *z, float *phase) const</td></tr>
+<tr class="separator:a312720cebc81f40629ee843dc7ad3a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Get p-polarization amplitude and phase for photons</div></td></tr>
+<tr class="memitem:a9e04165ec229ea0f1692e045f3018808"><td class="memItemLeft" align="right" valign="top"><a id="a9e04165ec229ea0f1692e045f3018808"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>pPolAx</b> () const</td></tr>
+<tr class="separator:a9e04165ec229ea0f1692e045f3018808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f6ef79f7d94b802a82dbb5780c8aa08"><td class="memItemLeft" align="right" valign="top"><a id="a3f6ef79f7d94b802a82dbb5780c8aa08"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>pPolAy</b> () const</td></tr>
+<tr class="separator:a3f6ef79f7d94b802a82dbb5780c8aa08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a793dbef3ac2ace440788dacc6b47f5a5"><td class="memItemLeft" align="right" valign="top"><a id="a793dbef3ac2ace440788dacc6b47f5a5"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>pPolAz</b> () const</td></tr>
+<tr class="separator:a793dbef3ac2ace440788dacc6b47f5a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10bd0c22cafec1d0f5bbd88f1c700772"><td class="memItemLeft" align="right" valign="top"><a id="a10bd0c22cafec1d0f5bbd88f1c700772"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>pPolPh</b> () const</td></tr>
+<tr class="separator:a10bd0c22cafec1d0f5bbd88f1c700772"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa30d7374225faa2f9dc71f86d5b19fd0"><td class="memItemLeft" align="right" valign="top"><a id="aa30d7374225faa2f9dc71f86d5b19fd0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_pPolarizationAmplitude</b> (float *x, float *y, float *z) const</td></tr>
+<tr class="separator:aa30d7374225faa2f9dc71f86d5b19fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab86581d1b4b4fcbd9c71a45f2be9e29e"><td class="memItemLeft" align="right" valign="top"><a id="ab86581d1b4b4fcbd9c71a45f2be9e29e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_pPolarization</b> (float *x, float *y, float *z, float *phase) const</td></tr>
+<tr class="separator:ab86581d1b4b4fcbd9c71a45f2be9e29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dc0ba25bdc6b91358b76a38e1a48178"><td class="memItemLeft" align="right" valign="top"><a id="a0dc0ba25bdc6b91358b76a38e1a48178"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength</b> () const</td></tr>
 <tr class="separator:a0dc0ba25bdc6b91358b76a38e1a48178"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +176,12 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>time</b> () const</t
 <tr class="memitem:aa0fe46079a8e6d0d24605bac87c52685"><td class="memItemLeft" align="right" valign="top"><a id="aa0fe46079a8e6d0d24605bac87c52685"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>weight</b> () const</td></tr>
 <tr class="separator:aa0fe46079a8e6d0d24605bac87c52685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1622a0ba50099a2f23d3626b11e5bd06"><td class="memItemLeft" align="right" valign="top"><a id="a1622a0ba50099a2f23d3626b11e5bd06"></a>
+unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> (void) const</td></tr>
+<tr class="separator:a1622a0ba50099a2f23d3626b11e5bd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af39fc0b2db3c75616b75828a56a75c71"><td class="memItemLeft" align="right" valign="top"><a id="af39fc0b2db3c75616b75828a56a75c71"></a>
+<a class="el" href="namespaceraytracing.html#a8a73b05a449eaa8c485e67e9acef2001">particleStatus_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>status</b> (void) const</td></tr>
+<tr class="separator:af39fc0b2db3c75616b75828a56a75c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Setters</div></td></tr>
 <tr class="memitem:a21906dc119aeedb0c4551e5ea1d1709c"><td class="memItemLeft" align="right" valign="top"><a id="a21906dc119aeedb0c4551e5ea1d1709c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c">position</a> (double x, double y, double z, double scale=1)</td></tr>
@@ -176,13 +198,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aff7dc41f019b8646e30b479efae0687b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b">polarization</a> (double x, double y, double z, double scale=1)</td></tr>
 <tr class="memdesc:aff7dc41f019b8646e30b479efae0687b"><td class="mdescLeft">&#160;</td><td class="mdescRight">scale and set polarization for non-photons  <a href="#aff7dc41f019b8646e30b479efae0687b">More...</a><br /></td></tr>
 <tr class="separator:aff7dc41f019b8646e30b479efae0687b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27ee73784b2165bc50c718f021b601dc"><td class="memItemLeft" align="right" valign="top"><a id="a27ee73784b2165bc50c718f021b601dc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a27ee73784b2165bc50c718f021b601dc">sPolarization</a> (double x, double y, double z, double scale=1)</td></tr>
-<tr class="memdesc:a27ee73784b2165bc50c718f021b601dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">scale and set s-polarization for photons <br /></td></tr>
-<tr class="separator:a27ee73784b2165bc50c718f021b601dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f746c3c520f1b2d474c626d787579e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a5f746c3c520f1b2d474c626d787579e2">pPolarization</a> (double x, double y, double z, double scale=1)</td></tr>
-<tr class="memdesc:a5f746c3c520f1b2d474c626d787579e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">scale and set p-polarization for photons  <a href="#a5f746c3c520f1b2d474c626d787579e2">More...</a><br /></td></tr>
-<tr class="separator:a5f746c3c520f1b2d474c626d787579e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52c8682552409e4b659409b6c6306f87"><td class="memItemLeft" align="right" valign="top"><a id="a52c8682552409e4b659409b6c6306f87"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a52c8682552409e4b659409b6c6306f87">sPolarization</a> (double x, double y, double z, double phase, double scale=1)</td></tr>
+<tr class="memdesc:a52c8682552409e4b659409b6c6306f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">scale and set s-polarization for photons <br /></td></tr>
+<tr class="separator:a52c8682552409e4b659409b6c6306f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a551ddc0c1188b07b16ba85f9d2d4778f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a551ddc0c1188b07b16ba85f9d2d4778f">pPolarization</a> (double x, double y, double z, double phase, double scale=1)</td></tr>
+<tr class="memdesc:a551ddc0c1188b07b16ba85f9d2d4778f"><td class="mdescLeft">&#160;</td><td class="mdescRight">scale and set p-polarization for photons  <a href="#a551ddc0c1188b07b16ba85f9d2d4778f">More...</a><br /></td></tr>
+<tr class="separator:a551ddc0c1188b07b16ba85f9d2d4778f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f8e952b7298b84377b31f2548ef69be"><td class="memItemLeft" align="right" valign="top"><a id="a4f8e952b7298b84377b31f2548ef69be"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a4f8e952b7298b84377b31f2548ef69be">wavelength</a> (double w)</td></tr>
 <tr class="memdesc:a4f8e952b7298b84377b31f2548ef69be"><td class="mdescLeft">&#160;</td><td class="mdescRight">set wavelength <br /></td></tr>
@@ -195,6 +217,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1Ray.html#a3f5320b18f7cc366bf46137fe889915b">weight</a> (double w)</td></tr>
 <tr class="memdesc:a3f5320b18f7cc366bf46137fe889915b"><td class="mdescLeft">&#160;</td><td class="mdescRight">set weight <br /></td></tr>
 <tr class="separator:a3f5320b18f7cc366bf46137fe889915b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a376516c930cc042946285259875d94fb"><td class="memItemLeft" align="right" valign="top"><a id="a376516c930cc042946285259875d94fb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> (unsigned long long int id)</td></tr>
+<tr class="separator:a376516c930cc042946285259875d94fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fee6efc09ec72476988423caead0512"><td class="memItemLeft" align="right" valign="top"><a id="a5fee6efc09ec72476988423caead0512"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>status</b> (<a class="el" href="namespaceraytracing.html#a8a73b05a449eaa8c485e67e9acef2001">particleStatus_t</a> s)</td></tr>
+<tr class="separator:a5fee6efc09ec72476988423caead0512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generic ray, containing all the ray information being stored by the API into the openPMD file. </p>
@@ -202,148 +230,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Other specific ray classes should inherit from this in order to provide more convenient methods for the user. Derived classes can be created from this and used by the users in their programs.</p>
 <p>Unit conversions should be applied here, so that the <a class="el" href="classraytracing_1_1Rays.html" title="stores the rays&#39; properties ">Rays</a> class stores information in a coherent way. There is a small inefficiency if rays are used multiple times, but the time spent in unit conversions is anyway negligible w.r.t. the simulation time. </p>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00023">23</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00035">35</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a05cb8495787a5312d36bafc769ff932b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05cb8495787a5312d36bafc769ff932b">&#9670;&nbsp;</a></span>get_direction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void raytracing::Ray::get_direction </td>
-          <td>(</td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>z</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>implement </dd></dl>
-
-</div>
-</div>
-<a id="a734d237c9b344c6c521b57c140556151"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a734d237c9b344c6c521b57c140556151">&#9670;&nbsp;</a></span>get_polarization()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void raytracing::Ray::get_polarization </td>
-          <td>(</td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>z</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>implement </dd></dl>
-
-</div>
-</div>
-<a id="aec832caef6510fd387fe374dcd4ab824"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec832caef6510fd387fe374dcd4ab824">&#9670;&nbsp;</a></span>get_sPolarization()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void raytracing::Ray::get_sPolarization </td>
-          <td>(</td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>z</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>implement </dd></dl>
-
-</div>
-</div>
-<a id="a962622ad18ed48aab711e9b26e077a8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a962622ad18ed48aab711e9b26e077a8a">&#9670;&nbsp;</a></span>get_pPolarization()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void raytracing::Ray::get_pPolarization </td>
-          <td>(</td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>z</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>implement </dd></dl>
-
-</div>
-</div>
 <a id="aff7dc41f019b8646e30b479efae0687b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aff7dc41f019b8646e30b479efae0687b">&#9670;&nbsp;</a></span>polarization()</h2>
 
@@ -391,9 +279,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>scale and set polarization for non-photons </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>to implement </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>to implement </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00119">119</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00178">178</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -408,11 +296,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a5f746c3c520f1b2d474c626d787579e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f746c3c520f1b2d474c626d787579e2">&#9670;&nbsp;</a></span>pPolarization()</h2>
+<a id="a551ddc0c1188b07b16ba85f9d2d4778f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a551ddc0c1188b07b16ba85f9d2d4778f">&#9670;&nbsp;</a></span>pPolarization()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void raytracing::Ray::pPolarization </td>
@@ -436,6 +327,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>phase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>scale</em> = <code>1</code>&#160;</td>
         </tr>
         <tr>
@@ -444,15 +341,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>scale and set p-polarization for photons </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>to implement </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>to implement </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00191">191</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph.png" border="0" usemap="#classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph" alt=""/></div>
+<map name="classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph" id="classraytracing_1_1Ray_a551ddc0c1188b07b16ba85f9d2d4778f_icgraph">
+<area shape="rect" id="node2" href="classraytracing_1_1Rays.html#a70d6422bcd081a1865614752349b0241" title="pop first ray " alt="" coords="247,13,393,39"/>
+<area shape="rect" id="node3" href="classraytracing_1_1openPMD__io.html#a6ba095753224e80a95abfec8816e0a5e" title="read one ray from file " alt="" coords="441,5,585,47"/>
+</map>
+</div>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/include/<a class="el" href="ray_8hh_source.html">ray.hh</a></li>
+<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/cpp/include/<a class="el" href="ray_8hh_source.html">ray.hh</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

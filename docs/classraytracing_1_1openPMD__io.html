@@ -111,7 +111,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 This is meant to be used to save/read a coherent set of rays to/from file. <br />
 Coherent in this case means that a single type of rays (particles) are going to used. </p>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8hh_source.html#l00023">23</a> of file <a class="el" href="openPMD__io_8hh_source.html">openPMD_io.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8hh_source.html#l00022">22</a> of file <a class="el" href="openPMD__io_8hh_source.html">openPMD_io.hh</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4d73f6fae48270ebbdc9bf7e61c72a07"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d73f6fae48270ebbdc9bf7e61c72a07">&#9670;&nbsp;</a></span>openPMD_io()</h2>
@@ -184,7 +184,7 @@ Coherent in this case means that a single type of rays (particles) are going to 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00026">26</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00027">27</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 
 </div>
 </div>
@@ -240,7 +240,7 @@ Coherent in this case means that a single type of rays (particles) are going to 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00107">107</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00114">114</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -287,11 +287,9 @@ Coherent in this case means that a single type of rays (particles) are going to 
 </div><div class="memdoc">
 
 <p>declare the ray particle species in the file </p>
-<p>This function must be called each time the particle species are changed and for each new iteration.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>The openPMD ray tracing extension settings are set here for the rays' properties.<br />
-n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
+<p>This function must be called each time the particle species are changed and for each new iteration. </p>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00073">73</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00074">74</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -322,8 +320,9 @@ n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
 </div><div class="memdoc">
 
 <p>Flushes the output to file before closing it It writes the current particle species of the current iteration. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>set minValue and maxValue </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00142">142</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00160">160</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -331,8 +330,7 @@ n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classraytracing_1_1openPMD__io_a90cf590f7834355125dce034fb6473a5_cgraph.png" border="0" usemap="#classraytracing_1_1openPMD__io_a90cf590f7834355125dce034fb6473a5_cgraph" alt=""/></div>
 <map name="classraytracing_1_1openPMD__io_a90cf590f7834355125dce034fb6473a5_cgraph" id="classraytracing_1_1openPMD__io_a90cf590f7834355125dce034fb6473a5_cgraph">
-<area shape="rect" id="node2" href="classraytracing_1_1Rays.html#aa27c29fa64fcc5597a6acd4c04d90370" title="returns the number of stored rays " alt="" coords="199,5,349,32"/>
-<area shape="rect" id="node3" href="classraytracing_1_1Rays.html#a0bc902010ca2ec0252eea6652aa53a88" title="reset the container, removing all the rays " alt="" coords="197,56,351,83"/>
+<area shape="rect" id="node2" href="classraytracing_1_1Rays.html#aa27c29fa64fcc5597a6acd4c04d90370" title="returns the number of stored rays " alt="" coords="197,13,347,39"/>
 </map>
 </div>
 
@@ -371,7 +369,7 @@ n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
 </div><div class="memdoc">
 
 <p>initializes the "series" object from the openPMD API in READ MODE </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>the file access type was defined in the <a class="el" href="classraytracing_1_1openPMD__io.html" title="I/O API for the ray trace extension of the openPMD format. ">openPMD_io</a> constructor </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>the file access type was defined in the <a class="el" href="classraytracing_1_1openPMD__io.html" title="I/O API for the ray trace extension of the openPMD format. ">openPMD_io</a> constructor </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">output_format</td><td>output format </td></tr>
@@ -379,7 +377,7 @@ n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>to fix the maximum number of rays one wants to read from the file </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>to fix the maximum number of rays one wants to read from the file </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">iter</td><td>openPMD iteration, always using the default value </td></tr>
@@ -387,7 +385,7 @@ n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00262">262</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00301">301</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
@@ -428,7 +426,7 @@ n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
 <p>read one ray from file </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classraytracing_1_1Ray.html" title="Generic ray, containing all the ray information being stored by the API into the openPMD file...">Ray</a> object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8hh_source.html#l00129">129</a> of file <a class="el" href="openPMD__io_8hh_source.html">openPMD_io.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8hh_source.html#l00128">128</a> of file <a class="el" href="openPMD__io_8hh_source.html">openPMD_io.hh</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -436,18 +434,20 @@ n_rays is the ncount of McStas, so the number of rays to be simulated </dd></dl>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classraytracing_1_1openPMD__io_a6ba095753224e80a95abfec8816e0a5e_cgraph.png" border="0" usemap="#classraytracing_1_1openPMD__io_a6ba095753224e80a95abfec8816e0a5e_cgraph" alt=""/></div>
 <map name="classraytracing_1_1openPMD__io_a6ba095753224e80a95abfec8816e0a5e_cgraph" id="classraytracing_1_1openPMD__io_a6ba095753224e80a95abfec8816e0a5e_cgraph">
-<area shape="rect" id="node2" href="classraytracing_1_1Rays.html#a70d6422bcd081a1865614752349b0241" title="pop first ray " alt="" coords="197,56,344,83"/>
-<area shape="rect" id="node3" href="classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="403,5,565,32"/>
-<area shape="rect" id="node4" href="classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="401,56,567,83"/>
-<area shape="rect" id="node5" href="classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="392,107,576,133"/>
+<area shape="rect" id="node2" href="classraytracing_1_1Rays.html#a70d6422bcd081a1865614752349b0241" title="pop first ray " alt="" coords="197,107,344,133"/>
+<area shape="rect" id="node3" href="classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="407,5,570,32"/>
+<area shape="rect" id="node4" href="classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="405,56,572,83"/>
+<area shape="rect" id="node5" href="classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="397,107,581,133"/>
+<area shape="rect" id="node6" href="classraytracing_1_1Ray.html#a52c8682552409e4b659409b6c6306f87" title="scale and set s&#45;polarization for photons " alt="" coords="392,157,585,184"/>
+<area shape="rect" id="node7" href="classraytracing_1_1Ray.html#a551ddc0c1188b07b16ba85f9d2d4778f" title="scale and set p&#45;polarization for photons " alt="" coords="392,208,585,235"/>
 </map>
 </div>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/include/<a class="el" href="openPMD__io_8hh_source.html">openPMD_io.hh</a></li>
-<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/src/<a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a></li>
+<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/cpp/include/<a class="el" href="openPMD__io_8hh_source.html">openPMD_io.hh</a></li>
+<li>/opt/panosc/openPMD_extension/openPMD_raytrace_API/cpp/src/<a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

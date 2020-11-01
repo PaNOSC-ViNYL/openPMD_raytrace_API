@@ -4,7 +4,18 @@
 #include <cmath>
 
 namespace raytracing {
-enum particleStatus_t { kDead = 0, kAlive = 1 };
+// enum particleStatus_t : int { kDead = 0, kAlive = 1 };
+
+/** \typedef particleStatus_t
+ * particle statues are defined by the openPMD extension as integers with
+ *  - 1: active/alive particle
+ *  - other: any other value is used for "dead" particles, the effective value and meaining
+ * depends on the simulation software used
+ * In the ray tracing extension only 0 and 1 values are used
+ */
+typedef int particleStatus_t;
+constexpr int kDead  = 0; ///<  particleStatus_t: dead ray
+constexpr int kAlive = 1; ///< alive ray
 
 /** \class Ray
  * \brief Generic ray, containing all the ray information being stored by the API into the openPMD
@@ -40,6 +51,7 @@ private:
 	float _time;
 	float _weight;
 	unsigned long long int _id;
+	//particleStatus_t _status;
 	particleStatus_t _status;
 
 public:
@@ -100,28 +112,28 @@ public:
 	float sPolAy() const { return _sPolarization[Y]; };
 	float sPolAz() const { return _sPolarization[Z]; };
 	float sPolPh() const { return _sPolarization[PHASE]; };
+	void get_sPolarizationAmplitude(float* x, float* y, float* z) const {
+		*x = sPolAx();
+		*y = sPolAy();
+		*z = sPolAz();
+	}
+	void get_sPolarization(float* x, float* y, float* z, float* phase) const {
+		get_sPolarizationAmplitude(x,y,z);
+		*phase = sPolPh();
+	}
+
 	///@}
 	/// \name Get p-polarization amplitude and phase for photons
 	float pPolAx() const { return _pPolarization[X]; };
 	float pPolAy() const { return _pPolarization[Y]; };
 	float pPolAz() const { return _pPolarization[Z]; };
 	float pPolPh() const { return _pPolarization[PHASE]; };
-
-	void get_sPolarizationAmplitude(float* x, float* y, float* z) const {
-		*x = sPolAx();
-		*y = sPolAy();
-		*z = sPolAz();
-	}
 	void get_pPolarizationAmplitude(float* x, float* y, float* z) const {
 		*x = pPolAx();
 		*y = pPolAy();
 		*z = pPolAz();
 	}
 
-	void get_sPolarization(float* x, float* y, float* z, float* phase) const {
-		get_sPolarizationAmplitude(x,y,z);
-		*phase = sPolPh();
-	}
 	void get_pPolarization(float* x, float* y, float* z, float* phase) const {
 		get_pPolarizationAmplitude(x,y,z);
 		*phase = pPolPh();

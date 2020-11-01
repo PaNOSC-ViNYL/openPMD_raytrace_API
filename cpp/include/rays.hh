@@ -33,7 +33,8 @@ namespace raytracing {
  */
 
 class Rays {
-private:
+	//private:
+public:
 	/**\class Record
 	 * \brief template utility class to simplify implementation
 	 * It is a vector that also stores min and max values while filling
@@ -74,7 +75,7 @@ public:
 	        _time, _weight;               // ray time, weight
 
 	Record<unsigned long long int> _id; // id
-	Record<particleStatus_t> _status;   // alive status
+	Record<int> _status;   // alive status
 private:
 	size_t _size;                       // number of stored rays
 	size_t _read;                       // current index when reading
@@ -87,7 +88,6 @@ public:
 	 * \param[in] this_ray : a ray object
 	 */
 	void push(const Ray& this_ray);
-	//_rays.push_back(this_ray); };
 
 	/** \brief pop first ray
 	 * \param[in] next : if true, it returns the current ray and advance the counter by one

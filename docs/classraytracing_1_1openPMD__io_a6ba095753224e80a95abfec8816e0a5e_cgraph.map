@@ -1,6 +1,8 @@
 <map id="raytracing::openPMD_io::trace_read" name="raytracing::openPMD_io::trace_read">
-<area shape="rect" id="node2" href="$classraytracing_1_1Rays.html#a70d6422bcd081a1865614752349b0241" title="pop first ray " alt="" coords="197,56,344,83"/>
-<area shape="rect" id="node3" href="$classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="403,5,565,32"/>
-<area shape="rect" id="node4" href="$classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="401,56,567,83"/>
-<area shape="rect" id="node5" href="$classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="392,107,576,133"/>
+<area shape="rect" id="node2" href="$classraytracing_1_1Rays.html#a70d6422bcd081a1865614752349b0241" title="pop first ray " alt="" coords="197,107,344,133"/>
+<area shape="rect" id="node3" href="$classraytracing_1_1Ray.html#a21906dc119aeedb0c4551e5ea1d1709c" title="scale and set the position " alt="" coords="407,5,570,32"/>
+<area shape="rect" id="node4" href="$classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06" title="scale and set the direction " alt="" coords="405,56,572,83"/>
+<area shape="rect" id="node5" href="$classraytracing_1_1Ray.html#aff7dc41f019b8646e30b479efae0687b" title="scale and set polarization for non&#45;photons " alt="" coords="397,107,581,133"/>
+<area shape="rect" id="node6" href="$classraytracing_1_1Ray.html#a52c8682552409e4b659409b6c6306f87" title="scale and set s&#45;polarization for photons " alt="" coords="392,157,585,184"/>
+<area shape="rect" id="node7" href="$classraytracing_1_1Ray.html#a551ddc0c1188b07b16ba85f9d2d4778f" title="scale and set p&#45;polarization for photons " alt="" coords="392,208,585,235"/>
 </map>

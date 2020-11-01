@@ -16,7 +16,8 @@ find_package(openPMD REQUIRED)
 #target_link_libraries(test_read.exe PRIVATE api)
 
 add_executable(test_write.exe bin/test_write.cpp)
-target_link_libraries(test_write.exe PRIVATE raytrace
+target_link_libraries(test_write.exe
+  PRIVATE raytrace
   PRIVATE openPMD::openPMD)
 
 # add_executable(test1.exe test1.cpp)

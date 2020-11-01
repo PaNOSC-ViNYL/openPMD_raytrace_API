@@ -84,6 +84,7 @@ public:
 #endif
 	/// \brief save ray properties
 	void trace_write(Ray this_ray) { _rays.push(this_ray); }
+	
 	/** \brief Flushes the output to file before closing it
 	 * It writes the current particle species of the current iteration.
 	 *

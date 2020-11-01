@@ -2,6 +2,7 @@
 #include "openPMD_io.hh"
 #include <iostream>
 #include <openPMD/openPMD.hpp> // openPMD C++ API
+#define DEBUG
 
 ///\file
 using namespace raytracing;
@@ -84,6 +85,8 @@ openPMD_io::init_rays(std::string particle_species, unsigned long long int n_ray
 
 	openPMD::Dataset dataset_float =
 	        openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{n_rays});
+	openPMD::Dataset dataset_int = openPMD::Dataset(openPMD::Datatype::INT, openPMD::Extent{n_rays});
+	openPMD::Dataset dataset_ulongint = openPMD::Dataset(openPMD::Datatype::ULONGLONG, openPMD::Extent{n_rays});
 
 	init_ray_prop("position", dataset_float, false, {{openPMD::UnitDimension::L, 1.}}, 1e-2);
 	init_ray_prop("direction", dataset_float, false);
@@ -102,10 +105,9 @@ openPMD_io::init_rays(std::string particle_species, unsigned long long int n_ray
 	init_ray_prop("weight", dataset_float, true);
 	init_ray_prop("rayTime", dataset_float, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3);
 
-	openPMD::Dataset dataset_int = openPMD::Dataset(openPMD::Datatype::INT, openPMD::Extent{n_rays});
-	init_ray_prop("id", dataset_int, true);
-	openPMD::Dataset dataset_ulongint = openPMD::Dataset(openPMD::Datatype::ULONGLONG, openPMD::Extent{n_rays});
-	init_ray_prop("particleStatus", dataset_ulongint, true);
+
+	init_ray_prop("id", dataset_ulongint, true);
+	init_ray_prop("particleStatus", dataset_int, true);
 }
 
 void
@@ -115,12 +117,12 @@ openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_s
 	std::string filename = _name;
 	std::string a        = output_format_names.find(extension)->second;
 	filename += std::string(".") + a;
-
+       
 	// assign the global variable to keep track of it
 	_series =
 	        std::unique_ptr<openPMD::Series>(new openPMD::Series(filename, openPMD::Access::CREATE));
 
-	_series->setAuthor("openPMD output component");
+	_series->setAuthor("openPMD raytracing API");
 	// latticeName: name of the instrument
 	// latticeFile: name of the instrument file
 	// branchIndex: unique index number assigned to the latice branch the[article is in. (it should
@@ -129,61 +131,83 @@ openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_s
 	std::cout << "Filename: " << filename << std::endl; // remove
 	//auto i = _series->iterations[1];
 	auto i = iter_pmd(iter);
-
+	std::cout << "Iter: " << _iter << std::endl;
 	// set the mccode, mccode_version, component name, instrument name
 
 	init_rays(particle_species, n_rays, iter);
-
+	std::cout << "init rays done" << std::endl;
 	//openPMD::Record mass = rays["mass"];
 	//openPMD::RecordComponent mass_scalar = mass[openPMD::RecordComponent::SCALAR];
 
 	//	mass_scalar.resetDataset(dataset);
 
-	_series->flush();
+	//	_series->flush();
+	std::cout << "flush done" << std::endl;
 }
 
 //------------------------------------------------------------
+template <typename T>
+void
+save_write_single(openPMD::ParticleSpecies& rays, std::string field, std::string record,
+                  Rays::Record<T>& rec, openPMD::Offset& offset, openPMD::Extent& extent) {
+	rays[field][record].storeChunk(openPMD::shareRaw(rec.vals()), offset, extent);
+	rays[field][record].setAttribute("minValue", rec.min());
+	rays[field][record].setAttribute("maxValue", rec.max());
+}
+//------------------------------------------------------------
+
 void
 openPMD_io::save_write(void) {
 	if (_rays.size() == 0) return;
+
 #ifdef DEBUG
-	std::cout << "Number of saved rays: " << _rays.size() << "\t" << _rays.x().size() << std::endl;
+	std::cout << "Number of saved rays: " << _rays.size() << "\t" << _rays._x.vals().size() << std::endl;
 #endif
 	auto rays = rays_pmd();
 	///\todo set minValue and maxValue
 	openPMD::Extent extent = {_rays.size()};
-	rays["position"]["x"].storeChunk(openPMD::shareRaw(_rays._x.vals()), _offset, extent);
-	rays["position"]["x"].setAttribute("minValue", _rays._x.min());
-	rays["position"]["x"].setAttribute("maxValue", _rays._x.max());
 
-	rays["position"]["y"].storeChunk(openPMD::shareRaw(_rays._y.vals()), _offset, extent);
-	rays["position"]["y"].setAttribute("minValue", _rays._y.min());
-	rays["position"]["y"].setAttribute("maxValue", _rays._y.max());
+	save_write_single(rays, "position", "x", _rays._x, _offset, extent);
+	save_write_single(rays, "position", "y", _rays._y, _offset, extent);
+	save_write_single(rays, "position", "z", _rays._z, _offset, extent);
 
-	rays["position"]["z"].storeChunk(openPMD::shareRaw(_rays._z.vals()), _offset, extent);
-	rays["position"]["z"].setAttribute("minValue", _rays._z.min());
-	rays["position"]["z"].setAttribute("maxValue", _rays._z.max());
+	save_write_single(rays, "direction", "x", _rays._dx, _offset, extent);
+	save_write_single(rays, "direction", "y", _rays._dy, _offset, extent);
+	save_write_single(rays, "direction", "z", _rays._dz, _offset, extent);
 
-	rays["direction"]["x"].storeChunk(openPMD::shareRaw(_rays._dx.vals()), _offset, extent);
-	rays["direction"]["y"].storeChunk(openPMD::shareRaw(_rays._dy.vals()), _offset, extent);
-	rays["direction"]["z"].storeChunk(openPMD::shareRaw(_rays._dz.vals()), _offset, extent);
+	save_write_single(rays, "nonPhotonPolarization", "x", _rays._sx, _offset, extent);
+	save_write_single(rays, "nonPhotonPolarization", "y", _rays._sy, _offset, extent);
+	save_write_single(rays, "nonPhotonPolarization", "z", _rays._sz, _offset, extent);
 
-	rays["polarization"]["x"].storeChunk(openPMD::shareRaw(_rays._sx.vals()), _offset, extent);
-	rays["polarization"]["y"].storeChunk(openPMD::shareRaw(_rays._sy.vals()), _offset, extent);
-	rays["polarization"]["z"].storeChunk(openPMD::shareRaw(_rays._sz.vals()), _offset, extent);
+	save_write_single(rays, "photonSPolarizationAmplitude", "x", _rays._sPolAx, _offset, extent);
+	save_write_single(rays, "photonSPolarizationAmplitude", "y", _rays._sPolAy, _offset, extent);
+	save_write_single(rays, "photonSPolarizationAmplitude", "z", _rays._sPolAz, _offset, extent);
+	save_write_single(rays, "photonSPolarizationPhase", openPMD::RecordComponent::SCALAR,
+	                  _rays._sPolPh, _offset, extent);
 
-	rays["rayTime"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays._time.vals()),
-	                                                          _offset, extent);
-	rays["wavelength"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays._wavelength.vals()),
-	                                                            _offset, extent);
-	rays["weight"][openPMD::RecordComponent::SCALAR].storeChunk(openPMD::shareRaw(_rays._weight.vals()),
-	                                                            _offset, extent);
+	save_write_single(rays, "photonPPolarizationAmplitude", "x", _rays._pPolAx, _offset, extent);
+	save_write_single(rays, "photonPPolarizationAmplitude", "y", _rays._pPolAy, _offset, extent);
+	save_write_single(rays, "photonPPolarizationAmplitude", "z", _rays._pPolAz, _offset, extent);
+	save_write_single(rays, "photonPPolarizationPhase", openPMD::RecordComponent::SCALAR,
+	                  _rays._pPolPh, _offset, extent);
 
+	save_write_single(rays, "rayTime", openPMD::RecordComponent::SCALAR, _rays._time, _offset,
+	                  extent);
+	save_write_single(rays, "wavelength", openPMD::RecordComponent::SCALAR, _rays._wavelength,
+	                  _offset, extent);
+	save_write_single(rays, "weight", openPMD::RecordComponent::SCALAR, _rays._weight, _offset,
+	                  extent);
+
+	save_write_single(rays, "id", openPMD::RecordComponent::SCALAR, _rays._id, _offset, extent);
+	save_write_single(rays, "particleStatus", openPMD::RecordComponent::SCALAR, _rays._status,
+	                  _offset, extent);
 
 	_series->flush();
 	_rays.clear();
+
 	for (size_t i = 0; i < extent.size(); ++i)
 		_offset[i] += extent[i];
+
 }
 
 //------------------------------------------------------------
@@ -191,7 +215,6 @@ openPMD_io::save_write(void) {
 void
 openPMD_io::load_chunk(void) {
 	_rays.clear(); // Necessary to set _read to zero
-
 	auto ray_data = rays_pmd();
 
 	auto x_dat = ray_data["position"]["x"];
@@ -303,42 +326,5 @@ openPMD_io::init_read(openPMD_output_format_t extension, unsigned long long int 
 	_rays.clear(); // Necessary to set _read to zero
 	return extent[0];
 }
-
-#ifdef SHERVIN
-//------------------------------------------------------------
-void
-openPMD_io::trace_read(double* x, double* y, double* z, double* sx, double* sy, double* sz, double* vx,
-                       double* vy, double* vz, double* t, double* p) {
-
-	if (_rays.is_chunk_finished()) load_chunk(); // proceed with a new chunk
-	if (_rays.size() == 0) return;               // there was nothing more to read
-
-	/* returning the values of the last ray again
-	 * this is to allow repeting rays to be used
-	 */
-	if (_i_repeat < _n_repeat) {
-		_rays.retrieve(x, y, z, sx, sy, sz, vx, vy, vz, t, p);
-		++_i_repeat;
-	} else {
-		// Get ray state from rays particle instance
-		_rays.retrieve_next(x, y, z, sx, sy, sz, vx, vy, vz, t,
-		                    p); // Will loop internally if more than data size is read
-		_i_repeat = 1;
-	}
-}
-
-//------------------------------------------------------------
-void
-openPMD_io::trace_write(double x, double y, double z,    //
-                        double sx, double sy, double sz, //
-                        double vx, double vy, double vz, //
-                        double t, double p) {
-
-	_rays.push_back(x, y, z, sx, sy, sz, vx, vy, vz, t, p);
-
-	if (_rays.size() >= CHUNK_SIZE) save_write();
-}
-
-#endif
 
 
