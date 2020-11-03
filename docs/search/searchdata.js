@@ -1,6 +1,6 @@
 var indexSectionsWithContent =
 {
-  0: "dhijkoprstvw",
+  0: "adhijkoprstvw",
   1: "or",
   2: "r",
   3: "or",
@@ -8,7 +8,7 @@ var indexSectionsWithContent =
   5: "k",
   6: "p",
   7: "o",
-  8: "hj",
+  8: "ahj",
   9: "t"
 };
 

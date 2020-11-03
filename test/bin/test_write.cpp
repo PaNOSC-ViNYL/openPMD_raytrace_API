@@ -3,10 +3,10 @@
 int
 main(int argc, char* argv[]) {
 
-	std::string filename = "test_file";
+	std::string filename = "test_file.h5";
 	raytracing::openPMD_io iol(filename, "test code");
 
-	iol.init_write(raytracing::JSON, "2112", 3, 1);
+	iol.init_write(  "2112", 3,raytracing::AUTO, 1);
 	std::cout << "filename = " << filename << std::endl;
 	raytracing::Ray myray;
 	myray.position(1, 2, 3);

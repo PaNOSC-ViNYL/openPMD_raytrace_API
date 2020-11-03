@@ -5,7 +5,8 @@ project(openPMDraytraceTest VERSION 0.1.0 LANGUAGES CXX C)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-set(CMAKE_CXX_STANDARD 17)
+# with 17 openPMD crashes. It happens with the same openPMD write example (here test1.exe)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
@@ -20,10 +21,10 @@ target_link_libraries(test_write.exe
   PRIVATE raytrace
   PRIVATE openPMD::openPMD)
 
-# add_executable(test1.exe test1.cpp)
-# target_link_libraries(test1.exe
-#   PRIVATE raytrace
-#   PRIVATE openPMD::openPMD)
+add_executable(test1.exe test1.cpp)
+target_link_libraries(test1.exe
+#  PRIVATE raytrace
+  PRIVATE openPMD::openPMD)
 
 #enable_testing()
 #add_test(NAME write COMMAND  test_write.exe)

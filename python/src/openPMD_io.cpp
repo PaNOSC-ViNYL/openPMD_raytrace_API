@@ -17,4 +17,8 @@ PYBIND11_MODULE(raytracing, m) {
 	        .def("init_read", &openPMD_io::init_read)
 	        .def("trace_read", &openPMD_io::trace_read) //
 	        ;
+	py::class_<Ray>(m, "Ray")
+		.def("x", &Ray::x)
+		.def("y", &Ray::y)
+		;
 }

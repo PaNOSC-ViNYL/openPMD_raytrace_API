@@ -14,6 +14,9 @@ if(NOT DEFINED BUILD_SHARED_LIBS)
   set(BUILD_SHARED_LIBS True)
 endif()
 
+set( CMAKE_BUILD_TYPE Release)
+set( CMAKE_BUILD_TYPE Debug)
+
 ##
 option(TEST "Do testing" OFF)
 option(EXTERNAL_PYBIND "Use Pybind v2.5.0 from GIT" OFF)
@@ -47,13 +50,15 @@ if(EXTERNAL_openPMD OR NOT openPMD_FOUND)
   message(WARNING "Using openPMD-api from GIT repository")
   ExternalProject_Add(openPMD-api
     GIT_REPOSITORY https://github.com/openPMD/openPMD-api.git
-    GIT_TAG dev
+    #GIT_TAG dev
+    GIT_TAG 0.12.0-alpha
     #GIT_COMMIT d6820a12b03b7c574a04e8c356a78b66492cb990
     GIT_SHALLOW True
     UPDATE_DISCONNECTED True
     PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/cmake_api.patch
 #    INSTALL_COMMAND "make install"
-    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+#    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=ON -DBUILD_EXAMPLES=ON -DBUILD_CLI_TOOLS=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     )
   ExternalProject_Get_Property(openPMD-api install_dir)
   set(openPMD_DIR ${install_dir}/src/openPMD-api-build/)
@@ -97,6 +102,7 @@ ExternalProject_Add(tests
 
 enable_testing()
 
+add_test(NAME openPMD_write COMMAND tests-prefix/src/tests-build/test1.exe)
 add_test(NAME write COMMAND  tests-prefix/src/tests-build/test_write.exe)
 
 

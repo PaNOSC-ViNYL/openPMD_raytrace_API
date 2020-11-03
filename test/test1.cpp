@@ -19,7 +19,6 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 #include <openPMD/openPMD.hpp>
-//#include <openPMD_io.hh>
 
 #include <iostream>
 #include <memory>
@@ -44,7 +43,7 @@ int main(int argc, char *argv[])
 
     // open file for writing
     Series series = Series(
-        "../samples/3_write_serial.json",
+        "../samples/3_write_serial.h5",
         Access::CREATE
     );
     cout << "Created an empty " << series.iterationEncoding() << " Series\n";

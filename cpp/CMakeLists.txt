@@ -14,8 +14,8 @@ if(NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
   set(CMAKE_CXX_STANDARD_REQUIRED True)
 endif()
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+#set(CMAKE_CXX_STANDARD 14)
+#set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 ##
 option(TEST "Do testing" OFF)
@@ -39,7 +39,7 @@ set_target_properties(raytrace PROPERTIES
   VERSION ${PROJECT_VERSION}
   )
 
-set_property(TARGET raytrace PROPERTY CXX_STANDARD 17) # with 17 it crashes!
+#set_property(TARGET raytrace PROPERTY CXX_STANDARD 17) # with 17 it crashes!
 # it should be due to the openPMD RAYTRACE
 target_link_libraries(raytrace PUBLIC openPMD::openPMD)
 

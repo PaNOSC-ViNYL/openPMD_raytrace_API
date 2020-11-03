@@ -5,7 +5,8 @@
 #define DEBUG
 
 ///\file
-using namespace raytracing;
+//using namespace raytracing;
+//using raytracing::openPMD_io;
 /** \brief defines the maximum number of rays that can be stored in memory before dumping to file
  * \todo The CHUNK_SIZE should not be hardcoded
  * it should also be optimized with tests
@@ -17,13 +18,15 @@ constexpr size_t CHUNK_SIZE = 10000;
 /** \todo use particlePatches ... but I don't understand if/how */
 
 //------------------------------------------------------------
-const std::map<openPMD_output_format_t, std::string> openPMD_io::output_format_names = {
+// filaname extensions base on the declared format
+const std::map<raytracing::openPMD_output_format_t, std::string> raytracing::openPMD_io::output_format_names = {
         {JSON, "json"},
         {HDF5, "h5"},
+	{AUTO, ""} // 
 };
 
 //------------------------------------------------------------
-openPMD_io::openPMD_io(const std::string& filename, // openPMD::Access read_mode,
+raytracing::openPMD_io::openPMD_io(const std::string& filename, // openPMD::Access read_mode,
                        std::string mc_code_name, std::string mc_code_version,
                        std::string instrument_name, std::string name_current_component, int repeat):
     _name(filename),
@@ -38,7 +41,7 @@ openPMD_io::openPMD_io(const std::string& filename, // openPMD::Access read_mode
 
 //------------------------------------------------------------
 void
-openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isScalar,
+raytracing::openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isScalar,
                           std::map<openPMD::UnitDimension, double> const& dims, double unitSI) {
 	auto rays = rays_pmd();
 
@@ -64,16 +67,22 @@ openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& dataset, bool isSc
  * simulated
  **/
 void
-openPMD_io::init_rays(std::string particle_species, unsigned long long int n_rays,
+raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long long int n_rays,
                       unsigned int iter) {
 #ifdef DEBUG
 	std::cout << "--------------- [INIT RAYS]" << std::endl;
 #endif
 	auto rays = rays_pmd(particle_species);
-	//rays.setAttribute("speciesType", particle_species);
-	//rays.setAttribute("PDGID", particle_species);
-	//rays.setAttribute("directionOfGravityX", 0.);
-	
+
+	// these are a single entry to mark some general properties of the particles
+	openPMD::Dataset dataset_single_float =
+	        openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{1});
+	init_ray_prop("directionOfGravity", dataset_single_float, false);
+	init_ray_prop("mass", dataset_single_float, true, {{openPMD::UnitDimension::M, 1.}});
+
+	rays.setAttribute("speciesType", particle_species);
+	rays.setAttribute("PDGID", particle_species);
+
 	openPMD::Dataset dataset_float =
 	        openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{n_rays});
 	openPMD::Dataset dataset_int =
@@ -104,13 +113,15 @@ openPMD_io::init_rays(std::string particle_species, unsigned long long int n_ray
 }
 
 void
-openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_species,
-                       unsigned long long int n_rays, unsigned int iter) {
+raytracing::openPMD_io::init_write(std::string particle_species, unsigned long long int n_rays,
+                                   openPMD_output_format_t extension, unsigned int iter) {
 	_iter                = iter;
 	std::string filename = _name;
-	std::string a        = output_format_names.find(extension)->second;
-	filename += std::string(".") + a;
-
+	//	size_t extension_pos = filename.rfind('.', 5);
+	if (extension != AUTO){
+		std::string a = output_format_names.find(extension)->second;
+		filename += std::string(".") + a;
+        }
 	// assign the global variable to keep track of it
 	_series = std::unique_ptr<openPMD::Series>(
 	        new openPMD::Series(filename, openPMD::Access::CREATE));
@@ -118,8 +129,8 @@ openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_s
 	_series->setAuthor("openPMD raytracing API");
 	// latticeName: name of the instrument
 	// latticeFile: name of the instrument file
-	// branchIndex: unique index number assigned to the latice branch the[article is in. (it
-	// should be per particle
+	// branchIndex: unique index number assigned to the latice branch the[article is in.
+	// (it should be per particle
 	//
 	std::cout << "Filename: " << filename << std::endl; // remove
 	// auto i = _series->iterations[1];
@@ -127,9 +138,12 @@ openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_s
 	_series->flush();
 
 	//	openPMD::Record directionOfGravity;
-	//	_series->setAttribute("directionOfGravity_X", 0.);
-	//_series->setAttribute("directionOfGravity_Y", 0.);
-	//_series->setAttribute("directionOfGravity_Z", 0.);
+	///\todo I don't how to add the directionOfGravity
+	// float directionOfGravity[3] = {0.,0.,0.}; // this ensures that the attribute is
+	// float type _series->setAttribute("directionOfGravity_X", directionOfGravity[0]);
+	//_series->setAttribute("directionOfGravity_Y", directionOfGravity[1]);
+	//_series->setAttribute("directionOfGravity_Z", directionOfGravity[2]);
+
 	std::cout << "Iter: " << _iter << std::endl;
 	// set the mccode, mccode_version, component name, instrument name
 
@@ -148,7 +162,7 @@ openPMD_io::init_write(openPMD_output_format_t extension, std::string particle_s
 template <typename T>
 void
 save_write_single(openPMD::ParticleSpecies& rays, std::string field, std::string record,
-                  openPMD_io ::Rays::Record<T>& rec, openPMD::Offset& offset,
+                  raytracing::openPMD_io::Rays::Record<T>& rec, openPMD::Offset& offset,
                   openPMD::Extent& extent) {
 	rays[field][record].storeChunk(openPMD::shareRaw(rec.vals()), offset, extent);
 	rays[field][record].setAttribute("minValue", rec.min());
@@ -157,7 +171,7 @@ save_write_single(openPMD::ParticleSpecies& rays, std::string field, std::string
 //------------------------------------------------------------
 
 void
-openPMD_io::save_write(void) {
+raytracing::openPMD_io::save_write(void) {
 	if (_rays.size() == 0) return;
 
 #ifdef DEBUG
@@ -219,7 +233,7 @@ openPMD_io::save_write(void) {
 //------------------------------------------------------------
 
 void
-openPMD_io::load_chunk(void) {
+raytracing::openPMD_io::load_chunk(void) {
 	_rays.clear(); // Necessary to set _read to zero
 	auto ray_data = rays_pmd();
 
@@ -252,7 +266,7 @@ openPMD_io::load_chunk(void) {
 	auto weight_dat     = ray_data["weight"][openPMD::RecordComponent::SCALAR];
 	// Missing polarization vector
 
-	openPMD::Extent chunk_size = {(extent[0] > CHUNK_SIZE) ? CHUNK_SIZE : extent[0]};
+	openPMD::Extent chunk_size = {(extent[0] > raytracing::CHUNK_SIZE) ? raytracing::CHUNK_SIZE : extent[0]};
 #ifdef DEBUG
 	std::cout << "  Loading chunk of size " << chunk_size[0] << "; file contains " << extent[0]
 	          << " entries of type " << x_dat.getDatatype() << std::endl;
@@ -305,7 +319,7 @@ openPMD_io::load_chunk(void) {
 }
 
 unsigned long long int
-openPMD_io::init_read(openPMD_output_format_t extension, unsigned long long int n_rays,
+raytracing::openPMD_io::init_read(raytracing::openPMD_output_format_t extension, unsigned long long int n_rays,
                       unsigned int iter) {
 	std::string filename = _name;
 
@@ -336,11 +350,11 @@ openPMD_io::init_read(openPMD_output_format_t extension, unsigned long long int 
 }
 
 void
-openPMD_io::trace_write(Ray this_ray) {
+raytracing::openPMD_io::trace_write(raytracing::Ray this_ray) {
 	_rays.push(this_ray);
 }
 
-Ray
-openPMD_io::trace_read(void) {
+raytracing::Ray
+raytracing::openPMD_io::trace_read(void) {
 	return _rays.pop(true);
 }
