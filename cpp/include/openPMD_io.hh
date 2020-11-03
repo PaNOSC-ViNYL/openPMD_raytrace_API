@@ -186,10 +186,10 @@ public:
 	        const std::string& filename, ///< filename
 	        //	        openPMD::Access read_mode,        ///< file access mode
 	        //(read/write/append)
-	        std::string mc_code_name    = "", ///< [optional] Name of the simulation code name
-	        std::string mc_code_version = "", ///< [optional] Simulation software version
-	        std::string instrument_name = "", ///< [optional] Name of the instrument
-	        std::string name_current_component =
+	        const std::string mc_code_name    = "", ///< [optional] Name of the simulation code name
+	        const std::string mc_code_version = "", ///< [optional] Simulation software version
+	        const std::string instrument_name = "", ///< [optional] Name of the instrument
+	        const std::string name_current_component =
 	                "",    ///< [optional] current component name along the beamline
 	        int repeat = 1 ///< [optional] Number of times a ray should be repeatedly retrieved
 	);
