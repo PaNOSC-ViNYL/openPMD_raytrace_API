@@ -70,6 +70,17 @@ $(function() {
 <p>## Writing </p><div class="fragment"><div class="line">include &lt;ray.hh&gt;</div></div><!-- fragment --><p> A Ray object should be constructed and filled with all the relevant information.</p>
 <p>The ray is then queued for writing using the openPMD_io class: </p><div class="fragment"><div class="line">std::string filename = &quot;test_file&quot;;</div><div class="line">raytracing::openPMD_io iol(filename, &quot;test code&quot;);</div><div class="line"></div><div class="line">iol.init_write(raytracing::JSON, &quot;2112&quot;, 3, 1);</div><div class="line"></div><div class="line">raytracing::Ray myray;</div><div class="line">myray.position(1,2,3);</div><div class="line">//...</div><div class="line">myray.direction(1,1,1,1./sqrt(3));</div><div class="line"></div><div class="line">// append </div><div class="line">iol.trace_write(myray);</div><div class="line"></div><div class="line"></div><div class="line">iol.save_write();</div></div><!-- fragment --><p>The Ray class is providing all the conversion/utility operations on the quantities stored in the openPMD file according to the RAYTRACE extension</p>
 <h2>Reading</h2>
+<h2>Todo</h2>
+<ul>
+<li>[ ] Setter and getter for gravity direction</li>
+<li>[ ] Setter and getter for horizontalCoordinate</li>
+<li>[ ] Setter and getter for numParticles</li>
+<li>[ ] Interal usage of numParticles</li>
+<li>[ ] Binding of wavelength, time, weight, id, status getters</li>
+<li>[ ] Test the python binding</li>
+<li>[ ] Cmake install for the python binding</li>
+<li>[ ] PyPi package </li>
+</ul>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

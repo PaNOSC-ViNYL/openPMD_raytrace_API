@@ -48,3 +48,15 @@ The Ray class is providing all the conversion/utility operations on the quantiti
 
 
 ## Reading
+
+
+
+## Todo
+ - [ ] Setter and getter for gravity direction
+ - [ ] Setter and getter for horizontalCoordinate
+ - [ ] Setter and getter for numParticles
+ - [ ] Interal usage of numParticles
+ - [ ] Binding of wavelength, time, weight, id, status getters
+ - [ ] Test the python binding
+ - [ ] Cmake install for the python binding
+ - [ ] PyPi package
