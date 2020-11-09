@@ -3,18 +3,15 @@
 namespace py = pybind11;
 
 #include <openPMD_io.hh>
-#include <rays.hh>
+#include <ray.hh>
 using namespace raytracing;
 
 PYBIND11_MODULE(raytracing, m) {
 
 	m.doc() = "pybind11 example plugin"; // optional module docstring
 	py::class_<openPMD_io>(m, "openPMD_io")
-		.def(py::init<const std::string&, const std::string,
-		     const std::string,
-		     const std::string,
-		     const std::string,
-		     int>())
+	        .def(py::init<const std::string&, const std::string, const std::string,
+	                      const std::string, const std::string>())
 	        .def("init_write", &openPMD_io::init_write)
 	        .def("init_rays", &openPMD_io::init_rays)
 	        .def("trace_write", &openPMD_io::trace_write)
@@ -55,11 +52,16 @@ PYBIND11_MODULE(raytracing, m) {
 	        .def("sPolarization", &Ray::sPolarization)
 	        .def("pPolarization", &Ray::pPolarization)
 	        //
-	        .def("wavelength", static_cast<void (Ray::*)(double)>(&Ray::wavelength))
-	        .def("time", static_cast<void (Ray::*)(double)>(&Ray::time))
-	        .def("weight", static_cast<void (Ray::*)(double)>(&Ray::weight))
-	        .def("id", static_cast<void (Ray::*)(unsigned long long int)>(&Ray::id))
-	        .def("status", static_cast<void (Ray::*)(particleStatus_t)>(&Ray::status))
+	        .def_property("wavelength", &Ray::get_wavelength, &Ray::set_wavelength)
+	        .def_property("time", &Ray::get_time, &Ray::set_time)
+	        .def_property("weight", &Ray::get_weight, &Ray::set_weight)
+	        .def_property("id", &Ray::get_id, &Ray::set_id)
+	        .def_property("status", &Ray::get_status, &Ray::set_status)
+	        // .def("wavelength", static_cast<void (Ray::*)(double)>(&Ray::wavelength))
+	        // .def("time", static_cast<void (Ray::*)(double)>(&Ray::time))
+	        // .def("weight", static_cast<void (Ray::*)(double)>(&Ray::weight))
+	        // .def("id", static_cast<void (Ray::*)(unsigned long long int)>(&Ray::id))
+	        // .def("status", static_cast<void (Ray::*)(particleStatus_t)>(&Ray::status))
 
 	        //
 	        ;

@@ -147,13 +147,19 @@ public:
 	 */
 	///@{
 	float wavelength() const { return _wavelength; };
+	inline float get_wavelength() const { return wavelength(); };
 	float time() const { return _time; };
+	inline float get_time() const { return time(); };
 	float weight() const { return _weight; };
+	inline float get_weight() const { return weight(); };
 	unsigned long long int id(void) const { return _id; };
+	inline unsigned long long int get_id(void) const { return id(); };
 	/** \brief return the particle status
 	 * \return raytracing::kAlive or raytracing::kDead
 	 */
 	particleStatus_t status(void) const { return _status; };
+	inline particleStatus_t get_status(void) const { return status(); };
+
 	///@}
 	///@}
 
@@ -202,14 +208,21 @@ public:
 	};
 	/// \brief set wavelength
 	void wavelength(double w) { _wavelength = w; };
+	inline void set_wavelength(double w) { wavelength(w); }; // for pybind overloading
+	
 	/// \brief set time
 	void time(double t) { _time = t; };
+	inline void set_time(double t) { time(t); }; // for pybind overloading
 	/// \brief set weight
 	void weight(double w) { _weight = w; };
+	inline void set_weight(double w) { weight(w); }; // for pybind overloading
 
-	void id(unsigned long long int id) { _id = id; };
+	void id(unsigned long long int idv) { _id = idv; };
+	inline void set_id(unsigned long long int idv) { id(idv); }; // for pybind overloading
 
 	void status(particleStatus_t s) { _status = s; };
+	inline void set_status(particleStatus_t s) { status(s); }; // for pybind overloading
+
 	///@}
 };
 

@@ -63,6 +63,13 @@ private:
 				if (_min > val) (_min) = val;
 				if (_max < val) (_max) = val;
 			}
+			// this is used when reading from the openPMD file
+			void store(const T * vec, size_t n, float min, float max){
+				//				clear();
+				_vals.insert(_vals.begin(), vec, vec+n);
+				_min = min;
+				_max = max;
+			}
 			void clear(void) {
 				std::numeric_limits<T> lim;
 				_max = lim.min();
@@ -109,7 +116,7 @@ private:
 		 * one if false, at the next pop() it will retrieve the same ray \return ray : a ray
 		 * object
 		 */
-		Ray pop(bool next = false);
+		Ray pop(bool next = true);
 		/** \brief reset the container, removing all the rays */
 		void clear(void) {
 			_size = 0;
@@ -184,14 +191,12 @@ public:
 	 */
 	explicit openPMD_io(
 	        const std::string& filename, ///< filename
-	        //	        openPMD::Access read_mode,        ///< file access mode
-	        //(read/write/append)
-	        const std::string mc_code_name    = "", ///< [optional] Name of the simulation code name
+	        const std::string mc_code_name =
+	                "", ///< [optional] Name of the simulation code name
 	        const std::string mc_code_version = "", ///< [optional] Simulation software version
 	        const std::string instrument_name = "", ///< [optional] Name of the instrument
 	        const std::string name_current_component =
-	                "",    ///< [optional] current component name along the beamline
-	        int repeat = 1 ///< [optional] Number of times a ray should be repeatedly retrieved
+	                "" ///< [optional] current component name along the beamline
 	);
 
 	/***************************************************************/
@@ -207,8 +212,8 @@ public:
 	 */
 	void init_write(std::string pdgId,             ///< PDG ID of the particles
 	                unsigned long long int n_rays, ///< number of rays being simulated (max)
-	                openPMD_output_format_t output_format=AUTO, ///< output format
-	                unsigned int iter = 1 ///< openPMD iteration, always using the default value
+	                openPMD_output_format_t output_format = AUTO, ///< output format
+	                unsigned int iter                     = 1     ///< openPMD iteration
 
 	);
 
@@ -221,11 +226,10 @@ public:
 	void
 	init_rays(std::string particle_species, unsigned long long int n_rays, unsigned int iter);
 
-	/// \brief save ray properties
+	/// \brief save ray properties for further writing to file by save_write()
 	void trace_write(Ray this_ray);
 
 	/** \brief Flushes the output to file before closing it
-	 * It writes the current particle species of the current iteration.
 	 *
 	 **/
 	void save_write(void);
@@ -234,20 +238,29 @@ public:
 	/***************************************************************/
 	/// \name Reading mode
 	///@{
+
 	/// \brief initializes the "series" object from the openPMD API in READ MODE
 	unsigned long long int
-	init_read(openPMD_output_format_t output_format, ///< output format
-	          unsigned long long int n_rays =
-	                  0,            ///< NOT USED YET 0 = all \todo to fix the maximum
-	                                ///< number of rays one wants to read from the file
-	          unsigned int iter = 1 ///< openPMD iteration, always using the default value
+	init_read(unsigned long long int n_rays =
+	                  0,             ///< NOT USED YET 0 = all \todo to fix the maximum
+	                                 ///< number of rays one wants to read from the file
+	          unsigned int iter = 1, ///< openPMD iteration, always using the default value
+	          unsigned int repeat =
+	                  1 ///< [optional] Number of times a ray should be repeatedly retrieved
 	);
 
-	/** \brief read one ray from file
+	/** \brief Read rays from file and returns the next in the list
 	 *
 	 * \returns Ray object
+	 * Loads the data from file in chunks. Each ray is returned as many times as requested at init_read() step.
+	 *
+	 * Each time this method is called, the ray counter increments
 	 */
 	Ray trace_read(void);
+
+	void get_gravity_direction(float *x, float *y, float* z) const;
+	void get_horizontal_direction(float* x, float* y, float* z) const;
+	
 	///@}
 private:
 	void load_chunk(void);
@@ -259,14 +272,15 @@ private:
 	std::string _mc_code_version;
 	std::string _instrument_name;
 	std::string _name_current_component;
-	int _i_repeat, _n_repeat;
-
+	unsigned int _i_repeat, _n_repeat;
+	unsigned long long int _nrays;
 	// internal usage
 	//	openPMD::Access _access_mode;
 	openPMD::Offset _offset;
 	bool _isWriteMode;
 	std::unique_ptr<openPMD::Series> _series;
 	Rays _rays;
+	Ray _last_ray;
 	unsigned int _iter;
 	std::string _particle_species;
 
@@ -288,6 +302,8 @@ private:
 		return i.particles[particle_species];
 	}
 
+	inline unsigned long long int numParticles(void){return 0;}; ///< \todo implement
+	
 	/** \brief Sets a new Record for the current particles of the current iteration
 	 * \param[in] isScalar : bool indicating if it is scalar
 	 * \param[in] dims : Unit dimensions

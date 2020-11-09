@@ -32,12 +32,13 @@ The Ray class is providing all the conversion/utility operations on the quantiti
  - [ ] Setter and getter for horizontalCoordinate
  - [ ] Setter and getter for numParticles
  - [ ] Interal usage of numParticles
- - [ ] Binding of wavelength, time, weight, id, status getters
+ - [X] Binding of wavelength, time, weight, id, status getters
  - [ ] Test the python binding
  - [ ] Cmake install for the python binding
  - [ ] PyPi package
  - [ ] ostream friend for the ray class to make easier to debug
-
+ - [X] Repeating ray multiple times if requested when reading the openPMD file
+ 
 ## Examples
 Examples can be found 
 
