@@ -104,12 +104,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abec6992a8ccfa5f79e01e1f75d7b30de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classraytracing_1_1Ray.html">Ray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classraytracing_1_1openPMD__io.html#abec6992a8ccfa5f79e01e1f75d7b30de">trace_read</a> (void)</td></tr>
 <tr class="memdesc:abec6992a8ccfa5f79e01e1f75d7b30de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read rays from file and returns the next in the list.  <a href="#abec6992a8ccfa5f79e01e1f75d7b30de">More...</a><br /></td></tr>
 <tr class="separator:abec6992a8ccfa5f79e01e1f75d7b30de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a492a6150c3cb8ff5dcacac36caf6e4ec"><td class="memItemLeft" align="right" valign="top"><a id="a492a6150c3cb8ff5dcacac36caf6e4ec"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>get_gravity_direction</b> (float *x, float *y, float *z) const</td></tr>
-<tr class="separator:a492a6150c3cb8ff5dcacac36caf6e4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4ad32f077d7d7ea6883f40fcc63d832"><td class="memItemLeft" align="right" valign="top"><a id="ae4ad32f077d7d7ea6883f40fcc63d832"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>get_horizontal_direction</b> (float *x, float *y, float *z) const</td></tr>
-<tr class="separator:ae4ad32f077d7d7ea6883f40fcc63d832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace960ad108c9eb029b06a7a983c3011a"><td class="memItemLeft" align="right" valign="top"><a id="ace960ad108c9eb029b06a7a983c3011a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_gravity_direction</b> (float *x, float *y, float *z)</td></tr>
+<tr class="separator:ace960ad108c9eb029b06a7a983c3011a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a780dcfc9f02fdc319e0e3f855944ce54"><td class="memItemLeft" align="right" valign="top"><a id="a780dcfc9f02fdc319e0e3f855944ce54"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_horizontal_direction</b> (float *x, float *y, float *z)</td></tr>
+<tr class="separator:a780dcfc9f02fdc319e0e3f855944ce54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>I/O API for the ray trace extension of the openPMD format. </p>
@@ -185,7 +185,7 @@ Coherent in this case means that a single type of rays (particles) are going to 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00029">29</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00030">30</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 
 </div>
 </div>
@@ -231,19 +231,20 @@ Coherent in this case means that a single type of rays (particles) are going to 
 <p>initializes the "series" object from the openPMD API in WRITE MODE </p>
 <p>It is extremely important to set the n_rays as the maximum number of rays to save in the file. If it is not known in advance, the user should guess it. The file size increases according to this value, so it should be kept the lowest possible.</p>
 <p>This method calls <a class="el" href="classraytracing_1_1openPMD__io.html#a25afd36d0796f4c8780f734e852fe02c" title="declare the ray particle species in the file ">init_rays()</a> a first time. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>I don't how to add the directionOfGravity </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>I don't how to add the directionOfGravity </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pdgId</td><td>PDG ID of the particles </td></tr>
     <tr><td class="paramname">n_rays</td><td>number of rays being simulated (max) </td></tr>
     <tr><td class="paramname">output_format</td><td>output format </td></tr>
-    <tr><td class="paramname">iter</td><td>openPMD iteration </td></tr>
+    <tr><td class="paramname">iter</td><td>openPMD iteration</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>add gravity direction and horizontal direction </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="test_write_8cpp-example.html#a1">test_write.cpp</a>.</dd>
 </dl>
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00117">117</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00120">120</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 
 </div>
 </div>
@@ -282,7 +283,7 @@ Coherent in this case means that a single type of rays (particles) are going to 
 <p>declare the ray particle species in the file </p>
 <p>This function must be called each time the particle species are changed and for each new iteration. </p>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00072">72</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00073">73</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 
 </div>
 </div>
@@ -305,7 +306,7 @@ Coherent in this case means that a single type of rays (particles) are going to 
 <p>Flushes the output to file before closing it. </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="test_write_8cpp-example.html#a7">test_write.cpp</a>.</dd>
 </dl>
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00175">175</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00178">178</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 
 </div>
 </div>
@@ -342,17 +343,17 @@ Coherent in this case means that a single type of rays (particles) are going to 
 </div><div class="memdoc">
 
 <p>initializes the "series" object from the openPMD API in READ MODE </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>the file access type was defined in the <a class="el" href="classraytracing_1_1openPMD__io.html" title="I/O API for the ray trace extension of the openPMD format. ">openPMD_io</a> constructor </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>check if the iteration exists </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>make it more meaningful </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>implement the getting of numParticles </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>the file access type was defined in the <a class="el" href="classraytracing_1_1openPMD__io.html" title="I/O API for the ray trace extension of the openPMD format. ">openPMD_io</a> constructor </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>check if the iteration exists </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>make it more meaningful </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>implement the getting of numParticles </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n_rays</td><td>NOT USED YET 0 = all</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>to fix the maximum number of rays one wants to read from the file </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>to fix the maximum number of rays one wants to read from the file </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">iter</td><td>openPMD iteration, always using the default value </td></tr>
@@ -361,7 +362,7 @@ Coherent in this case means that a single type of rays (particles) are going to 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00316">316</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00327">327</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 
 </div>
 </div>
@@ -384,9 +385,9 @@ Coherent in this case means that a single type of rays (particles) are going to 
 <p>Read rays from file and returns the next in the list. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classraytracing_1_1Ray.html" title="Generic ray, containing all the ray information being stored by the API into the openPMD file...">Ray</a> object Loads the data from file in chunks. Each ray is returned as many times as requested at <a class="el" href="classraytracing_1_1openPMD__io.html#a885640137a184ecfef3ba73ed877d68d" title="initializes the &quot;series&quot; object from the openPMD API in READ MODE ">init_read()</a> step.</dd></dl>
 <p>Each time this method is called, the ray counter increments </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>reordering if conditions can improve performance </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>reordering if conditions can improve performance </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00359">359</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="openPMD__io_8cc_source.html#l00377">377</a> of file <a class="el" href="openPMD__io_8cc_source.html">openPMD_io.cc</a>.</p>
 
 </div>
 </div>
