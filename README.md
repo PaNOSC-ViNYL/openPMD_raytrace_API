@@ -28,8 +28,8 @@ The Ray class is providing all the conversion/utility operations on the quantiti
 \include test_read.cpp
 
 ## Todo
- - [ ] Setter and getter for gravity direction
- - [ ] Setter and getter for horizontalCoordinate
+ - [X] Setter and getter for gravity direction
+ - [X] Setter and getter for horizontalCoordinate
  - [ ] Setter and getter for numParticles
  - [ ] Interal usage of numParticles
  - [X] Binding of wavelength, time, weight, id, status getters
@@ -38,6 +38,8 @@ The Ray class is providing all the conversion/utility operations on the quantiti
  - [ ] PyPi package
  - [ ] ostream friend for the ray class to make easier to debug
  - [X] Repeating ray multiple times if requested when reading the openPMD file
+ - [X] Writing in chunks
+ - [X] Throwing runtime_error when over the maximum foreseen number of rays
  
 ## Examples
 Examples can be found 
@@ -48,3 +50,19 @@ Examples can be found
 
 
 
+## Quantities
+
+	
+| Variable             | Comment                             | Units                    |
+| ---------            | ----------------                    | ------------------------ |
+| x,y,z                | position in                         | [cm]                     |
+| dx,dy,dz             | direction                           | (normalized velocity)    |
+| sx,sy,sz             | polarization of non-photons         |                          |
+| sPolAx,sPolAy,sPolAz | s-polarization amplitude of photons |                          |
+| pPolAx,pPolAy,pPolAz | p-polarization amplitude of photons |                          |
+| sPolx,sPoly,sPolz    | s-polarization amplitude of photons |                          |
+| pPolx,pPoly,pPolz    | p-polarization amplitude of photons |                          |
+| time                 | ray time w.r.t. ray generation      | [ms]                     |
+| wavelength           |                                     | [Ang]                    |
+| weight               | weight                              |                          |
+	

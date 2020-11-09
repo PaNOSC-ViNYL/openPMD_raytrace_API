@@ -13,7 +13,8 @@
  * it should also be optimized with tests
  */
 namespace raytracing {
-constexpr size_t CHUNK_SIZE = 10000;
+	//constexpr size_t CHUNK_SIZE = 10000;
+constexpr size_t CHUNK_SIZE = 3;
 }
 
 /** \todo use particlePatches ... but I don't understand if/how */
@@ -71,6 +72,7 @@ raytracing::openPMD_io::init_ray_prop(std::string name, openPMD::Dataset& datase
 void
 raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long long int n_rays,
                                   unsigned int iter) {
+	_max_allowed_rays = n_rays;
 #ifdef DEBUG
 	std::cout << "--------------- [INIT RAYS]" << std::endl;
 #endif
@@ -80,6 +82,7 @@ raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long lo
 	openPMD::Dataset dataset_single_float =
 	        openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{1});
 	init_ray_prop("directionOfGravity", dataset_single_float, false);
+	init_ray_prop("horizontalCoordinate", dataset_single_float, false);
 	init_ray_prop("mass", dataset_single_float, true, {{openPMD::UnitDimension::M, 1.}});
 
 	rays.setAttribute("speciesType", particle_species);
@@ -181,7 +184,10 @@ raytracing::openPMD_io::save_write(void) {
 #endif
 	auto rays = rays_pmd();
 
-	openPMD::Extent extent = {_rays.size()};
+	unsigned long long int extent_size = (_offset[0] + _rays.size() > _max_allowed_rays)
+	                                             ? _max_allowed_rays - _offset[0]
+	                                             : _rays.size();
+	openPMD::Extent extent = {extent_size};
 
 	save_write_single(rays, "position", "x", _rays._x, _offset, extent);
 	save_write_single(rays, "position", "y", _rays._y, _offset, extent);
@@ -229,6 +235,11 @@ raytracing::openPMD_io::save_write(void) {
 
 	for (size_t i = 0; i < extent.size(); ++i)
 		_offset[i] += extent[i];
+
+	// this check is here and not in the trace_write because I believe that loosing time for a
+	// CHUNKSIZE simulating rays that are not store is much less frequent that.
+	if(_offset[0] >= _max_allowed_rays)
+		throw std::runtime_error("Maximum number of foreseen rays reached, stopping");
 }
 
 //------------------------------------------------------------
@@ -352,6 +363,13 @@ raytracing::openPMD_io::init_read(unsigned long long int n_rays, unsigned int it
 
 void
 raytracing::openPMD_io::trace_write(raytracing::Ray this_ray) {
+	if(_rays.size() == CHUNK_SIZE){
+#ifdef DEBUG
+		std::cout << "Reached CHUNK_SIZE\t" << _offset[0] << "\t" << _rays.size() << "\t" << _max_allowed_rays << std::endl;
+#endif
+		save_write();
+		_rays.clear();
+	}
 	_rays.push(this_ray);
 }
 
@@ -374,4 +392,18 @@ raytracing::openPMD_io::trace_read(void) {
 }
 
 void
-raytracing::openPMD_io::get_gravity_direction(float* x, float* y, float* z) const {}
+raytracing::openPMD_io::get_gravity_direction(float* x, float* y, float* z)  {
+	auto rays = rays_pmd();
+	*x  = rays["directionOfGravity"]["x"].loadChunk<float>().get()[0];
+	*y  = rays["directionOfGravity"]["y"].loadChunk<float>().get()[0];
+	*z  = rays["directionOfGravity"]["z"].loadChunk<float>().get()[0];
+
+}
+
+void
+raytracing::openPMD_io::get_horizontal_direction(float* x, float* y, float* z)  {
+	auto rays = rays_pmd();
+	*x  = rays["horizontalCoordinate"]["x"].loadChunk<float>().get()[0];
+	*y  = rays["horizontalCoordinate"]["y"].loadChunk<float>().get()[0];
+	*z  = rays["horizontalCoordinate"]["z"].loadChunk<float>().get()[0];
+}

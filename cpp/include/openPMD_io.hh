@@ -26,7 +26,6 @@ private:
 	 * them on disk by the store_chunk method, or to load in memory the rays' quantities after
 	 * reading the openPMD file from disk with the load_chunk method
 	 *
-	 *
 	 * \todo add a check that the non-photon polarization is not filled if storing photons
 	 * \todo check that polarizationAmplitudes are not filled for non-photons
 	 *
@@ -44,7 +43,8 @@ private:
 	 */
 
 	class Rays {
-	public: // public to make it available to openPMD_io methods
+		// public to make it available to openPMD_io methods
+	public:
 		/**\class Record
 		 * \brief template utility class to simplify implementation
 		 * It is a vector that also stores min and max values while filling
@@ -58,18 +58,22 @@ private:
 			const std::vector<T>& vals(void) const { return _vals; };
 			T min(void) const { return _min; };
 			T max(void) const { return _max; };
+
+			// used when filling before writing
 			void push_back(T val) {
 				_vals.push_back(val);
 				if (_min > val) (_min) = val;
 				if (_max < val) (_max) = val;
 			}
+
 			// this is used when reading from the openPMD file
-			void store(const T * vec, size_t n, float min, float max){
+			void store(const T* vec, size_t n, float min, float max) {
 				//				clear();
-				_vals.insert(_vals.begin(), vec, vec+n);
+				_vals.insert(_vals.begin(), vec, vec + n);
 				_min = min;
 				_max = max;
 			}
+
 			void clear(void) {
 				std::numeric_limits<T> lim;
 				_max = lim.min();
@@ -77,13 +81,13 @@ private:
 				_vals.clear();
 			}
 			const T operator[](size_t i) const { return _vals[i]; }; // cannot modify
-		};
+		}; // end of Record class
 
 		//------------------------------ public memebers
 	public:
-		// I make the Recors public members to avoid writing methods to access them
+		// I make the Records public members to avoid writing methods to access them
 		//
-		// the 3d components are in separate vectors because this is the way the openPMD API
+		// the 3D components are in separate vectors because this is the way the openPMD API
 		// wants them to be
 		Record<float> _x, _y, _z,                   // position
 		        _dx, _dy, _dz,                      // direction (vx^2+vy^2+vz^2) = 1
@@ -92,13 +96,12 @@ private:
 		        _pPolAx, _pPolAy, _pPolAz, _pPolPh, // photon p-polarization amplitude
 		        _wavelength,                        // wavelength
 		        _time, _weight;                     // ray time, weight
-
-		Record<unsigned long long int> _id; // id
-		Record<int> _status;                // alive status
+		Record<unsigned long long int> _id;         // id
+		Record<int> _status;                        // alive status
 
 		//------------------------------ private memebers
 	private:
-		size_t _size; // number of stored rays
+		size_t _size; // number of stored rays = min(chunk_size, remaining rays to read)
 		size_t _read; // current index when reading
 
 		//------------------------------ public methods
@@ -161,26 +164,7 @@ private:
 		 * it return true also if it is empty
 		 */
 		bool is_chunk_finished(void) { return _read == _size; }
-
-		// clang-format off
-/** \name 1D vector quantities of stored rays
-| Variable    | Comment                        | Units                    |
-| ---------   | ----------------               | ------------------------ |
-| x,y,z       | position in                    | [cm]                     |
-| dx,dy,dz    | direction                      | (normalized velocity)    |
-| sx,sy,sz    | polarization of non-photons    |                          |
-| sPolAx,sPolAy,sPolAz | s-polarization amplitude of photons      |                          |
-| pPolAx,pPolAy,pPolAz | p-polarization amplitude of photons      |                          |
-| sPolx,sPoly,sPolz | s-polarization amplitude of photons      |                          |
-| pPolx,pPoly,pPolz | p-polarization amplitude of photons      |                          |
-| time        | ray time w.r.t. ray generation | [ms]                     |
-| wavelength  |                                | [Ang]                    |
-| weight      | weight                         |                          |
-*/
-		// clang-format on
-
-		///@}
-	};
+	}; // end of Rays class
 
 public:
 	/**\brief constructor
@@ -214,7 +198,7 @@ public:
 	                unsigned long long int n_rays, ///< number of rays being simulated (max)
 	                openPMD_output_format_t output_format = AUTO, ///< output format
 	                unsigned int iter                     = 1     ///< openPMD iteration
-
+			///\todo add gravity direction and horizontal direction
 	);
 
 	/** \brief declare the ray particle species in the file
@@ -252,15 +236,15 @@ public:
 	/** \brief Read rays from file and returns the next in the list
 	 *
 	 * \returns Ray object
-	 * Loads the data from file in chunks. Each ray is returned as many times as requested at init_read() step.
+	 * Loads the data from file in chunks. Each ray is returned as many times as requested at
+	 * init_read() step.
 	 *
 	 * Each time this method is called, the ray counter increments
 	 */
 	Ray trace_read(void);
 
-	void get_gravity_direction(float *x, float *y, float* z) const;
-	void get_horizontal_direction(float* x, float* y, float* z) const;
-	
+	void get_gravity_direction(float* x, float* y, float* z) ;
+	void get_horizontal_direction(float* x, float* y, float* z) ;
 	///@}
 private:
 	void load_chunk(void);
@@ -273,7 +257,8 @@ private:
 	std::string _instrument_name;
 	std::string _name_current_component;
 	unsigned int _i_repeat, _n_repeat;
-	unsigned long long int _nrays;
+	unsigned long long int _nrays, _max_allowed_rays;
+	
 	// internal usage
 	//	openPMD::Access _access_mode;
 	openPMD::Offset _offset;
@@ -302,8 +287,8 @@ private:
 		return i.particles[particle_species];
 	}
 
-	inline unsigned long long int numParticles(void){return 0;}; ///< \todo implement
-	
+	inline unsigned long long int numParticles(void) { return 0; }; ///< \todo implement
+
 	/** \brief Sets a new Record for the current particles of the current iteration
 	 * \param[in] isScalar : bool indicating if it is scalar
 	 * \param[in] dims : Unit dimensions
