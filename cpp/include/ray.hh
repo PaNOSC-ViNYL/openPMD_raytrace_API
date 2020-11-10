@@ -148,19 +148,14 @@ public:
 	 * Allowed status values are raytracing::kAlive and raytracing::kDead
 	 */
 	///@{
-	float wavelength() const { return _wavelength; };
-	inline float get_wavelength() const { return wavelength(); };
-	float time() const { return _time; };
-	inline float get_time() const { return time(); };
-	float weight() const { return _weight; };
-	inline float get_weight() const { return weight(); };
-	unsigned long long int id(void) const { return _id; };
-	inline unsigned long long int get_id(void) const { return id(); };
+	float get_wavelength() const { return _wavelength; };
+	float get_time() const { return _time; };
+	float get_weight() const { return _weight; };
+	unsigned long long int get_id(void) const { return _id; };
 	/** \brief return the particle status
 	 * \return raytracing::kAlive or raytracing::kDead
 	 */
-	particleStatus_t status(void) const { return _status; };
-	inline particleStatus_t get_status(void) const { return status(); };
+	inline particleStatus_t get_status(void) const { return _status; };
 
 	///@}
 	///@}
@@ -169,61 +164,53 @@ public:
 	/// @{
 
 	/// \brief scale and set the position
-	void position(double x, double y, double z, double scale = 1) {
+	void set_position(double x, double y, double z, double scale = 1) {
 		_position[X] = x * scale;
 		_position[Y] = y * scale;
 		_position[Z] = z * scale;
 	}
 
 	/// \brief scale and set the direction
-	void direction(double x, double y, double z, double scale = 1) {
+	void set_direction(double x, double y, double z, double scale = 1) {
 		_direction[X] = x * scale;
 		_direction[Y] = y * scale;
 		_direction[Z] = z * scale;
 	}
 
 	/// \brief scale and set the direction from the velocity
-	void velocity(double x, double y, double z) {
+	void set_velocity(double x, double y, double z) {
 		double abs_v = sqrt(x * x + y * y + z * z);
-		direction(x, y, z, 1. / abs_v);
+		set_direction(x, y, z, 1. / abs_v);
 	}
 
 	/// \brief scale and set polarization for non-photons  \todo to implement
-	void polarization(double x, double y, double z, double scale = 1) {
+	void set_polarization(double x, double y, double z, double scale = 1) {
 		_polarization[X] = x * scale;
 		_polarization[Y] = y * scale;
 		_polarization[Z] = z * scale;
 	}
 	/// \brief scale and set s-polarization for photons
-	void sPolarization(double x, double y, double z, double phase, double scale = 1){
+	void set_sPolarization(double x, double y, double z, double phase, double scale = 1){
 		_sPolarization[X] = x * scale;
 		_sPolarization[Y] = y * scale;
 		_sPolarization[Z] = z * scale;
 		_sPolarization[PHASE] = phase;
 	};
 	/// \brief scale and set p-polarization for photons  \todo to implement
-	void pPolarization(double x, double y, double z, double phase, double scale = 1){
+	void set_pPolarization(double x, double y, double z, double phase, double scale = 1){
 		_pPolarization[X] = x * scale;
 		_pPolarization[Y] = y * scale;
 		_pPolarization[Z] = z * scale;
 		_pPolarization[PHASE] = phase;
 	};
 	/// \brief set wavelength
-	void wavelength(double w) { _wavelength = w; };
-	inline void set_wavelength(double w) { wavelength(w); }; // for pybind overloading
-	
+	void set_wavelength(double w) { _wavelength = w; };
 	/// \brief set time
-	void time(double t) { _time = t; };
-	inline void set_time(double t) { time(t); }; // for pybind overloading
+	void set_time(double t) { _time = t; };
 	/// \brief set weight
-	void weight(double w) { _weight = w; };
-	inline void set_weight(double w) { weight(w); }; // for pybind overloading
-
-	void id(unsigned long long int idv) { _id = idv; };
-	inline void set_id(unsigned long long int idv) { id(idv); }; // for pybind overloading
-
-	void status(particleStatus_t s) { _status = s; };
-	inline void set_status(particleStatus_t s) { status(s); }; // for pybind overloading
+	void set_weight(double w) { _weight = w; };
+	void set_id(unsigned long long int idv) { _id = idv; };
+	void set_status(particleStatus_t s) { _status = s; };
 
 	///@}
 public:
@@ -251,10 +238,12 @@ class photon : public Ray {};
 class neutron : public Ray {};
 
 #endif
+
+	
 class mcstas_neutron : public Ray {
 public:
-	void position(double x, double y, double z){
-		Ray::position(x, y, z, 1e2);
+	void set_position(double x, double y, double z){
+		Ray::set_position(x, y, z, 1e2);
 	};
 };
 

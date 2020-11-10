@@ -13,9 +13,9 @@ main(int argc, char* argv[]) {
 	iol.init_write(  "2112", 8,raytracing::AUTO, 2);
 	std::cout << "filename = " << filename << std::endl;
 	raytracing::Ray myray;
-	myray.position(1, 2, 3);
+	myray.set_position(1, 2, 3);
 	//...
-	myray.direction(1, 1, 1, 1. / sqrt(3));
+	myray.set_direction(1, 1, 1, 1. / sqrt(3));
 
 	// append
 	for(size_t i =0; i < 10; ++i){

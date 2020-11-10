@@ -38,12 +38,12 @@ openPMD_io::Rays::push(const Ray& this_ray) {
 	_pPolAz.push_back(this_ray.pPolAz());
 	_pPolPh.push_back(this_ray.pPolPh());
 
-	_wavelength.push_back(this_ray.wavelength());
-	_time.push_back(this_ray.time());
-	_weight.push_back(this_ray.weight());
+	_wavelength.push_back(this_ray.get_wavelength());
+	_time.push_back(this_ray.get_time());
+	_weight.push_back(this_ray.get_weight());
 
-	_id.push_back(this_ray.id());
-	_status.push_back(this_ray.status());
+	_id.push_back(this_ray.get_id());
+	_status.push_back(this_ray.get_status());
 	++_size;
 };
 
@@ -52,20 +52,20 @@ Ray
 openPMD_io::Rays::pop(bool next) {
 
 	Ray r;
-	r.position(_x[_read], _y[_read], _z[_read]);
-	r.direction(_dx[_read], _dy[_read], _dz[_read]);
+	r.set_position(_x[_read], _y[_read], _z[_read]);
+	r.set_direction(_dx[_read], _dy[_read], _dz[_read]);
 
-	r.polarization(_sx[_read], _sy[_read], _sz[_read]);
+	r.set_polarization(_sx[_read], _sy[_read], _sz[_read]);
 
-	r.sPolarization(_sPolAx[_read], _sPolAy[_read], _sPolAz[_read], _sPolPh[_read]);
-	r.pPolarization(_pPolAx[_read], _pPolAy[_read], _pPolAz[_read], _pPolPh[_read]);
+	r.set_sPolarization(_sPolAx[_read], _sPolAy[_read], _sPolAz[_read], _sPolPh[_read]);
+	r.set_pPolarization(_pPolAx[_read], _pPolAy[_read], _pPolAz[_read], _pPolPh[_read]);
 
-	r.wavelength(_wavelength[_read]);
-	r.time(_time[_read]);
-	r.weight(_weight[_read]);
+	r.set_wavelength(_wavelength[_read]);
+	r.set_time(_time[_read]);
+	r.set_weight(_weight[_read]);
 
-	r.id(_id[_read]);
-	r.status(_status[_read]);
+	r.set_id(_id[_read]);
+	r.set_status(_status[_read]);
 	
 	if (next) ++_read;
 	return r;

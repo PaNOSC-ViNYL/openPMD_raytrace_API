@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['direction',['direction',['../classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06',1,'raytracing::Ray']]]
+  ['get_5fstatus',['get_status',['../classraytracing_1_1Ray.html#a0456b47ec080626a3933bf0ab22d388a',1,'raytracing::Ray']]]
 ];

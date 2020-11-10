@@ -46,22 +46,17 @@ PYBIND11_MODULE(raytracing, m) {
 	        //.def("id", &Ray::id)
 	        //.def("status", &Ray::status)
 	        // // Setters
-	        .def("position", &Ray::position)
-	        .def("direction", &Ray::direction)
-	        .def("polarization", &Ray::polarization)
-	        .def("sPolarization", &Ray::sPolarization)
-	        .def("pPolarization", &Ray::pPolarization)
+	        .def("position", &Ray::get_position)
+	        .def("direction", &Ray::get_direction)
+	        .def("polarization", &Ray::get_polarization)
+	        .def("sPolarization", &Ray::get_sPolarization)
+	        .def("pPolarization", &Ray::get_pPolarization)
 	        //
 	        .def_property("wavelength", &Ray::get_wavelength, &Ray::set_wavelength)
 	        .def_property("time", &Ray::get_time, &Ray::set_time)
 	        .def_property("weight", &Ray::get_weight, &Ray::set_weight)
 	        .def_property("id", &Ray::get_id, &Ray::set_id)
 	        .def_property("status", &Ray::get_status, &Ray::set_status)
-	        // .def("wavelength", static_cast<void (Ray::*)(double)>(&Ray::wavelength))
-	        // .def("time", static_cast<void (Ray::*)(double)>(&Ray::time))
-	        // .def("weight", static_cast<void (Ray::*)(double)>(&Ray::weight))
-	        // .def("id", static_cast<void (Ray::*)(unsigned long long int)>(&Ray::id))
-	        // .def("status", static_cast<void (Ray::*)(particleStatus_t)>(&Ray::status))
 
 	        //
 	        ;
