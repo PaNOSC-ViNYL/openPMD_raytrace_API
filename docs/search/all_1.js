@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['direction',['direction',['../classraytracing_1_1Ray.html#a01bd376c09f70f5df880c435613fca06',1,'raytracing::Ray']]]
+  ['c_2b_2b_20api_20for_20the_20openpmd_20ray_20trace_20extension',['c++ API for the openPMD ray trace extension',['../index.html',1,'']]]
 ];

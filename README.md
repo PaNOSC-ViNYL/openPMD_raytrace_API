@@ -1,6 +1,30 @@
-c++ API for the openPMD ray trace extension 
+# c++ API for the openPMD ray trace extension 
 
-# Devel instructions
+This library provides an API in C++ and Python to read and write openPMD files following the raytrace extension.
+
+
+## Quantities
+According to the extension, here's the list of variables stored in the file and the corresponding units.
+
+	
+| Variable             | Comment                             | Units                    |
+| ---------            | ----------------                    | ------------------------ |
+| x,y,z                | position in                         | [cm]                     |
+| dx,dy,dz             | direction                           | (normalized velocity)    |
+| sx,sy,sz             | polarization of non-photons         |                          |
+| sPolAx,sPolAy,sPolAz | s-polarization amplitude of photons |                          |
+| pPolAx,pPolAy,pPolAz | p-polarization amplitude of photons |                          |
+| sPolx,sPoly,sPolz    | s-polarization amplitude of photons |                          |
+| pPolx,pPoly,pPolz    | p-polarization amplitude of photons |                          |
+| time                 | ray time w.r.t. ray generation      | [ms]                     |
+| wavelength           |                                     | [Ang]                    |
+| weight               | weight                              |                          |
+|                      |                                     |                          |
+
+	
+
+## Devel instructions
+
 ```
 git clone -b devel git@github.com:PaNOSC-ViNYL/openPMD_raytrace_API.git
 cd openPMD_raytrace_API/
@@ -12,6 +36,30 @@ cmake --build . --target doc
 ```
 
 # Usage
+
+The library is under the \ref raytracing namespace.
+
+Here's a schematic of the I/O logic. 
+
+NB: image with hyperlinks
+
+\dot
+	   digraph example {
+	       rankdir="LR";
+	       node [shape=record, fontname=Helvetica, fontsize=10];
+		   u    [label="User's program" shape=ellipse];
+		   Ray  [label="Ray object" shape=rectangle, URL="\ref raytracing::Ray"];
+		   u -> Ray [label="create and fill"];
+		   openPMD_io [];
+		   Ray -> openPMD_io [label="trace_write", URL="\ref raytracing::openPMD_io::trace_write"];
+		   openPMD_io -> pmd [label="save_write", URL="\ref raytracing::openPMD_io::save_write"];
+		   pmd  [ label="openPMD file", shape=ellipse];
+		   pmd -> openPMD_io [label="load_chunk (internal)"];
+		   openPMD_io -> Ray [label="trace_read", URL="\ref raytracing::openPMD_io::trace_read"];
+		   Ray -> u [label="get values"];
+	   }
+\enddot
+
 
 ## Writing
 
@@ -40,7 +88,10 @@ The Ray class is providing all the conversion/utility operations on the quantiti
  - [X] Repeating ray multiple times if requested when reading the openPMD file
  - [X] Writing in chunks
  - [X] Throwing runtime_error when over the maximum foreseen number of rays
- 
+ - [ ] Add doctest package for C++ unit tests
+
+
+
 ## Examples
 Examples can be found 
 
@@ -49,20 +100,3 @@ Examples can be found
 
 
 
-
-## Quantities
-
-	
-| Variable             | Comment                             | Units                    |
-| ---------            | ----------------                    | ------------------------ |
-| x,y,z                | position in                         | [cm]                     |
-| dx,dy,dz             | direction                           | (normalized velocity)    |
-| sx,sy,sz             | polarization of non-photons         |                          |
-| sPolAx,sPolAy,sPolAz | s-polarization amplitude of photons |                          |
-| pPolAx,pPolAy,pPolAz | p-polarization amplitude of photons |                          |
-| sPolx,sPoly,sPolz    | s-polarization amplitude of photons |                          |
-| pPolx,pPoly,pPolz    | p-polarization amplitude of photons |                          |
-| time                 | ray time w.r.t. ray generation      | [ms]                     |
-| wavelength           |                                     | [Ang]                    |
-| weight               | weight                              |                          |
-	
