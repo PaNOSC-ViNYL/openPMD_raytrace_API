@@ -1,7 +1,9 @@
 #ifndef RAY_CLASS_HH
 #define RAY_CLASS_HH
+//#include <doctest/doctest.h>
 
 #include <cmath>
+#include <ostream>
 
 namespace raytracing {
 // enum particleStatus_t : int { kDead = 0, kAlive = 1 };
@@ -224,9 +226,20 @@ public:
 	inline void set_status(particleStatus_t s) { status(s); }; // for pybind overloading
 
 	///@}
+public:
+	friend std::ostream& operator<<(std::ostream& os, const Ray& ray);
 };
 
+	
 #ifdef DD
+	
+TEST_CASE("") {
+	Ray myray;
+	CHECK(myray.get_status() == kAlive);
+	myray.position(1e-5, 2e-4, 2e2, 0.5);
+	CHECK(myray.x() == 0.5e-5);
+}
+
 /** \class photon
  * \brief helper class for photons
  */
@@ -236,7 +249,16 @@ class photon : public Ray {};
  *  \brief helper class for neutrons
  */
 class neutron : public Ray {};
+
 #endif
+class mcstas_neutron : public Ray {
+public:
+	void position(double x, double y, double z){
+		Ray::position(x, y, z, 1e2);
+	};
+};
+
 } // namespace raytracing
 
 #endif
+

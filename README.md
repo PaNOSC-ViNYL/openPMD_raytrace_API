@@ -75,7 +75,19 @@ The Ray class is providing all the conversion/utility operations on the quantiti
 
 \include test_read.cpp
 
+
+## Unit conversion
+
+The units of the quantities stored in the openPMD file are pre-defined by the extension and not customizable by the user.
+
+For a more user-friendly user interface, the user should create it's own version of the Ray object (either in C++ or in Python), inheriting from the original Ray object.
+The conversion should be done in the overloaded methods.
+This should highly simplify the user code.
+
+Otherwise, the user can also use the bare Ray class with the "scale" optional argument for the different methods to scale the units into the pre-defined ones.
+
 ## Todo
+ - [ ] Units conversion!!!!
  - [X] Setter and getter for gravity direction
  - [X] Setter and getter for horizontalCoordinate
  - [ ] Setter and getter for numParticles

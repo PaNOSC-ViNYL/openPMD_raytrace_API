@@ -21,6 +21,11 @@ target_link_libraries(test_write.exe
   PRIVATE raytrace
   PRIVATE openPMD::openPMD)
 
+add_executable(mcstas_write.exe bin/mcstas_write.cpp)
+target_link_libraries(mcstas_write.exe
+  PRIVATE raytrace
+  PRIVATE openPMD::openPMD)
+
 add_executable(test1.exe test1.cpp)
 target_link_libraries(test1.exe
 #  PRIVATE raytrace

@@ -407,3 +407,8 @@ raytracing::openPMD_io::get_horizontal_direction(float* x, float* y, float* z)  
 	*y  = rays["horizontalCoordinate"]["y"].loadChunk<float>().get()[0];
 	*z  = rays["horizontalCoordinate"]["z"].loadChunk<float>().get()[0];
 }
+
+std::ostream&
+raytracing::operator<<(std::ostream& os, const raytracing::Ray& ray) {
+	return os << "(" << ray.x() << ", " << ray.y() << "\n";
+}

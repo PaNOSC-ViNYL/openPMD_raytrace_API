@@ -104,6 +104,7 @@ enable_testing()
 
 add_test(NAME openPMD_write COMMAND tests-prefix/src/tests-build/test1.exe)
 add_test(NAME write COMMAND  tests-prefix/src/tests-build/test_write.exe)
+add_test(NAME mcstas_write COMMAND  tests-prefix/src/tests-build/mcstas_write.exe)
 
 
 
