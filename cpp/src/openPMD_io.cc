@@ -258,22 +258,31 @@ read_single(openPMD::ParticleSpecies& rays, std::string field, std::string recor
             openPMD::Extent& chunk_size) {
 
 	auto data  = rays[field][record];
-	auto ddata = data.loadChunk<T>(offset, chunk_size);
-	rec.store((ddata.get()), chunk_size[0],                              //
-	          rays[field][record].getAttribute("minValue").get<float>(), //
-	          rays[field][record].getAttribute("maxValue").get<float>());
+	rec.vals().reserve(chunk_size[0]);
+	rec.vals().resize(chunk_size[0]);
+	data.loadChunk<T>(openPMD::shareRaw(rec.vals()), offset, chunk_size);//data.loadChunk<T>(offset, chunk_size);
+	// if (field == "position") {
+	// 	for (auto i = 0; i < chunk_size[0]; ++i) {
+	// 		std::cout << "Data " << record << ": " << i << "\t" << rec.vals()[i] << "\t"
+	// 		          << rec.vals().size() << std::endl;
+	// 	}
+	// }
+	        // rec.store((ddata.get()), chunk_size[0],                              //
+	        //           rays[field][record].getAttribute("minValue").get<float>(), //
+	        //           rays[field][record].getAttribute("maxValue").get<float>());
 }
 //------------------------------------------------------------
 
 void
 raytracing::openPMD_io::load_chunk(void) {
+
 	_rays.clear(); // Necessary to set _read to zero
 	auto rays                     = rays_pmd();
-	unsigned long long int offset = _nrays - _offset[0];
-	openPMD::Extent chunk_size    = {offset > raytracing::CHUNK_SIZE ? raytracing::CHUNK_SIZE
-                                                                      : offset};
+	unsigned long long int remaining = _nrays - _offset[0];
+	openPMD::Extent chunk_size    = {remaining > raytracing::CHUNK_SIZE ? raytracing::CHUNK_SIZE
+                                                                      : remaining};
 #ifdef DEBUG
-	std::cout << _nrays << "\t" << _offset[0] << "\t" << offset << "\t" << chunk_size[0] << std::endl;
+	std::cout << "OO: " << _nrays << "\t" << _offset[0] << "\t" << remaining << "\t" << chunk_size[0] << std::endl;
 	std::cout << "  Loading chunk of size " << chunk_size[0] << "; file contains " << _nrays
 		//<< " entries of type " << x_dat.getDatatype()
 		  << std::endl;
@@ -319,10 +328,11 @@ raytracing::openPMD_io::load_chunk(void) {
 	read_single(rays, "particleStatus", openPMD::RecordComponent::SCALAR, _rays._status,
 	            _offset, chunk_size);
 
-	_rays.size(chunk_size[0]);
+	//_rays.size(chunk_size[0]);
 	
 	_series->flush();
 
+	//	std::cout << _rays._x[0] << "\t" << _rays._x[2] << std::endl;
 	for (size_t i = 0; i < chunk_size.size(); ++i)
 		_offset[i] += chunk_size[i];
 }
@@ -332,7 +342,7 @@ raytracing::openPMD_io::init_read(std::string particle_species, unsigned int ite
                                   unsigned long long int n_rays, unsigned int repeat) {
 
 	_n_repeat            = repeat;
-	_i_repeat            = 0;
+	_i_repeat            = repeat;
 	_iter                = iter;
 	_offset              = {0};
 	std::string filename = _name;
@@ -369,11 +379,14 @@ raytracing::openPMD_io::init_read(std::string particle_species, unsigned int ite
 		          << std::endl;
 		throw std::runtime_error("ERROR"); ///\todo make it more meaningful
 	}
-	if (n_rays != 0){
+	if (n_rays != 0) {
 		std::cout << "[WARNING] Requested " << n_rays
 		          << ", while available in file: " << _nrays << std::endl;
 		_nrays = n_rays;
-
+	}
+	_series->flush();
+	load_chunk();
+	_last_ray = _rays.pop();
 	return _nrays;
 }
 
@@ -393,16 +406,13 @@ raytracing::openPMD_io::trace_write(raytracing::Ray this_ray) {
 raytracing::Ray
 raytracing::openPMD_io::trace_read(void) {
 	///\todo reordering if conditions can improve performance
-
-	if (_rays.is_chunk_finished()) { load_chunk(); }
-
-	if (_n_repeat <= 1) return _rays.pop();
-	if (_i_repeat == _n_repeat) {
-		_i_repeat = 1;
+	std::cout << "---- " << _i_repeat << "\t" << _n_repeat << "\t";
+	if (_i_repeat++ >= _n_repeat){
+		_i_repeat = 0;
+		if (_rays.is_chunk_finished()) { load_chunk(); }
 		_last_ray = _rays.pop();
-	} else
-		++_i_repeat;
-
+	}
+	std::cout <<_last_ray  << std::endl; 
 	return _last_ray;
 }
 
@@ -424,5 +434,5 @@ raytracing::openPMD_io::get_horizontal_direction(float* x, float* y, float* z) {
 
 std::ostream&
 raytracing::operator<<(std::ostream& os, const raytracing::Ray& ray) {
-	return os << "(" << ray.x() << ", " << ray.y() << "\t" << ray.z() << ")\n";
+	return os << "(" << ray.x() << ", " << ray.y() << "\t" << ray.z() << ")";
 }

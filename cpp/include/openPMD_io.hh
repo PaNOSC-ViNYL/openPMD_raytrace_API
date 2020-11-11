@@ -58,6 +58,7 @@ private:
 		public:
 			Record(): _vals(), _min(), _max() { clear(); }
 			const std::vector<T>& vals(void) const { return _vals; };
+			std::vector<T>& vals(void) { return _vals; };
 			T min(void) const { return _min; };
 			T max(void) const { return _max; };
 
