@@ -13,9 +13,9 @@
  * it should also be optimized with tests
  */
 namespace raytracing {
-	//constexpr size_t CHUNK_SIZE = 10000;
+// constexpr size_t CHUNK_SIZE = 10000;
 constexpr size_t CHUNK_SIZE = 3;
-}
+} // namespace raytracing
 
 /** \todo use particlePatches ... but I don't understand if/how */
 
@@ -27,9 +27,9 @@ const std::map<raytracing::openPMD_output_format_t, std::string>
 };
 
 //------------------------------------------------------------
-raytracing::openPMD_io::openPMD_io(const std::string& filename, 
-                                   std::string mc_code_name, std::string mc_code_version,
-                                   std::string instrument_name, std::string name_current_component):
+raytracing::openPMD_io::openPMD_io(const std::string& filename, std::string mc_code_name,
+                                   std::string mc_code_version, std::string instrument_name,
+                                   std::string name_current_component):
     //, int repeat):
     _name(filename),
     _mc_code_name(mc_code_name),
@@ -73,6 +73,7 @@ void
 raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long long int n_rays,
                                   unsigned int iter) {
 	_max_allowed_rays = n_rays;
+	_nrays =0;
 #ifdef DEBUG
 	std::cout << "--------------- [INIT RAYS]" << std::endl;
 #endif
@@ -87,6 +88,7 @@ raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long lo
 
 	rays.setAttribute("speciesType", particle_species);
 	rays.setAttribute("PDGID", particle_species);
+	rays.setAttribute("numParticles", 0);
 
 	openPMD::Dataset dataset_float =
 	        openPMD::Dataset(openPMD::Datatype::FLOAT, openPMD::Extent{n_rays});
@@ -187,6 +189,14 @@ raytracing::openPMD_io::save_write(void) {
 	unsigned long long int extent_size = (_offset[0] + _rays.size() > _max_allowed_rays)
 	                                             ? _max_allowed_rays - _offset[0]
 	                                             : _rays.size();
+
+	_nrays+=extent_size;
+	
+	// this check is here and not in the trace_write because I believe that loosing time for a
+	// CHUNKSIZE simulating rays that are not store is much less frequent that.
+	if (_nrays >= _max_allowed_rays)
+		throw std::runtime_error("Maximum number of foreseen rays reached, stopping");
+
 	openPMD::Extent extent = {extent_size};
 
 	save_write_single(rays, "position", "x", _rays._x, _offset, extent);
@@ -230,16 +240,13 @@ raytracing::openPMD_io::save_write(void) {
 	save_write_single(rays, "particleStatus", openPMD::RecordComponent::SCALAR, _rays._status,
 	                  _offset, extent);
 
+	rays.setAttribute("numParticles", _nrays + 1);
+
 	_series->flush();
 	_rays.clear();
 
 	for (size_t i = 0; i < extent.size(); ++i)
 		_offset[i] += extent[i];
-
-	// this check is here and not in the trace_write because I believe that loosing time for a
-	// CHUNKSIZE simulating rays that are not store is much less frequent that.
-	if(_offset[0] >= _max_allowed_rays)
-		throw std::runtime_error("Maximum number of foreseen rays reached, stopping");
 }
 
 //------------------------------------------------------------
@@ -252,7 +259,7 @@ read_single(openPMD::ParticleSpecies& rays, std::string field, std::string recor
 
 	auto data  = rays[field][record];
 	auto ddata = data.loadChunk<T>(offset, chunk_size);
-	rec.store((ddata.get()), chunk_size[0],                            //
+	rec.store((ddata.get()), chunk_size[0],                              //
 	          rays[field][record].getAttribute("minValue").get<float>(), //
 	          rays[field][record].getAttribute("maxValue").get<float>());
 }
@@ -261,22 +268,15 @@ read_single(openPMD::ParticleSpecies& rays, std::string field, std::string recor
 void
 raytracing::openPMD_io::load_chunk(void) {
 	_rays.clear(); // Necessary to set _read to zero
-	auto rays = rays_pmd();
-
-	auto x_dat = rays["position"]["x"];
-	// Assume all have same length
-	openPMD::Extent extent = x_dat.getExtent();
-	if (extent[0] == 0) {
-		std::cout << "[STATUS][LoadChunk] No more data to read" << std::endl;
-		return;
-	}
-	// Missing polarization vector
-
-	openPMD::Extent chunk_size = {(extent[0] > raytracing::CHUNK_SIZE) ? raytracing::CHUNK_SIZE
-	                                                                   : extent[0]};
+	auto rays                     = rays_pmd();
+	unsigned long long int offset = _nrays - _offset[0];
+	openPMD::Extent chunk_size    = {offset > raytracing::CHUNK_SIZE ? raytracing::CHUNK_SIZE
+                                                                      : offset};
 #ifdef DEBUG
-	std::cout << "  Loading chunk of size " << chunk_size[0] << "; file contains " << extent[0]
-	          << " entries of type " << x_dat.getDatatype() << std::endl;
+	std::cout << _nrays << "\t" << _offset[0] << "\t" << offset << "\t" << chunk_size[0] << std::endl;
+	std::cout << "  Loading chunk of size " << chunk_size[0] << "; file contains " << _nrays
+		//<< " entries of type " << x_dat.getDatatype()
+		  << std::endl;
 #endif
 	/* I don't understand....
 	 * the data type info is embedded in the data... so why do we need to declare
@@ -319,21 +319,29 @@ raytracing::openPMD_io::load_chunk(void) {
 	read_single(rays, "particleStatus", openPMD::RecordComponent::SCALAR, _rays._status,
 	            _offset, chunk_size);
 
+	_rays.size(chunk_size[0]);
+	
 	_series->flush();
 
+	for (size_t i = 0; i < chunk_size.size(); ++i)
+		_offset[i] += chunk_size[i];
 }
 
 unsigned long long int
-raytracing::openPMD_io::init_read(unsigned long long int n_rays, unsigned int iter, unsigned int repeat) {
-	_n_repeat = repeat;
-	_i_repeat = 0;
-	_iter = iter;
+raytracing::openPMD_io::init_read(std::string particle_species, unsigned int iter,
+                                  unsigned long long int n_rays, unsigned int repeat) {
+
+	_n_repeat            = repeat;
+	_i_repeat            = 0;
+	_iter                = iter;
+	_offset              = {0};
 	std::string filename = _name;
 
 	// assign the global variable to keep track of it
 	_series = std::unique_ptr<openPMD::Series>(new openPMD::Series(
-	        filename, openPMD::Access::READ_ONLY)); ///\todo the file access type was defined in
-	                                                /// the openPMD_io constructor
+	        filename,
+	        openPMD::Access::READ_ONLY)); ///\todo the file access type was defined in
+	                                      /// the openPMD_io constructor
 
 	std::cout << "File information: " << filename << std::endl;
 	if (_series->containsAttribute("author"))
@@ -349,23 +357,32 @@ raytracing::openPMD_io::init_read(unsigned long long int n_rays, unsigned int it
 	// check the maximum number of rays stored
 	_rays.clear(); // Necessary to set _read to zero
 
-	if (n_rays > numParticles()) {
-		std::cerr << "[ERROR] Requested a number of rays that is not available in the "
+	auto i = iter_pmd(_iter);
+	_series->flush();
+	auto rays = rays_pmd(particle_species);
+	_nrays    = rays.getAttribute("numParticles").get<unsigned long long int>();
+	std::cout << "numParticles: " << _nrays << std::endl;
+	if (n_rays > _nrays) {
+		std::cerr << "[ERROR] Requested a number of rays that is not available in "
+		             "the "
 		             "current file"
 		          << std::endl;
 		throw std::runtime_error("ERROR"); ///\todo make it more meaningful
 	}
-	if (n_rays == 0) _nrays = numParticles(); ///\todo implement the getting of numParticles
-	else _nrays = n_rays;
+	if (n_rays != 0){
+		std::cout << "[WARNING] Requested " << n_rays
+		          << ", while available in file: " << _nrays << std::endl;
+		_nrays = n_rays;
 
 	return _nrays;
 }
 
 void
 raytracing::openPMD_io::trace_write(raytracing::Ray this_ray) {
-	if(_rays.size() == CHUNK_SIZE){
+	if (_rays.size() == CHUNK_SIZE) {
 #ifdef DEBUG
-		std::cout << "Reached CHUNK_SIZE\t" << _offset[0] << "\t" << _rays.size() << "\t" << _max_allowed_rays << std::endl;
+		std::cout << "Reached CHUNK_SIZE\t" << _offset[0] << "\t" << _rays.size() << "\t"
+		          << _max_allowed_rays << std::endl;
 #endif
 		save_write();
 		_rays.clear();
@@ -376,13 +393,11 @@ raytracing::openPMD_io::trace_write(raytracing::Ray this_ray) {
 raytracing::Ray
 raytracing::openPMD_io::trace_read(void) {
 	///\todo reordering if conditions can improve performance
-	
-	if(_rays.is_chunk_finished()){
-		load_chunk();
-	}
-	
+
+	if (_rays.is_chunk_finished()) { load_chunk(); }
+
 	if (_n_repeat <= 1) return _rays.pop();
-	if (_i_repeat == _n_repeat){
+	if (_i_repeat == _n_repeat) {
 		_i_repeat = 1;
 		_last_ray = _rays.pop();
 	} else
@@ -392,23 +407,22 @@ raytracing::openPMD_io::trace_read(void) {
 }
 
 void
-raytracing::openPMD_io::get_gravity_direction(float* x, float* y, float* z)  {
+raytracing::openPMD_io::get_gravity_direction(float* x, float* y, float* z) {
 	auto rays = rays_pmd();
-	*x  = rays["directionOfGravity"]["x"].loadChunk<float>().get()[0];
-	*y  = rays["directionOfGravity"]["y"].loadChunk<float>().get()[0];
-	*z  = rays["directionOfGravity"]["z"].loadChunk<float>().get()[0];
-
+	*x        = rays["directionOfGravity"]["x"].loadChunk<float>().get()[0];
+	*y        = rays["directionOfGravity"]["y"].loadChunk<float>().get()[0];
+	*z        = rays["directionOfGravity"]["z"].loadChunk<float>().get()[0];
 }
 
 void
-raytracing::openPMD_io::get_horizontal_direction(float* x, float* y, float* z)  {
+raytracing::openPMD_io::get_horizontal_direction(float* x, float* y, float* z) {
 	auto rays = rays_pmd();
-	*x  = rays["horizontalCoordinate"]["x"].loadChunk<float>().get()[0];
-	*y  = rays["horizontalCoordinate"]["y"].loadChunk<float>().get()[0];
-	*z  = rays["horizontalCoordinate"]["z"].loadChunk<float>().get()[0];
+	*x        = rays["horizontalCoordinate"]["x"].loadChunk<float>().get()[0];
+	*y        = rays["horizontalCoordinate"]["y"].loadChunk<float>().get()[0];
+	*z        = rays["horizontalCoordinate"]["z"].loadChunk<float>().get()[0];
 }
 
 std::ostream&
 raytracing::operator<<(std::ostream& os, const raytracing::Ray& ray) {
-	return os << "(" << ray.x() << ", " << ray.y() << "\n";
+	return os << "(" << ray.x() << ", " << ray.y() << "\t" << ray.z() << ")\n";
 }

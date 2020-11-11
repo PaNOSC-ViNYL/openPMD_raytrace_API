@@ -31,6 +31,15 @@ target_link_libraries(test1.exe
 #  PRIVATE raytrace
   PRIVATE openPMD::openPMD)
 
+add_executable(doctest doctest.cpp)
+target_compile_definitions(doctest
+  PRIVATE DOCTEST
+  )
+target_link_libraries(doctest
+  PRIVATE raytrace
+  PRIVATE openPMD::openPMD
+  )
+
 
 
 #------------------------------

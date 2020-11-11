@@ -1,6 +1,5 @@
 #ifndef RAY_CLASS_HH
 #define RAY_CLASS_HH
-//#include <doctest/doctest.h>
 
 #include <cmath>
 #include <ostream>
@@ -217,15 +216,8 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Ray& ray);
 };
 
-	
+
 #ifdef DD
-	
-TEST_CASE("") {
-	Ray myray;
-	CHECK(myray.get_status() == kAlive);
-	myray.position(1e-5, 2e-4, 2e2, 0.5);
-	CHECK(myray.x() == 0.5e-5);
-}
 
 /** \class photon
  * \brief helper class for photons
@@ -250,4 +242,7 @@ public:
 } // namespace raytracing
 
 #endif
+
+
+
 

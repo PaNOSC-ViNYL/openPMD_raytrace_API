@@ -6,6 +6,8 @@
 #include <openPMD/openPMD.hpp> // openPMD C++ API
 #include <string>
 
+#include <exception>
+
 namespace raytracing {
 #define ITER 1
 
@@ -159,6 +161,14 @@ private:
 		/** \brief returns the number of stored rays */
 		size_t size() const { return _size; };
 
+		/** \brief sets the size, it should match the content of the records! */
+		void size(size_t s) {
+			_size = s;
+			if (_x.vals().size() != s)
+				throw std::runtime_error(
+				        "size of stored Rays and one of its records is different");
+		};
+
 		/** \brief check if all the data have been already retrieved
 		 * \return bool : true if all the data stored have been retrieved
 		 * it return true also if it is empty
@@ -225,10 +235,9 @@ public:
 
 	/// \brief initializes the "series" object from the openPMD API in READ MODE
 	unsigned long long int
-	init_read(unsigned long long int n_rays =
-	                  0,             ///< NOT USED YET 0 = all \todo to fix the maximum
-	                                 ///< number of rays one wants to read from the file
-	          unsigned int iter = 1, ///< openPMD iteration, always using the default value
+	init_read(std::string pdgId,                 ///< PDG ID of the particle
+	          unsigned int iter             = 1, ///< openPMD iteration
+	          unsigned long long int n_rays = 0, ///< max number of rays to read, 0=ALL
 	          unsigned int repeat =
 	                  1 ///< [optional] Number of times a ray should be repeatedly retrieved
 	);
@@ -258,7 +267,7 @@ private:
 	std::string _name_current_component;
 	unsigned int _i_repeat, _n_repeat;
 	unsigned long long int _nrays, _max_allowed_rays;
-	
+
 	// internal usage
 	//	openPMD::Access _access_mode;
 	openPMD::Offset _offset;
@@ -287,7 +296,6 @@ private:
 		return i.particles[particle_species];
 	}
 
-	inline unsigned long long int numParticles(void) { return 0; }; ///< \todo implement
 
 	/** \brief Sets a new Record for the current particles of the current iteration
 	 * \param[in] isScalar : bool indicating if it is scalar
