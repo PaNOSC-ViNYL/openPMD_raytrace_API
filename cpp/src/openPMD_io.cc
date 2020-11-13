@@ -36,7 +36,7 @@ raytracing::openPMD_io::openPMD_io(const std::string& filename, std::string mc_c
     _mc_code_version(mc_code_version),
     _instrument_name(instrument_name),
     _name_current_component(name_current_component),
-    _i_repeat(1),
+    _i_repeat(0),
     _n_repeat(1),
     _offset({0}),
     _series(nullptr){};
@@ -342,7 +342,7 @@ raytracing::openPMD_io::init_read(std::string particle_species, unsigned int ite
                                   unsigned long long int n_rays, unsigned int repeat) {
 
 	_n_repeat            = repeat;
-	_i_repeat            = repeat;
+	_i_repeat            = 0;
 	_iter                = iter;
 	_offset              = {0};
 	std::string filename = _name;
@@ -385,8 +385,6 @@ raytracing::openPMD_io::init_read(std::string particle_species, unsigned int ite
 		_nrays = n_rays;
 	}
 	_series->flush();
-	load_chunk();
-	_last_ray = _rays.pop();
 	return _nrays;
 }
 
@@ -407,11 +405,12 @@ raytracing::Ray
 raytracing::openPMD_io::trace_read(void) {
 	///\todo reordering if conditions can improve performance
 	std::cout << "---- " << _i_repeat << "\t" << _n_repeat << "\t";
-	if (_i_repeat++ >= _n_repeat){
-		_i_repeat = 0;
+	if(_i_repeat++==0){
 		if (_rays.is_chunk_finished()) { load_chunk(); }
 		_last_ray = _rays.pop();
 	}
+	if (_i_repeat >= _n_repeat) _i_repeat = 0;
+
 	std::cout <<_last_ray  << std::endl; 
 	return _last_ray;
 }
