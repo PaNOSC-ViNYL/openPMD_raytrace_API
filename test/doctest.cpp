@@ -24,6 +24,9 @@ TEST_CASE("[openPMD_io] Write"){
 	unsigned int iter = 2;
 	iol.init_write("2112", n_rays_max, raytracing::AUTO, iter);
 	std::cout << "filename = " << filename << std::endl;
+
+
+	iol.set_gravity_direction(0.33,0.33,0.33);
 	raytracing::Ray myray;
 	myray.set_position(1, 2, 3);
 	//...
@@ -41,7 +44,13 @@ TEST_CASE("[openPMD_io] Write"){
 
 	unsigned int nrepeat = 3;
 	auto nrays = iol.init_read("2112",  iter, 2, nrepeat);
-
+	float x=3,y=5,z=7;
+	iol.get_gravity_direction(&x, &y, &z);
+	std::cout << x << "\t" << y << "\t" << z << std::endl;
+	CHECK(x == doctest::Approx(0.33));
+	CHECK(y == doctest::Approx(0.33));
+	CHECK(z == doctest::Approx(0.33));
+	
 	for(unsigned int i=0; i < nrays*nrepeat; ++i){
 		//		std::cout << i << "/" << nrays << "\t" <<
 		iol.trace_read();

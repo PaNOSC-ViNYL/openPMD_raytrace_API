@@ -6,7 +6,7 @@ namespace py = pybind11;
 #include <ray.hh>
 using namespace raytracing;
 
-PYBIND11_MODULE(raytracing, m) {
+PYBIND11_MODULE(raytracingpy, m) {
 
 	m.doc() = "pybind11 example plugin"; // optional module docstring
 	py::class_<openPMD_io>(m, "openPMD_io")
@@ -60,4 +60,11 @@ PYBIND11_MODULE(raytracing, m) {
 
 	        //
 	        ;
+#ifdef VERSION_INFO
+    m.attr("__version__") = VERSION_INFO;
+#else
+    m.attr("__version__") = "dev";
+#endif
+
 }
+

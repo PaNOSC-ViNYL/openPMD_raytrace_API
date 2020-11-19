@@ -87,7 +87,7 @@ This should highly simplify the user code.
 Otherwise, the user can also use the bare Ray class with the "scale" optional argument for the different methods to scale the units into the pre-defined ones.
 
 ## Todo
- - [ ] Units conversion!!!!
+ - [NO] Units conversion!!!!
  - [X] Setter and getter for gravity direction
  - [X] Setter and getter for horizontalCoordinate
  - [X] Setter and getter for numParticles

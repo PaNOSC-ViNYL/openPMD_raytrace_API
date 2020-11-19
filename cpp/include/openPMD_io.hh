@@ -253,8 +253,11 @@ public:
 	 */
 	Ray trace_read(void);
 
-	void get_gravity_direction(float* x, float* y, float* z) ;
-	void get_horizontal_direction(float* x, float* y, float* z) ;
+	void set_gravity_direction(float x, float y, float z);
+
+	void get_gravity_direction(float* x, float* y, float* z);
+	void get_horizontal_direction(float* x, float* y, float* z);
+	void set_horizontal_direction(float* x, float* y, float* z);
 	///@}
 private:
 	void load_chunk(void);
@@ -288,27 +291,26 @@ private:
 	inline openPMD::ParticleSpecies& rays_pmd(void) {
 		auto i = iter_pmd(_iter);
 		return i.particles[_particle_species];
-	}
+		}
 
-	// returns the given particle species from the current iteration
-	inline openPMD::ParticleSpecies& rays_pmd(std::string particle_species) {
-		_particle_species = particle_species;
-		auto i            = iter_pmd(_iter);
-		return i.particles[particle_species];
-	}
+		// returns the given particle species from the current iteration
+		inline openPMD::ParticleSpecies& rays_pmd(std::string particle_species) {
+			_particle_species = particle_species;
+			auto i            = iter_pmd(_iter);
+			return i.particles[particle_species];
+		}
 
-
-	/** \brief Sets a new Record for the current particles of the current iteration
-	 * \param[in] isScalar : bool indicating if it is scalar
-	 * \param[in] dims : Unit dimensions
-	 * \param[in]
-	 */
-	void init_ray_prop(std::string name,          ///< name : name of the field/property
-	                   openPMD::Dataset& dataset, ///< dataset definition
-	                   bool isScalar,             ///< true if it is a scalar
-	                   std::map<openPMD::UnitDimension, double> const& dims =
-	                           {{openPMD::UnitDimension::L, 0.}}, ///< dimensions
-	                   double unitSI = 0.);                       ///< scale w.r.t. SI
-};
+		/** \brief Sets a new Record for the current particles of the current iteration
+		 * \param[in] isScalar : bool indicating if it is scalar
+		 * \param[in] dims : Unit dimensions
+		 * \param[in]
+		 */
+		void init_ray_prop(std::string name, ///< name : name of the field/property
+		                   openPMD::Dataset & dataset, ///< dataset definition
+		                   bool isScalar,              ///< true if it is a scalar
+		                   std::map<openPMD::UnitDimension, double> const& dims =
+		                           {{openPMD::UnitDimension::L, 0.}}, ///< dimensions
+		                   double unitSI = 0.);                       ///< scale w.r.t. SI
+	};
 } // namespace raytracing
 #endif

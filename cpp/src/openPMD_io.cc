@@ -416,19 +416,39 @@ raytracing::openPMD_io::trace_read(void) {
 }
 
 void
+raytracing::openPMD_io::set_gravity_direction(float x, float y, float z){
+	auto rays = rays_pmd();
+	openPMD::Offset offset = {0};
+	openPMD::Extent extent = {1};
+	rays["directionOfGravity"]["x"].storeChunk(openPMD::shareRaw(&x), offset, extent);
+	rays["directionOfGravity"]["y"].storeChunk(openPMD::shareRaw(&y), offset, extent);
+	rays["directionOfGravity"]["z"].storeChunk(openPMD::shareRaw(&z), offset, extent);
+	_series->flush();
+}
+	
+void
 raytracing::openPMD_io::get_gravity_direction(float* x, float* y, float* z) {
 	auto rays = rays_pmd();
-	*x        = rays["directionOfGravity"]["x"].loadChunk<float>().get()[0];
-	*y        = rays["directionOfGravity"]["y"].loadChunk<float>().get()[0];
-	*z        = rays["directionOfGravity"]["z"].loadChunk<float>().get()[0];
+	auto xx        = rays["directionOfGravity"]["x"].loadChunk<float>();
+	auto yy        = rays["directionOfGravity"]["y"].loadChunk<float>();
+	auto zz        = rays["directionOfGravity"]["z"].loadChunk<float>();
+	_series->flush();
+	*x = xx.get()[0];
+	*y = yy.get()[0];
+	*z = zz.get()[0];
+	//	std::cout << "[DEBUG] " << *x << std::endl;
 }
 
 void
 raytracing::openPMD_io::get_horizontal_direction(float* x, float* y, float* z) {
-	auto rays = rays_pmd();
-	*x        = rays["horizontalCoordinate"]["x"].loadChunk<float>().get()[0];
-	*y        = rays["horizontalCoordinate"]["y"].loadChunk<float>().get()[0];
-	*z        = rays["horizontalCoordinate"]["z"].loadChunk<float>().get()[0];
+		auto rays = rays_pmd();
+	auto xx        = rays["horizontalCoordinate"]["x"].loadChunk<float>();
+	auto yy        = rays["horizontalCoordinate"]["y"].loadChunk<float>();
+	auto zz        = rays["horizontalCoordinate"]["z"].loadChunk<float>();
+	_series->flush();
+	*x = xx.get()[0];
+	*y = yy.get()[0];
+	*z = zz.get()[0];
 }
 
 std::ostream&
