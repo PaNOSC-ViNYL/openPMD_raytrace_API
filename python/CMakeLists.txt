@@ -121,6 +121,28 @@ install(TARGETS raytracingpy
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/raytracingpyConfigVersion.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
 
+
+
+#find_package(Python3 COMPONENTS Interpreter REQUIRED)
+find_package(PythonInterp)
+
+# detect virtualenv and set Pip args accordingly
+if(DEFINED ENV{VIRTUAL_ENV} OR DEFINED ENV{CONDA_PREFIX})
+  set(_pip_args)
+else()
+  set(_pip_args "--user")
+endif()
+
+if(PYTHONINTERP_FOUND)
+  message("Installing with PIP: ${_pip_args}")
+  #execute_process(COMMAND ${PYTHON_EXECUTABLE} -m pip install -e . ${_pip_args})
+  if(PYPI_PACKAGE)
+    execute_process(COMMAND ${PYTHON_EXECUTABLE} setup.py sdist bdist_wheel
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  endif()
+
+endif()
+
 if(INSTALL)
 #############################################
 
