@@ -701,7 +701,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@ @CMAKE_CURRENT_SOURCE_DIR@/cpp/include/ @CMAKE_CURRENT_SOURCE_DIR@/cpp/src/ @CMAKE_CURRENT_SOURCE_DIR@/python/src/ 
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@ @CMAKE_CURRENT_SOURCE_DIR@/doc/ @CMAKE_CURRENT_SOURCE_DIR@/cpp/include/ @CMAKE_CURRENT_SOURCE_DIR@/cpp/src/ @CMAKE_CURRENT_SOURCE_DIR@/python/src/ 
 
 INPUT_ENCODING         = UTF-8
 
@@ -796,7 +796,7 @@ EXCLUDE_SYMBOLS        =
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/test/bin/
+EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/test/bin/ @CMAKE_SOURCE_DIR@/doc/ @CMAKE_SOURCE_DIR@
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and
@@ -868,7 +868,8 @@ FILTER_SOURCE_FILES    = NO
 FILTER_SOURCE_PATTERNS =
 
 
-USE_MDFILE_AS_MAINPAGE = "@CMAKE_CURRENT_SOURCE_DIR@/README.md"
+#USE_MDFILE_AS_MAINPAGE = "@CMAKE_SOURCE_DIR@/doc/mainpage.md"
+USE_MDFILE_AS_MAINPAGE = "@CMAKE_SOURCE_DIR@/README.md"
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing

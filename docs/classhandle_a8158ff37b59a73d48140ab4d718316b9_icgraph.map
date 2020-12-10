@@ -1,5 +1,0 @@
-<map id="handle::cast" name="handle::cast">
-<area shape="rect" id="node2" href="$classcpp__function.html#a4120dff5c867829edb5ad1df929ec522" title="Register a function call with Python (generic non&#45;templated code goes here) " alt="" coords="147,5,297,47"/>
-<area shape="rect" id="node3" href="$classcpp__function.html#a97487e306e9e0a8d0535fb5fe5c6d8ef" title="Special internal constructor for functors, lambda functions, etc. " alt="" coords="345,13,496,39"/>
-<area shape="rect" id="node4" href="$classcpp__function.html#adf288fd4fadeaf8e9e142d177fc267da" title="Construct a cpp_function from a vanilla function pointer. " alt="" coords="544,13,723,39"/>
-</map>

@@ -2,7 +2,8 @@
 # cd openPMD-api
 # patch -p1 < ../cmake_api.patch
 # cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF
-cmake_minimum_required(VERSION 3.7.2)
+#cmake_minimum_required(VERSION 3.7.2)
+cmake_minimum_required(VERSION 3.11.4)
 
 project(openPMD_raytrace_API VERSION 0.1.0)
 
@@ -21,6 +22,7 @@ set( CMAKE_BUILD_TYPE Debug)
 option(TEST "Do testing" OFF)
 option(EXTERNAL_PYBIND "Use Pybind v2.5.0 from GIT" OFF)
 option(INSTALL "perform the installation" OFF)
+option(PYTHONBIND "Make the python library" ON)
 #------------------------------------------------------------
 if(NOT INSTALL)
   set(CMAKE_INSTALL_PREFIX /tmp/devel)
@@ -28,6 +30,7 @@ if(NOT INSTALL)
 endif()
 
 #------------------------------------------------------------
+if(PYTHONBIND)
 find_package(pybind11 2.4.3)  # this is the version that has been used for development and tests
 if(EXTERNAL_PYBIND OR NOT pybind11_FOUND)
   message(WARNING "Using PYBIND11 from GIT repository")
@@ -41,7 +44,7 @@ if(EXTERNAL_PYBIND OR NOT pybind11_FOUND)
   ExternalProject_Get_Property(pybind11 install_dir)
   set(pybind11_DIR ${install_dir}/src/pybind11-build/)
 endif()
-
+endif(PYTHONBIND)
 
 #########################################################
 #------------------------------------------------------------
@@ -79,7 +82,7 @@ ExternalProject_Add(openPMDraytrace
 
 
 #------------------------------------------------------------
-#set (CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+if(PYTHONBIND)
 ExternalProject_Add(openPMDraytracepy
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/python/
   DEPENDS openPMDraytrace
@@ -88,7 +91,7 @@ ExternalProject_Add(openPMDraytracepy
   #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
   #INSTALL_COMMAND ""
   )
-
+endif(PYTHONBIND)
 #------------------------------------------------------------
 #set (CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
 ExternalProject_Add(tests

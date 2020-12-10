@@ -1,5 +1,0 @@
-<map id="error_already_set::restore" name="error_already_set::restore">
-<area shape="rect" id="node2" href="$classobject.html#a4ce66b1d44b37ae6b28e80228b075aae" title="object::release" alt="" coords="184,5,291,32"/>
-<area shape="rect" id="node4" href="$classhandle.html#afcd412ba4cbffd7d1e3c9338746b2682" title="Return the underlying PyObject * pointer. " alt="" coords="196,56,279,83"/>
-<area shape="rect" id="node3" href="$classhandle.html#a53ba30cccfb1cabee421fd4ea555cf44" title="The default constructor creates a handle with a nullptr&#45;valued pointer. " alt="" coords="339,5,445,32"/>
-</map>

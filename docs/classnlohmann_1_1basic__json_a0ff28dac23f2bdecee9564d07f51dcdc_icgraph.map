@@ -1,5 +1,0 @@
-<map id="nlohmann::basic_json::begin" name="nlohmann::basic_json::begin">
-<area shape="rect" id="node2" href="$classnlohmann_1_1basic__json.html#a3acba9c6ceb7214e565fe08c3ba5b352" title="access the first element " alt="" coords="201,5,349,47"/>
-<area shape="rect" id="node3" href="$classnlohmann_1_1basic__json.html#ac77aed0925d447744676725ab0b6d535" title="returns an iterator to the reverse&#45;end " alt="" coords="201,71,349,112"/>
-<area shape="rect" id="node4" href="$classnlohmann_1_1basic__json.html#a5338e282d1d02bed389d852dd670d98d" title="add an object to an object if key does not exist " alt="" coords="201,136,349,177"/>
-</map>

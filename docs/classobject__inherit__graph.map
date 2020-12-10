@@ -1,7 +1,0 @@
-<map id="object" name="object">
-<area shape="rect" id="node3" href="$classexception.html" title="exception\&lt; type \&gt;" alt="" coords="5,155,132,181"/>
-<area shape="rect" id="node4" href="$classgeneric__type.html" title="Generic support for creating new Python heap types. " alt="" coords="157,155,253,181"/>
-<area shape="rect" id="node5" href="$classiterator.html" title="iterator" alt="" coords="277,155,340,181"/>
-<area shape="rect" id="node6" href="$classmodule.html" title="Wrapper for Python extension modules. " alt="" coords="365,155,429,181"/>
-<area shape="rect" id="node2" href="$classhandle.html" title="handle" alt="" coords="227,5,287,32"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="handle::inc_ref" name="handle::inc_ref">
-<area shape="rect" id="node2" href="$classloader__life__support.html#a0759a5fe160fb836f1f1d47eecdfb36f" title="loader_life_support\l::add_patient" alt="" coords="160,5,291,47"/>
-<area shape="rect" id="node3" href="$classmodule.html#abd798017921903073343c4479efb93c0" title="Create a new top&#45;level Python module with the given name and docstring. " alt="" coords="168,71,283,98"/>
-<area shape="rect" id="node4" href="$classobject.html#a6537d8aee1fc94555af84e5bb9ecad21" title="Copy constructor; always increases the reference count. " alt="" coords="175,122,275,149"/>
-</map>

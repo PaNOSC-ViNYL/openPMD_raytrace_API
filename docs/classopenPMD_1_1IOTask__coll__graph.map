@@ -1,5 +1,0 @@
-<map id="openPMD::IOTask" name="openPMD::IOTask">
-<area shape="rect" id="node2" href="$classopenPMD_1_1Writable.html" title="Layer to mirror structure of logical data and persistent data in file. " alt="" coords="9,5,143,32"/>
-<area shape="rect" id="node3" href="$classopenPMD_1_1Attributable.html" title="Layer to manage storage of attributes associated with file objects. " alt="" coords="161,95,314,121"/>
-<area shape="rect" id="node4" href="$classopenPMD_1_1AbstractIOHandler.html" title="openPMD::AbstractIOHandler" alt="" coords="233,5,428,32"/>
-</map>

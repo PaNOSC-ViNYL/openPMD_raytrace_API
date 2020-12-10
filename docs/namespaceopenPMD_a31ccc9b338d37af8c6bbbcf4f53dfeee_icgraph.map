@@ -1,6 +1,0 @@
-<map id="openPMD::toBits" name="openPMD::toBits">
-<area shape="rect" id="node2" href="$namespaceopenPMD.html#a1e0c5a7cd758d4f0e2495639da8496a3" title="openPMD::isSameFloatingPoint" alt="" coords="185,5,392,32"/>
-<area shape="rect" id="node3" href="$namespaceopenPMD.html#a2d77cb0d3393504e417aea6ad1ae9a58" title="openPMD::isSameComplexFloating\lPoint" alt="" coords="175,57,403,98"/>
-<area shape="rect" id="node4" href="$namespaceopenPMD.html#aae1011a1acfc03c4914f0a6e2d3443a9" title="openPMD::isSameInteger" alt="" coords="203,123,374,149"/>
-<area shape="rect" id="node5" href="$namespaceopenPMD.html#a97abc0c52f6828a3ce8f8a01bdd4a9fe" title="openPMD::isSame" alt="" coords="223,173,354,200"/>
-</map>

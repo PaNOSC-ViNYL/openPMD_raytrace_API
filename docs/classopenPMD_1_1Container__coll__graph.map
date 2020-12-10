@@ -1,5 +1,0 @@
-<map id="openPMD::Container&lt; T, T_key, T_container &gt;" name="openPMD::Container&lt; T, T_key, T_container &gt;">
-<area shape="rect" id="node2" href="$classopenPMD_1_1Attributable.html" title="Layer to manage storage of attributes associated with file objects. " alt="" coords="95,95,248,121"/>
-<area shape="rect" id="node4" href="$classopenPMD_1_1Writable.html" title="Layer to mirror structure of logical data and persistent data in file. " alt="" coords="204,191,339,218"/>
-<area shape="rect" id="node3" href="$classopenPMD_1_1AbstractIOHandler.html" title="openPMD::AbstractIOHandler" alt="" coords="74,5,269,32"/>
-</map>

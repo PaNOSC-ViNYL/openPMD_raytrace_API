@@ -1,114 +1,56 @@
-# c++ API for the openPMD ray trace extension 
+c++ API for the openPMD ray trace extension  {#readme}
+======================================================
 
-This library provides an API in C++ and Python to read and write openPMD files following the raytrace extension.
+This library provides a high-level API in C++ and Python to read and write openPMD files following the raytrace extension.
+It uses the official openPMD-api at lower level.
 
 
-## Quantities
-According to the extension, here's the list of variables stored in the file and the corresponding units.
-
-	
-| Variable             | Comment                             | Units                    |
-| ---------            | ----------------                    | ------------------------ |
-| x,y,z                | position in                         | [cm]                     |
-| dx,dy,dz             | direction                           | (normalized velocity)    |
-| sx,sy,sz             | polarization of non-photons         |                          |
-| sPolAx,sPolAy,sPolAz | s-polarization amplitude of photons |                          |
-| pPolAx,pPolAy,pPolAz | p-polarization amplitude of photons |                          |
-| sPolx,sPoly,sPolz    | s-polarization amplitude of photons |                          |
-| pPolx,pPoly,pPolz    | p-polarization amplitude of photons |                          |
-| time                 | ray time w.r.t. ray generation      | [ms]                     |
-| wavelength           |                                     | [Ang]                    |
-| weight               | weight                              |                          |
-|                      |                                     |                          |
+Quantities
+------------------------------
+The list of variables stored in the openPMD file as defined by the extension is reported in the following table:
 
 	
+| Variable                       | Comment                                       | Units                    |
+| ---------                      | ----------------                              | ------------------------ |
+| x,y,z                          | position                                      | []                       |
+| dx,dy,dz                       | direction                                     | (normalized velocity)    |
+| sx,sy,sz                       | polarization of non-photons                   |                          |
+| sPolAx, sPolAy, sPolAz, sPolPh | s-polarization amplitude and phase of photons |                          |
+| pPolAx, pPolAy, pPolAz, pPolPh | p-polarization amplitude of photons           |                          |
+| time                           | ray time w.r.t. ray generation                | [ms]                     |
+| wavelength                     |                                               | [Ang]                    |
+| weight                         | weight                                        |                          |
+| id                             | unique ID                                     |                          |
+| status                         | Alive or Dead                                 |                          |
 
-## Devel instructions
+	
 
+Dependencies
+------------------------------
+This packaged depends on:
+ - [**cmake**](https://cmake.org) (3.11.4): 
+ - [**openPMD-api**](https://www.openpmd.org/openPMD-api/) (0.12.1) used as base layer
+ - [**pybind11**](https://github.com/pybind/pybind11) (2.4.3) [optional, ON by default] for the python binding 
+ - [**doxygen**](https://doxygen.nl) (1.8.14) [optional]
+ 
+ If you do not have the openPMD-api installed on your system, this package downloads, compiles and install it for you. But installing it separately is highly advisable.
+ 
+
+Compilation and installation
+------------------------------
 ```
-git clone -b devel git@github.com:PaNOSC-ViNYL/openPMD_raytrace_API.git
+git clone -b devel --depth 1 git@github.com:PaNOSC-ViNYL/openPMD_raytrace_API.git
 cd openPMD_raytrace_API/
 
+mkdir build/
+cd build/
 cmake ..
 
 cmake --build .
+
+# for the documentation
 cmake --build . --target doc
 ```
 
-# Usage
 
-The library is under the \ref raytracing namespace.
-
-Here's a schematic of the I/O logic. 
-
-NB: image with hyperlinks
-
-\dot
-	   digraph example {
-	       rankdir="LR";
-	       node [shape=record, fontname=Helvetica, fontsize=10];
-		   u    [label="User's program" shape=ellipse];
-		   Ray  [label="Ray object" shape=rectangle, URL="\ref raytracing::Ray"];
-		   u -> Ray [label="create and fill"];
-		   openPMD_io [];
-		   Ray -> openPMD_io [label="trace_write", URL="\ref raytracing::openPMD_io::trace_write"];
-		   openPMD_io -> pmd [label="save_write", URL="\ref raytracing::openPMD_io::save_write"];
-		   pmd  [ label="openPMD file", shape=ellipse];
-		   pmd -> openPMD_io [label="load_chunk (internal)"];
-		   openPMD_io -> Ray [label="trace_read", URL="\ref raytracing::openPMD_io::trace_read"];
-		   Ray -> u [label="get values"];
-	   }
-\enddot
-
-
-## Writing
-
-A Ray object should be constructed and filled with all the relevant information.
-
-The ray is then queued for writing using the openPMD_io class:
-\include test_write.cpp
-
-The Ray class is providing all the conversion/utility operations on the quantities stored in the openPMD file according to the RAYTRACE extension
-
-
-## Reading
-
-\include test_read.cpp
-
-
-## Unit conversion
-
-The units of the quantities stored in the openPMD file are pre-defined by the extension and not customizable by the user.
-
-For a more user-friendly user interface, the user should create it's own version of the Ray object (either in C++ or in Python), inheriting from the original Ray object.
-The conversion should be done in the overloaded methods.
-This should highly simplify the user code.
-
-Otherwise, the user can also use the bare Ray class with the "scale" optional argument for the different methods to scale the units into the pre-defined ones.
-
-## Todo
- - [NO] Units conversion!!!!
- - [X] Setter and getter for gravity direction
- - [X] Setter and getter for horizontalCoordinate
- - [X] Setter and getter for numParticles
- - [X] Interal usage of numParticles
- - [X] Binding of wavelength, time, weight, id, status getters
- - [ ] Test the python binding
- - [ ] Cmake install for the python binding
- - [ ] PyPi package
- - [ ] ostream friend for the ray class to make easier to debug
- - [X] Repeating ray multiple times if requested when reading the openPMD file
- - [X] Writing in chunks
- - [X] Throwing runtime_error when over the maximum foreseen number of rays
- - [X] Add doctest package for C++ unit tests
-
-
-
-## Examples
-Examples can be found 
-
-
-\example test_write.cpp
-
-
-
+More information about the usage can be found [here](@ref usage)
