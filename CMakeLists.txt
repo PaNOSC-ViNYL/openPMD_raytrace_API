@@ -31,7 +31,7 @@ endif()
 
 #------------------------------------------------------------
 if(PYTHONBIND)
-  find_package(pybind11 2.4.3 QUIET)
+  find_package(pybind11 2.5.0 QUIET)
   if(NOT pybind11_FOUND)
     message(WARNING "Using PYBIND11 from GIT repository")
     ExternalProject_Add(pybind11 
@@ -89,14 +89,14 @@ ExternalProject_Add(openPMDraytrace
 
 #------------------------------------------------------------
 if(PYTHONBIND)
-ExternalProject_Add(openPMDraytracepy
-  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/python/
-  DEPENDS openPMDraytrace
-  #  DEPENDS pybind11
-  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DopenPMDraytrace_DIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake # -DopenPMD_DIR=${openPMD_pybind11_DIR} -Dcameo_DIR=${cameo_DIR}
-  #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-  #INSTALL_COMMAND ""
-  )
+  ExternalProject_Add(openPMDraytracepy
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/python/
+    DEPENDS openPMDraytrace
+    #  DEPENDS pybind11
+    CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DopenPMDraytrace_DIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake # -DopenPMD_DIR=${openPMD_pybind11_DIR} -Dcameo_DIR=${cameo_DIR}
+    #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+    #INSTALL_COMMAND ""
+    )
 endif(PYTHONBIND)
 #------------------------------------------------------------
 #set (CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
