@@ -85,7 +85,7 @@ $(function() {
 <h2>Writing</h2>
 <ol type="1">
 <li>Declare an openPMD_io object with a filename used for writing (<a class="el" href="classraytracing_1_1openPMD__io.html">raytracing::openPMD_io()</a>)</li>
-<li>initialize the file (<a class="el" href="classraytracing_1_1openPMD__io.html#ae1b99798ad0a81fc7872c8240fa4f6bf">raytracing::openPMD_io::init_write</a>)</li>
+<li>initialize the file (<a class="el" href="classraytracing_1_1openPMD__io.html#a588ddaa65124f51680f9215da2bd799e">raytracing::openPMD_io::init_write</a>)</li>
 <li>a Ray object should be constructed and filled with all the relevant information for the ray being traced</li>
 <li>the ray is then queued for writing with the <a class="el" href="classraytracing_1_1openPMD__io.html#a42ce4771b20fb8cc9fec4787160526cf">raytracing::openPMD_io::trace_write</a></li>
 <li>the queued rays are written to file in bunches of CHUNKSIZE and finally when <a class="el" href="classraytracing_1_1openPMD__io.html#aaf91fdc5011da4ae515d747e5aec384b">raytracing::openPMD_io::save_write()</a> is called</li>

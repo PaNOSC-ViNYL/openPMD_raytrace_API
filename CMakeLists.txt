@@ -31,19 +31,25 @@ endif()
 
 #------------------------------------------------------------
 if(PYTHONBIND)
-find_package(pybind11 2.4.3)  # this is the version that has been used for development and tests
-if(EXTERNAL_PYBIND OR NOT pybind11_FOUND)
-  message(WARNING "Using PYBIND11 from GIT repository")
-  ExternalProject_Add(pybind11 
-	GIT_REPOSITORY https://github.com/pybind/pybind11.git
-	GIT_TAG v2.5.0
-	GIT_SHALLOW True
-	INSTALL_COMMAND "make install"
-	CMAKE_ARGS -DPYBIND11_TEST=OFF -DPYBIND11_INSTALL=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-	)
-  ExternalProject_Get_Property(pybind11 install_dir)
-  set(pybind11_DIR ${install_dir}/src/pybind11-build/)
-endif()
+  find_package(pybind11 2.4.3 QUIET)
+  if(NOT pybind11_FOUND)
+    message(WARNING "Using PYBIND11 from GIT repository")
+    ExternalProject_Add(pybind11 
+      GIT_REPOSITORY https://github.com/pybind/pybind11.git
+      GIT_TAG v2.5.0
+      GIT_SHALLOW True
+      #INSTALL_COMMAND ""
+      UPDATE_COMMAND ""
+      UPDATE_DISCONNECTED FALSE
+      CMAKE_ARGS -DPYBIND11_TEST=OFF -DPYBIND11_INSTALL=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/pybind11_install/
+      #I am obliged to perform the install step otherwise some files from pybind are not put together and I don't manage to set it.
+      )
+    ExternalProject_Get_Property(pybind11 install_dir BINARY_DIR)
+    
+    list(APPEND DEPENDENT_PACKAGES pybind11)
+    #set(pybind11_DIR ${install_dir})
+    set(pybind11_DIR ${CMAKE_CURRENT_BINARY_DIR}/pybind11_install/share/cmake/pybind11)
+  endif()
 endif(PYTHONBIND)
 
 #########################################################

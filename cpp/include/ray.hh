@@ -5,6 +5,7 @@
 #include <ostream>
 
 namespace raytracing {
+constexpr double V2W = 3.956034e-07; // m^2/
 // enum particleStatus_t : int { kDead = 0, kAlive = 1 };
 
 /** \typedef particleStatus_t
@@ -13,7 +14,8 @@ namespace raytracing {
  *  - other: any other value is used for "dead" particles, the effective value and meaining
  * depends on the simulation software used
  *
- * In the ray tracing extension only raytracing::kDead and raytracing::kAlive values are used
+ * In the ray tracing extension only raytracing::kDead and raytracing::kAlive values are
+ * used
  */
 typedef int particleStatus_t;
 constexpr int kDead  = 0; ///<  particleStatus_t: dead ray
@@ -49,25 +51,15 @@ private:
 	float _polarization[DIM]; // for non-photons
 	float _sPolarization[PHASEDIM];
 	float _pPolarization[PHASEDIM];
-	float _wavelength;
-	float _time;
-	float _weight;
-	unsigned long long int _id;
-	//particleStatus_t _status;
-	particleStatus_t _status;
+	float _wavelength          = 0;
+	float _time                = 0;
+	float _weight              = 1;
+	unsigned long long int _id = 0;
+	// particleStatus_t _status;
+	particleStatus_t _status = kAlive;
 
 public:
-	Ray():
-	    _position(),
-	    _direction(),
-	    _polarization(),
-	    _sPolarization(),
-	    _pPolarization(),
-	    _wavelength(0),
-	    _time(0),
-	    _weight(1),
-	    _id(0),
-	    _status(kAlive){};
+	//Ray(){};
 
 	/// \name Getters
 	///@{
@@ -82,6 +74,12 @@ public:
 		(*yy) = y();
 		(*zz) = z();
 	}
+	void get_position(double* xx, double* yy, double* zz) const {
+		(*xx) = x();
+		(*yy) = y();
+		(*zz) = z();
+	}
+
 	//@}
 
 	/// \name Get direction
@@ -89,11 +87,17 @@ public:
 	float dx() const { return _direction[X]; };
 	float dy() const { return _direction[Y]; };
 	float dz() const { return _direction[Z]; };
-	void get_direction(float* x, float* y, float* z) const {
-		*x = dx();
-		*y = dy();
-		*z = dz();
+	void get_direction(float* x, float* y, float* z, double scale) const {
+		*x = dx() * scale;
+		*y = dy() * scale;
+		*z = dz() * scale;
 	}
+	void get_direction(double* x, double* y, double* z, double scale) const {
+		*x = dx() * scale;
+		*y = dy() * scale;
+		*z = dz() * scale;
+	}
+
 	///@}
 
 	/// \name Get polarization for non-photons
@@ -106,6 +110,12 @@ public:
 		*y = sy();
 		*z = sz();
 	}
+	void get_polarization(double* x, double* y, double* z) const {
+		*x = sx();
+		*y = sy();
+		*z = sz();
+	}
+
 	///@}
 
 	/// \name Get s-polarization amplituded and phase for photons
@@ -235,8 +245,17 @@ class neutron : public Ray {};
 class mcstas_neutron : public Ray {
 public:
 	void set_position(double x, double y, double z){
-		Ray::set_position(x, y, z, 1e2);
+		Ray::set_position(x, y, z);
 	};
+	void set_velocity(double x, double y, double z){
+		double abs_v = sqrt(x * x + y * y + z * z);
+		set_direction(x, y, z, 1. / abs_v);
+		set_wavelength(V2W/abs_v);
+	}
+	void get_velocity(float *x, float *y, float* z){
+		double abs_v = V2W/get_wavelength();
+		get_direction(x, y, z, abs_v);
+	}
 };
 
 } // namespace raytracing

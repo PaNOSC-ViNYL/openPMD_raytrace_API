@@ -104,9 +104,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>dy</b> () const</td>
 <tr class="memitem:aa6a25942a8a7c3cf598f1853ad2d7816"><td class="memItemLeft" align="right" valign="top"><a id="aa6a25942a8a7c3cf598f1853ad2d7816"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>dz</b> () const</td></tr>
 <tr class="separator:aa6a25942a8a7c3cf598f1853ad2d7816"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05cb8495787a5312d36bafc769ff932b"><td class="memItemLeft" align="right" valign="top"><a id="a05cb8495787a5312d36bafc769ff932b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>get_direction</b> (float *x, float *y, float *z) const</td></tr>
-<tr class="separator:a05cb8495787a5312d36bafc769ff932b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0ef6c17f7b54099bf7ff33a88f82ba2"><td class="memItemLeft" align="right" valign="top"><a id="af0ef6c17f7b54099bf7ff33a88f82ba2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_direction</b> (float *x, float *y, float *z, double scale) const</td></tr>
+<tr class="separator:af0ef6c17f7b54099bf7ff33a88f82ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Get polarization for non-photons</div></td></tr>
 <tr class="memitem:aa895834d647d495ca7c67d68fb52207f"><td class="memItemLeft" align="right" valign="top"><a id="aa895834d647d495ca7c67d68fb52207f"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>sx</b> () const</td></tr>
@@ -225,7 +225,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_status</b> (<a cl
 <p>Unit conversions should be applied here, so that the Rays class stores information in a coherent way. There is a small inefficiency if rays are used multiple times, but the time spent in unit conversions is anyway negligible w.r.t. the simulation time. </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="test_write_8cpp-example.html#_a3">test_write.cpp</a>.</dd>
 </dl>
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00037">37</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00039">39</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0456b47ec080626a3933bf0ab22d388a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0456b47ec080626a3933bf0ab22d388a">&#9670;&nbsp;</a></span>get_status()</h2>
@@ -254,7 +254,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_status</b> (<a cl
 <p>return the particle status </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="namespaceraytracing.html#a57e78a789925757c2eae3a495d2ddae1" title="alive ray ">raytracing::kAlive</a> or <a class="el" href="namespaceraytracing.html#a914c09e1dd7082a964c1713ee2e3ce49" title="particleStatus_t: dead ray ">raytracing::kDead</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00157">157</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00149">149</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_status</b> (<a cl
 <p>scale and set polarization for non-photons </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>to implement </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00186">186</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00178">178</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_status</b> (<a cl
 <p>scale and set p-polarization for photons </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>to implement </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00199">199</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ray_8hh_source.html#l00191">191</a> of file <a class="el" href="ray_8hh_source.html">ray.hh</a>.</p>
 
 </div>
 </div>

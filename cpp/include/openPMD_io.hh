@@ -207,7 +207,7 @@ public:
 	 */
 	void init_write(std::string pdgId,             ///< PDG ID of the particles
 	                unsigned long long int n_rays, ///< number of rays being simulated (max)
-	                openPMD_output_format_t output_format = AUTO, ///< output format
+	                openPMD_output_format_t output_format = raytracing::AUTO, ///< output format
 	                unsigned int iter                     = 1     ///< openPMD iteration
 			///\todo add gravity direction and horizontal direction
 	);
