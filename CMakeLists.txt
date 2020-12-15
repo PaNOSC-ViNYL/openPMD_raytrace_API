@@ -19,8 +19,7 @@ set( CMAKE_BUILD_TYPE Release)
 set( CMAKE_BUILD_TYPE Debug)
 
 ##
-option(TEST "Do testing" OFF)
-option(EXTERNAL_PYBIND "Use Pybind v2.5.0 from GIT" OFF)
+option(BUILD_TESTING "Do testing" OFF)
 option(INSTALL "perform the installation" OFF)
 option(PYTHONBIND "Make the python library" ON)
 #------------------------------------------------------------
@@ -31,7 +30,7 @@ endif()
 
 #------------------------------------------------------------
 if(PYTHONBIND)
-  find_package(pybind11 2.5.0 QUIET)
+  find_package(pybind11 2.4.3 QUIET)
   if(NOT pybind11_FOUND)
     message(WARNING "Using PYBIND11 from GIT repository")
     ExternalProject_Add(pybind11 
@@ -55,7 +54,7 @@ endif(PYTHONBIND)
 #########################################################
 #------------------------------------------------------------
 find_package(openPMD 0.12.1 QUIET)  # this is the version that has been used for development and tests
-if(EXTERNAL_openPMD OR NOT openPMD_FOUND)
+if(NOT openPMD_FOUND)
   message(WARNING "Using openPMD-api from GIT repository")
   ExternalProject_Add(openPMD-api
     GIT_REPOSITORY https://github.com/openPMD/openPMD-api.git
@@ -67,7 +66,7 @@ if(EXTERNAL_openPMD OR NOT openPMD_FOUND)
     PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/cmake_api.patch
 #    INSTALL_COMMAND "make install"
 #    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=ON -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=ON -DBUILD_EXAMPLES=ON -DBUILD_CLI_TOOLS=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} 
+    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} 
     )
   ExternalProject_Get_Property(openPMD-api install_dir)
   set(openPMD_DIR ${install_dir}/src/openPMD-api-build/)
@@ -100,6 +99,7 @@ if(PYTHONBIND)
 endif(PYTHONBIND)
 #------------------------------------------------------------
 #set (CMAKE_PREFIX_PATH ${CMAKE_INSTALL_PREFIX})
+if(BUILD_TESTING)
 ExternalProject_Add(tests
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test/
   DEPENDS openPMDraytrace
@@ -114,7 +114,7 @@ enable_testing()
 add_test(NAME openPMD_write COMMAND tests-prefix/src/tests-build/test1.exe)
 add_test(NAME write COMMAND  tests-prefix/src/tests-build/test_write.exe)
 add_test(NAME mcstas_write COMMAND  tests-prefix/src/tests-build/mcstas_write.exe)
-
+endif()
 
 
 

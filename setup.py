@@ -21,7 +21,7 @@ class CMakeBuild(build_ext):
             out = subprocess.check_output(['cmake', '--version'])
         except OSError:
             raise RuntimeError(
-                "CMake 3.12.0+ must be installed to build the following " +
+                "CMake 3.7.2+ must be installed to build the following " +
                 "extensions: " +
                 ", ".join(e.name for e in self.extensions))
 
@@ -29,8 +29,8 @@ class CMakeBuild(build_ext):
             r'version\s*([\d.]+)',
             out.decode()
         ).group(1))
-        if cmake_version < '3.11.0':
-            raise RuntimeError("CMake >= 3.11.0 is required")
+        if cmake_version < '3.7.2':
+            raise RuntimeError("CMake >= 3.7.2 is required")
 
         for ext in self.extensions:
             self.build_extension(ext)
@@ -45,21 +45,14 @@ class CMakeBuild(build_ext):
 
         cmake_args = [
             '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' +
-            os.path.join(extdir, "openpmd_api"),
+            os.path.join(extdir, "raytracingpy"),
             # '-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=' + extdir,
             '-DCMAKE_PYTHON_OUTPUT_DIRECTORY=' + extdir,
             '-DPYTHON_EXECUTABLE=' + sys.executable,
-            '-DopenPMD_USE_PYTHON:BOOL=ON',
-            # variants
-            '-DopenPMD_USE_MPI:BOOL=' + openPMD_USE_MPI,
-            # skip building cli tools, examples & tests
-            '-DBUILD_CLI_TOOLS:BOOL=OFF',  # note: provided as console scripts
             '-DBUILD_EXAMPLES:BOOL=' + BUILD_EXAMPLES,
             '-DBUILD_TESTING:BOOL=' + BUILD_TESTING,
             # static/shared libs
             '-DBUILD_SHARED_LIBS:BOOL=' + BUILD_SHARED_LIBS,
-            '-DHDF5_USE_STATIC_LIBRARIES:BOOL=' + HDF5_USE_STATIC_LIBRARIES,
-            '-DADIOS_USE_STATIC_LIBS:BOOL=' + ADIOS_USE_STATIC_LIBS,
             # Unix: rpath to current dir when packaged
             #       needed for shared (here non-default) builds and ADIOS1
             #       wrapper libraries
@@ -82,7 +75,7 @@ class CMakeBuild(build_ext):
             cmake_args += [
                 '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(
                     cfg.upper(),
-                    os.path.join(extdir, "openpmd_api")
+                    os.path.join(extdir, "raytracingpy")
                 )
             ]
             if sys.maxsize > 2**32:
@@ -90,7 +83,7 @@ class CMakeBuild(build_ext):
             build_args += ['--', '/m']
         else:
             cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
-            build_args += ['--', '-j2']
+            build_args += ['--', '-j1']
 
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(
@@ -118,49 +111,38 @@ with open('./README.md', encoding='utf-8') as f:
 # Allow to control options via environment vars.
 # Work-around for https://github.com/pypa/setuptools/issues/1712
 # note: changed default for SHARED, MPI, TESTING and EXAMPLES
-openPMD_USE_MPI = os.environ.get('openPMD_USE_MPI', 'OFF')
-HDF5_USE_STATIC_LIBRARIES = os.environ.get('HDF5_USE_STATIC_LIBRARIES', 'OFF')
-ADIOS_USE_STATIC_LIBS = os.environ.get('ADIOS_USE_STATIC_LIBS', 'OFF')
 BUILD_SHARED_LIBS = os.environ.get('BUILD_SHARED_LIBS', 'OFF')
 BUILD_TESTING = os.environ.get('BUILD_TESTING', 'OFF')
 BUILD_EXAMPLES = os.environ.get('BUILD_EXAMPLES', 'OFF')
-
-# https://cmake.org/cmake/help/v3.0/command/if.html
-if openPMD_USE_MPI.upper() in ['1', 'ON', 'YES', 'TRUE', 'YES']:
-    openPMD_USE_MPI = "ON"
-else:
-    openPMD_USE_MPI = "OFF"
+CMAKE_INSTALL_PREFIX = os.environ.get('CMAKE_INSTALL_PREFIX')
 
 # Get the package requirements from the requirements.txt file
 with open('./requirements.txt') as f:
     install_requires = [line.strip('\n') for line in f.readlines()]
-    if openPMD_USE_MPI == "ON":
-        install_requires.append('mpi4py>=2.1.0')
 
 # keyword reference:
 #   https://packaging.python.org/guides/distributing-packages-using-setuptools
 setup(
-    name='openPMD-api',
+    name='raytracingpy',
     # note PEP-440 syntax: x.y.zaN but x.y.z.devN
-    version='0.12.1.dev',
-    author='Fabian Koller, Franz Poeschel, Axel Huebl',
-    author_email='f.koller@hzdr.de, f.poeschel@hzdr.de, axelhuebl@lbl.gov',
+    version='0.1.0.dev',
+    author='Shervin Nourbakhsh',
+    author_email='nourbakhsh@ill.fr',
     maintainer='Shervin Nourbakhsh',
     maintainer_email='nourbakhsh@ill.fr',
-    description='C++ & Python API for Scientific I/O with openPMD',
+    description='Python API for openPMDraytrace',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    keywords=('openPMD openscience hdf5 adios mpi hpc research '
-              'file-format file-handling'),
-    url='https://www.openPMD.org',
+    keywords=('openPMDraytrace openscience'),
+    url='',
     project_urls={
-        'Documentation': 'https://openpmd-api.readthedocs.io',
-        'Doxygen': 'https://www.openpmd.org/openPMD-api',
-        'Reference': 'https://doi.org/10.14278/rodare.27',
-        'Source': 'https://github.com/openPMD/openPMD-api',
-        'Tracker': 'https://github.com/openPMD/openPMD-api/issues',
+#        'Documentation': 'https://openpmd-api.readthedocs.io',
+#        'Doxygen': 'https://www.openpmd.org/openPMD-api',
+#        'Reference': 'https://doi.org/10.14278/rodare.27',
+#        'Source': 'https://github.com/openPMD/openPMD-api',
+#        'Tracker': 'https://github.com/openPMD/openPMD-api/issues',
     },
-    ext_modules=[CMakeExtension('openpmd_api_cxx')],
+    ext_modules=[CMakeExtension('raytracingpy'),CMakeExtension('openPMDraytracepy')],
     cmdclass=dict(build_ext=CMakeBuild),
     # scripts=['openpmd-ls'],
     zip_safe=False,
@@ -169,9 +151,9 @@ setup(
     install_requires=install_requires,
     # see: src/bindings/python/cli
     entry_points={
-        'console_scripts': [
-            'openpmd-ls = openpmd_api.ls.__main__:main'
-        ]
+#        'console_scripts': [
+#            'openpmd-ls = openpmd_api.ls.__main__:main'
+#        ]
     },
     # we would like to use this mechanism, but pip / setuptools do not
     # influence the build and build_ext with it.
@@ -190,12 +172,12 @@ setup(
         'Operating System :: OS Independent',
         'Topic :: Scientific/Engineering',
         'Topic :: Database :: Front-Ends',
-        'Programming Language :: C++',
+ #       'Programming Language :: C++',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
+ #       'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+ #       'Programming Language :: Python :: 3.7',
+ #       'Programming Language :: Python :: 3.8',
         ('License :: OSI Approved :: '
          'GNU Lesser General Public License v3 or later (LGPLv3+)'),
     ],

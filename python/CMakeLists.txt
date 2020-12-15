@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.7.2)
 #endif()
 
-project(openPMDraytracepy VERSION 0.1.0 LANGUAGES CXX C)
+project(raytracing VERSION 0.1.0 LANGUAGES CXX C)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -20,7 +20,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #------------------------------------------------------------
 find_package(openPMD REQUIRED)
 find_package(openPMDraytrace REQUIRED) # provided by the C++ API
-
 find_package(pybind11 2.4.3 REQUIRED)
 
 #------------------------------------------------------------
@@ -91,7 +90,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
 # Install
 #------------------------------------------------------------
 install(
-  FILES   ${CMAKE_CURRENT_SOURCE_DIR}/python/__init__.py
+  FILES   ${CMAKE_CURRENT_SOURCE_DIR}/src/__init__.py
   DESTINATION ${CMAKE_INSTALL_PYTHONDIR}/${PROJECT_NAME}
   )
 install(TARGETS raytracingpy
