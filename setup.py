@@ -1,184 +1,125 @@
+# -*- coding: utf-8 -*-
 import os
-import re
 import sys
-import platform
 import subprocess
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-from distutils.version import LooseVersion
+
+# Convert distutils Windows platform specifiers to CMake -A arguments
+PLAT_TO_CMAKE = {
+    "win32": "Win32",
+    "win-amd64": "x64",
+    "win-arm32": "ARM",
+    "win-arm64": "ARM64",
+}
 
 
+# A CMakeExtension needs a sourcedir instead of a file list.
 class CMakeExtension(Extension):
-    def __init__(self, name, sourcedir=''):
+    def __init__(self, name, sourcedir=""):
         Extension.__init__(self, name, sources=[])
         self.sourcedir = os.path.abspath(sourcedir)
 
 
 class CMakeBuild(build_ext):
     def run(self):
+        # This is optional - will print a nicer error if CMake is missing.
+        # Since we force CMake via PEP 518 in the pyproject.toml, this should
+        # never happen and this whole method can be removed in your code if you
+        # want.
         try:
-            out = subprocess.check_output(['cmake', '--version'])
+            subprocess.check_output(["cmake", "--version"])
         except OSError:
-            raise RuntimeError(
-                "CMake 3.7.2+ must be installed to build the following " +
-                "extensions: " +
-                ", ".join(e.name for e in self.extensions))
+            msg = "CMake missing - probably upgrade to a newer version of Pip?"
+            raise RuntimeError(msg)
 
-        cmake_version = LooseVersion(re.search(
-            r'version\s*([\d.]+)',
-            out.decode()
-        ).group(1))
-        if cmake_version < '3.7.2':
-            raise RuntimeError("CMake >= 3.7.2 is required")
-
-        for ext in self.extensions:
-            self.build_extension(ext)
+        # To support Python 2, we have to avoid super(), since distutils is all
+        # old-style classes.
+        build_ext.run(self)
 
     def build_extension(self, ext):
-        extdir = os.path.abspath(os.path.dirname(
-            self.get_ext_fullpath(ext.name)
-        ))
+        extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
+
         # required for auto-detection of auxiliary "native" libs
         if not extdir.endswith(os.path.sep):
             extdir += os.path.sep
 
+        cfg = "Debug" if self.debug else "Release"
+
+        # CMake lets you override the generator - we need to check this.
+        # Can be set with Conda-Build, for example.
+        cmake_generator = os.environ.get("CMAKE_GENERATOR", "")
+
+        # Set Python_EXECUTABLE instead if you use PYBIND11_FINDPYTHON
+        # EXAMPLE_VERSION_INFO shows you how to pass a value into the C++ code
+        # from Python.
         cmake_args = [
-            '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' +
-            os.path.join(extdir, "raytracingpy"),
-            # '-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=' + extdir,
-            '-DCMAKE_PYTHON_OUTPUT_DIRECTORY=' + extdir,
-            '-DPYTHON_EXECUTABLE=' + sys.executable,
-            '-DBUILD_EXAMPLES:BOOL=' + BUILD_EXAMPLES,
-            '-DBUILD_TESTING:BOOL=' + BUILD_TESTING,
-            # static/shared libs
-            '-DBUILD_SHARED_LIBS:BOOL=' + BUILD_SHARED_LIBS,
-            # Unix: rpath to current dir when packaged
-            #       needed for shared (here non-default) builds and ADIOS1
-            #       wrapper libraries
-            '-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON',
-            '-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=OFF',
-            # Windows: has no RPath concept, all `.dll`s must be in %PATH%
-            #          or same dir as calling executable
+            "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={}".format(extdir),
+            "-DPYTHON_EXECUTABLE={}".format(sys.executable),
+            "-DEXAMPLE_VERSION_INFO={}".format(self.distribution.get_version()),
+            "-DCMAKE_BUILD_TYPE={}".format(cfg),  # not used on MSVC, but no harm
         ]
-        if sys.platform == "darwin":
-            cmake_args.append('-DCMAKE_INSTALL_RPATH=@loader_path')
+        build_args = []
+
+        if self.compiler.compiler_type != "msvc":
+            # Using Ninja-build since it a) is available as a wheel and b)
+            # multithreads automatically. MSVC would require all variables be
+            # exported for Ninja to pick it up, which is a little tricky to do.
+            # Users can override the generator with CMAKE_GENERATOR in CMake
+            # 3.15+.
+            if not cmake_generator:
+                cmake_args += ["-GNinja"]
+
         else:
-            # values: linux*, aix, freebsd, ...
-            #   just as well win32 & cygwin (although Windows has no RPaths)
-            cmake_args.append('-DCMAKE_INSTALL_RPATH=$ORIGIN')
 
-        cfg = 'Debug' if self.debug else 'Release'
-        build_args = ['--config', cfg]
+            # Single config generators are handled "normally"
+            single_config = any(x in cmake_generator for x in {"NMake", "Ninja"})
 
-        if platform.system() == "Windows":
-            cmake_args += [
-                '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(
-                    cfg.upper(),
-                    os.path.join(extdir, "raytracingpy")
-                )
-            ]
-            if sys.maxsize > 2**32:
-                cmake_args += ['-A', 'x64']
-            build_args += ['--', '/m']
-        else:
-            cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
-            build_args += ['--', '-j1']
+            # CMake allows an arch-in-generator style for backward compatibility
+            contains_arch = any(x in cmake_generator for x in {"ARM", "Win64"})
 
-        env = os.environ.copy()
-        env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(
-            env.get('CXXFLAGS', ''),
-            self.distribution.get_version()
-        )
+            # Specify the arch if using MSVC generator, but only if it doesn't
+            # contain a backward-compatibility arch spec already in the
+            # generator name.
+            if not single_config and not contains_arch:
+                cmake_args += ["-A", PLAT_TO_CMAKE[self.plat_name]]
+
+            # Multi-config generators have a different way to specify configs
+            if not single_config:
+                cmake_args += [
+                    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), extdir)
+                ]
+                build_args += ["--config", cfg]
+
+        # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
+        # across all generators.
+        if "CMAKE_BUILD_PARALLEL_LEVEL" not in os.environ:
+            # self.parallel is a Python 3 only way to set parallel jobs by hand
+            # using -j in the build_ext call, not supported by pip or PyPA-build.
+            if hasattr(self, "parallel") and self.parallel:
+                # CMake 3.12+ only.
+                build_args += ["-j{}".format(self.parallel)]
+
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
+
         subprocess.check_call(
-            ['cmake', ext.sourcedir] + cmake_args,
-            cwd=self.build_temp,
-            env=env
+            ["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp
         )
         subprocess.check_call(
-            ['cmake', '--build', '.'] + build_args,
-            cwd=self.build_temp
+            ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
-        # note that this does not call install;
-        # we pick up artifacts directly from the build output dirs
 
 
-with open('./README.md', encoding='utf-8') as f:
-    long_description = f.read()
-
-# Allow to control options via environment vars.
-# Work-around for https://github.com/pypa/setuptools/issues/1712
-# note: changed default for SHARED, MPI, TESTING and EXAMPLES
-BUILD_SHARED_LIBS = os.environ.get('BUILD_SHARED_LIBS', 'OFF')
-BUILD_TESTING = os.environ.get('BUILD_TESTING', 'OFF')
-BUILD_EXAMPLES = os.environ.get('BUILD_EXAMPLES', 'OFF')
-CMAKE_INSTALL_PREFIX = os.environ.get('CMAKE_INSTALL_PREFIX')
-
-# Get the package requirements from the requirements.txt file
-with open('./requirements.txt') as f:
-    install_requires = [line.strip('\n') for line in f.readlines()]
-
-# keyword reference:
-#   https://packaging.python.org/guides/distributing-packages-using-setuptools
 setup(
-    name='raytracingpy',
-    # note PEP-440 syntax: x.y.zaN but x.y.z.devN
-    version='0.1.0.dev',
-    author='Shervin Nourbakhsh',
-    author_email='nourbakhsh@ill.fr',
-    maintainer='Shervin Nourbakhsh',
-    maintainer_email='nourbakhsh@ill.fr',
-    description='Python API for openPMDraytrace',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    keywords=('openPMDraytrace openscience'),
-    url='',
-    project_urls={
-#        'Documentation': 'https://openpmd-api.readthedocs.io',
-#        'Doxygen': 'https://www.openpmd.org/openPMD-api',
-#        'Reference': 'https://doi.org/10.14278/rodare.27',
-#        'Source': 'https://github.com/openPMD/openPMD-api',
-#        'Tracker': 'https://github.com/openPMD/openPMD-api/issues',
-    },
-    ext_modules=[CMakeExtension('raytracingpy'),CMakeExtension('openPMDraytracepy')],
-    cmdclass=dict(build_ext=CMakeBuild),
-    # scripts=['openpmd-ls'],
+    name="cmake_example",
+    version="0.0.1",
+    author="Dean Moldovan",
+    author_email="dean0x7d@gmail.com",
+    description="A test project using pybind11 and CMake",
+    long_description="",
+    ext_modules=[CMakeExtension("")],
+    cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
-    python_requires='>=3.5, <3.9',
-    # tests_require=['pytest'],
-    install_requires=install_requires,
-    # see: src/bindings/python/cli
-    entry_points={
-#        'console_scripts': [
-#            'openpmd-ls = openpmd_api.ls.__main__:main'
-#        ]
-    },
-    # we would like to use this mechanism, but pip / setuptools do not
-    # influence the build and build_ext with it.
-    # therefore, we use environment vars to control.
-    # ref: https://github.com/pypa/setuptools/issues/1712
-    # extras_require={
-    #     'mpi': ['mpi4py>=2.1.0'],
-    # },
-    # cmdclass={'test': PyTest},
-    # platforms='any',
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Natural Language :: English',
-        'Environment :: Console',
-        'Intended Audience :: Science/Research',
-        'Operating System :: OS Independent',
-        'Topic :: Scientific/Engineering',
-        'Topic :: Database :: Front-Ends',
- #       'Programming Language :: C++',
-        'Programming Language :: Python :: 3',
- #       'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
- #       'Programming Language :: Python :: 3.7',
- #       'Programming Language :: Python :: 3.8',
-        ('License :: OSI Approved :: '
-         'GNU Lesser General Public License v3 or later (LGPLv3+)'),
-    ],
 )
