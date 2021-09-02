@@ -2,13 +2,15 @@
 //#include <pybind11/stl.h>
 namespace py = pybind11;
 
+#include "config.h"
 #include <openPMD_io.hh>
 #include <ray.hh>
 using namespace raytracing;
 
-PYBIND11_MODULE(raytracingpy, m) {
+PYBIND11_MODULE(MODULE_NAME, m) {
 
 	m.doc() = "pybind11 example plugin"; // optional module docstring
+m.
 	py::class_<openPMD_io>(m, "openPMD_io")
 	        .def(py::init<const std::string&, const std::string, const std::string,
 	                      const std::string, const std::string>())

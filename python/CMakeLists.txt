@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.7.2)
 #endif()
 
-project(raytracing VERSION 0.1.0 LANGUAGES CXX C)
+project(openPMDraytracepy VERSION 0.1.0 LANGUAGES CXX C)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -23,8 +23,8 @@ find_package(openPMDraytrace REQUIRED) # provided by the C++ API
 find_package(pybind11 2.4.3 REQUIRED)
 
 #------------------------------------------------------------
-pybind11_add_module(raytracingpy src/openPMD_io.cpp)
-target_link_libraries(raytracingpy PRIVATE raytrace)
+pybind11_add_module(${PROJECT_NAME} src/openPMD_io.cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE raytrace)
 #target_include_directories(raytracingpy
 #  PRIVATE $<TARGET_PROPERTY:raytrace,INTERFACE_INCLUDE_DIRECTORIES>
 #  )
@@ -34,7 +34,7 @@ target_link_libraries(raytracingpy PRIVATE raytrace)
 #         ${CMAKE_CURRENT_SOURCE_DIR}/python/
 #         ${CMAKE_PYTHON_OUTPUT_DIRECTORY}/raytracing
 #     )
-set_target_properties(raytracingpy PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
   SOVERSION ${PROJECT_VERSION_MAJOR}
   VERSION ${PROJECT_VERSION}
   )
@@ -93,7 +93,7 @@ install(
   FILES   ${CMAKE_CURRENT_SOURCE_DIR}/src/__init__.py
   DESTINATION ${CMAKE_INSTALL_PYTHONDIR}/${PROJECT_NAME}
   )
-install(TARGETS raytracingpy
+install(TARGETS ${PROJECT_NAME}
   EXPORT raytracingpyexport
   DESTINATION ${CMAKE_INSTALL_PYTHONDIR}/${PROJECT_NAME}
   )
