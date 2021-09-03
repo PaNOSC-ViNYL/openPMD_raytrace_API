@@ -32,6 +32,9 @@ if(NOT DEFINED ${CMAKE_BUILD_TYPE})
   set(CMAKE_BUILD_TYPE "Release") # set Release by default
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+if(NOT DEFINED BUILD_SHARED_LIBS)
+  set(BUILD_SHARED_LIBS True)
+endif()
 
 # fix the RPATH for the linker
 if(NOT APPLE)
@@ -81,7 +84,7 @@ target_link_libraries(${LIBNAME} PUBLIC openPMD::openPMD)
 include(GenerateExportHeader)
 generate_export_header(${LIBNAME}
     EXPORT_MACRO_NAME ${LIBNAME}_EXPORT
-    EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_INCLUDEDIR}/export.h
+    EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/include/export.h
 )
 
 #---------------
@@ -96,9 +99,6 @@ write_basic_package_version_file(${PROJECT_NAME}-config-version.cmake
 #------------------------------------------------------------
 # Install
 #------------------------------------------------------------
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
-
 
 install(TARGETS ${LIBNAME}
   EXPORT raytraceTargets
