@@ -22,6 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">openPMD_raytrace_API
+   &#160;<span id="projectnumber">0.1.0</span>
    </div>
   </td>
  </tr>
@@ -101,7 +102,7 @@ $(function() {
 </ul>
 <p>If you do not have the openPMD-api installed on your system, this package downloads, compiles and install it for you. But installing it separately is highly advisable.</p>
 <h2>Compilation and installation </h2>
-<div class="fragment"><div class="line">git clone -b devel --depth 1 git@github.com:PaNOSC-ViNYL/openPMD_raytrace_API.git</div><div class="line">cd openPMD_raytrace_API/</div><div class="line"></div><div class="line">mkdir build/</div><div class="line">cd build/</div><div class="line">cmake ..</div><div class="line"></div><div class="line">cmake --build .</div><div class="line"></div><div class="line"># for the documentation</div><div class="line">cmake --build . --target doc</div></div><!-- fragment --><p>More information about the usage can be found <a class="el" href="usage.html">here</a> </p>
+<div class="fragment"><div class="line">git clone -b devel --depth 1 git@github.com:PaNOSC-ViNYL/openPMD_raytrace_API.git</div><div class="line">cd openPMD_raytrace_API/</div><div class="line"></div><div class="line">cmake -S . -B build/</div><div class="line">cmake --build build/</div><div class="line"></div><div class="line"># for the documentation</div><div class="line">cmake --build build/ --target doc</div></div><!-- fragment --><p>More information about the usage can be found <a class="el" href="usage.html">here</a> </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
