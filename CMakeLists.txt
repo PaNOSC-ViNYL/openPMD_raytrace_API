@@ -15,13 +15,13 @@ if(NOT DEFINED BUILD_SHARED_LIBS)
   set(BUILD_SHARED_LIBS True)
 endif()
 
-set( CMAKE_BUILD_TYPE Release)
-set( CMAKE_BUILD_TYPE Debug)
+#option(CMAKE_BUILD_TYPE "CMake Build type" Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 ##
 option(BUILD_TESTING "Do testing" OFF)
 option(INSTALL "perform the installation" OFF)
-option(PYTHONBIND "Make the python library" ON)
+option(PYTHONBIND "Make the python library" OFF)
 #------------------------------------------------------------
 if(NOT INSTALL)
   set(CMAKE_INSTALL_PREFIX /tmp/devel)
@@ -63,7 +63,7 @@ if(NOT openPMD_FOUND)
     #GIT_COMMIT d6820a12b03b7c574a04e8c356a78b66492cb990
     GIT_SHALLOW True
     UPDATE_DISCONNECTED True
-    PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/cmake_api.patch
+    #PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/cmake_api.patch
 #    INSTALL_COMMAND "make install"
 #    CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     CMAKE_ARGS cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=ON -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} 

@@ -1,98 +1,177 @@
-cmake_minimum_required(VERSION 3.7.2)
+cmake_minimum_required(VERSION 3.20.2)
 
-project(openPMDraytrace VERSION 0.1.0 LANGUAGES CXX C)
+project(openPMDraytrace
+  VERSION 0.1.0
+  LANGUAGES CXX
+  HOMEPAGE_URL "https://panosc-vinyl.github.io/openPMD_raytrace_API/"
+  )
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
-
-if(NOT DEFINED BUILD_SHARED_LIBS)
-  set(BUILD_SHARED_LIBS True)
-endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
   # specify the C++ standard
   set(CMAKE_CXX_STANDARD 14)
   set(CMAKE_CXX_STANDARD_REQUIRED True)
 endif()
-#set(CMAKE_CXX_STANDARD 14)
-#set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
 ##
-option(TEST "Do testing" OFF)
-option(INSTALL "perform the installation" OFF)
+#------------------------------------------------------------
+# name of the target library
+set(LIBNAME ${PROJECT_NAME})
+set(NAMESPACE openPMD)
+set(INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+set(ConfigPackageLocation ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME})
+set(component_runtime OPENPMDRAYTRACE_API_CPP_RUNTIME)
+set(component_development OPENPMDRAYTRACE_API_CPP_DEVELOPMENT)
+#------------------------------------------------------------
+option(OPENPMDRAYTRACE_TEST "Compiling the test programs" OFF)
+option(OPENPMDRAYTRACE_INSTALL "Perform the installation" OFF)
+if(NOT DEFINED ${CMAKE_BUILD_TYPE})
+  set(CMAKE_BUILD_TYPE "Release") # set Release by default
+endif()
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+# fix the RPATH for the linker
+if(NOT APPLE)
+  set(CMAKE_INSTALL_RPATH $ORIGIN)
+endif()
 #------------------------------------------------------------
 
-find_package(openPMD)
+#------------------------------------------------------------
+# Dependencies
+#------------------------------------------------------------
+# this is needed when including this file as subdir
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+# if you update this list, please make sure it is reflected in cmake/*cmake.in files in the source dir
+find_package(openPMD REQUIRED)
 
-add_library(raytrace  src/openPMD_io.cc src/rays.cc)
-set_target_properties(raytrace
+#------------------------------------------------------------
+#------------------------------------------------------------
+# Libraries
+#------------------------------------------------------------
+add_library(${LIBNAME}) 
+add_library(${NAMESPACE}::${LIBNAME} ALIAS ${LIBNAME})
+
+
+target_sources(${LIBNAME}
+  PRIVATE src/openPMD_io.cc src/rays.cc
+  )
+set_target_properties(${LIBNAME}
    PROPERTIES LINKER_LANGUAGE CXX
    )
-
-target_include_directories(raytrace
+target_include_directories(${LIBNAME}
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/ # all the private headers
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> 
-  PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>
+  PUBLIC $<INSTALL_INTERFACE:${INSTALL_INCLUDEDIR}>
   )
-set_target_properties(raytrace PROPERTIES
+set_target_properties(${LIBNAME} PROPERTIES
   SOVERSION ${PROJECT_VERSION_MAJOR}
   VERSION ${PROJECT_VERSION}
+  POSITION_INDEPENDENT_CODE 1 # this is needed for static compilation for python binding
   )
+#target_compile_features(raytrace PUBLIC cxx_std_17)
+#set_property(TARGET ${LIBNAME} PROPERTY CXX_STANDARD 17) # with 17 it crashes!
+# it should be due to the openPMD ${LIBNAME}
+target_link_libraries(${LIBNAME} PUBLIC openPMD::openPMD)
 
-#set_property(TARGET raytrace PROPERTY CXX_STANDARD 17) # with 17 it crashes!
-# it should be due to the openPMD RAYTRACE
-target_link_libraries(raytrace PUBLIC openPMD::openPMD)
 
+#------------------------------------------------------------
+include(GenerateExportHeader)
+generate_export_header(${LIBNAME}
+    EXPORT_MACRO_NAME ${LIBNAME}_EXPORT
+    EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_INCLUDEDIR}/export.h
+)
 
 #---------------
 # Library version
-write_basic_package_version_file(${PROJECT_NAME}ConfigVersion.cmake
+write_basic_package_version_file(${PROJECT_NAME}-config-version.cmake
   COMPATIBILITY SameMajorVersion
   VERSION ${PROJECT_VERSION}
   )
 
 
-if(INSTALL)
-  #------------------------------------------------------------
-  # Install
-  #------------------------------------------------------------
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
-  
-  # this is to install the headers
-  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ # don't forget the trailing /
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
-    )
-  
-  # in CMake 3.14 you just need #install(TARGETS cameo)
-  install(TARGETS raytrace
-    EXPORT raytraceexport
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # windows
-    COMPONENT raytrace_Runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # dynamic
-    COMPONENT raytrace_Runtime
-    #    NAMELINK_COMPONENT cameo_Development #from CMake 3.12
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # static
-    COMPONENT raytrace_Development
-    PUBLIC_HEADER  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    )
-  
-  
-  # This makes the project importable from the install directory
-  # Put config file in per-project dir (name MUST match), can also
-  # just go into 'cmake'.
-  install(EXPORT raytraceexport
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
-    FILE ${PROJECT_NAME}Config.cmake 
-    )
-  # makes the project importable from the build directory
-  export(TARGETS raytrace FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake)
-endif(INSTALL)
 
-#enable_testing()
-#add_subdirectory(test)
+#------------------------------------------------------------
+# Install
+#------------------------------------------------------------
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
+
+
+install(TARGETS ${LIBNAME}
+  EXPORT raytraceTargets
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # windows
+    COMPONENT ${component_runtime}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # dynamic
+    COMPONENT ${component_runtime}
+  #    NAMELINK_COMPONENT cameo_Development #from CMake 3.12
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # static
+    COMPONENT ${component_development}
+  PUBLIC_HEADER  DESTINATION ${INSTALL_INCLUDEDIR}
+    COMPONENT ${component_development}
+  )
+  
+# this is to install the headers
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ # don't forget the trailing /
+  DESTINATION ${INSTALL_INCLUDEDIR}
+  COMPONENT ${component_development}
+  FILES_MATCHING PATTERN *.h*
+  )
+
+# this is to install the version header that is generated by cmake
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/ # don't forget the trailing /
+  DESTINATION ${INSTALL_INCLUDEDIR}
+  COMPONENT ${component_development}
+  FILES_MATCHING  PATTERN *.h*
+  )
+
+export(EXPORT raytraceTargets
+  FILE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-targets.cmake
+  NAMESPACE ${NAMESPACE}::
+  )
+configure_package_config_file(cmake/${PROJECT_NAME}-config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  INSTALL_DESTINATION  ${ConfigPackageLocation}
+  )
+
+
+# This makes the project importable from the install directory
+# Put config file in per-project dir (name MUST match), can also
+# just go into 'cmake'.
+install(EXPORT raytraceTargets
+  FILE ${PROJECT_NAME}-targets.cmake
+  NAMESPACE ${NAMESPACE}::
+  DESTINATION ${ConfigPackageLocation}
+  COMPONENT ${component_development}
+  )
+
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+  DESTINATION ${ConfigPackageLocation}
+  COMPONENT ${component_development}
+  )
+# makes the project importable from the build directory
+#export(TARGETS ${LIBNAME} FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake)
+
+#------------------------------------------------------------
+# CPack
+#------------------------------------------------------------
+include(${CMAKE_CURRENT_SOURCE_DIR}/packaging/CPackConfig.cmake)
+include(CPack)
+
+#------------------------------------------------------------
+# Tests
+#------------------------------------------------------------
+if(CAMEO_API_CPP_TESTS)
+# Note: execute ctest --verbose to have more details 
+enable_testing()
+add_subdirectory(tests)
+endif(CAMEO_API_CPP_TESTS)
+
 
 
 

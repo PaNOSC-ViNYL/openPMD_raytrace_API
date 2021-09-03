@@ -42,14 +42,11 @@ Compilation and installation
 git clone -b devel --depth 1 git@github.com:PaNOSC-ViNYL/openPMD_raytrace_API.git
 cd openPMD_raytrace_API/
 
-mkdir build/
-cd build/
-cmake ..
-
-cmake --build .
+cmake -S . -B build/
+cmake --build build/
 
 # for the documentation
-cmake --build . --target doc
+cmake --build build/ --target doc
 ```
 
 
