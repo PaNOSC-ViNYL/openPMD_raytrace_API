@@ -166,11 +166,11 @@ include(CPack)
 #------------------------------------------------------------
 # Tests
 #------------------------------------------------------------
-if(CAMEO_API_CPP_TESTS)
+if(OPENPMDRAYTRACE_TEST)
 # Note: execute ctest --verbose to have more details 
-enable_testing()
-add_subdirectory(tests)
-endif(CAMEO_API_CPP_TESTS)
+#enable_testing()
+#add_subdirectory(tests) # tests yet to be added
+endif(OPENPMDRAYTRACE_TEST)
 
 
 
