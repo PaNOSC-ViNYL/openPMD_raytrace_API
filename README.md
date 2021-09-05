@@ -51,3 +51,9 @@ cmake --build build/ --target doc
 
 
 More information about the usage can be found [here](@ref usage)
+
+
+To do
+------------------------------
+ - [ ] Make a dedicated set of tests for the C++ API in cpp/tests/
+ - [ ] Uniform convention for header files .h

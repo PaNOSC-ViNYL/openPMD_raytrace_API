@@ -89,7 +89,7 @@ generate_export_header(${LIBNAME}
 
 #---------------
 # Library version
-write_basic_package_version_file(${PROJECT_NAME}-config-version.cmake
+write_basic_package_version_file(${PROJECT_NAME}ConfigVersion.cmake
   COMPATIBILITY SameMajorVersion
   VERSION ${PROJECT_VERSION}
   )
@@ -132,7 +132,7 @@ export(EXPORT raytraceTargets
   NAMESPACE ${NAMESPACE}::
   )
 configure_package_config_file(cmake/${PROJECT_NAME}-config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
   INSTALL_DESTINATION  ${ConfigPackageLocation}
   )
 
@@ -149,8 +149,8 @@ install(EXPORT raytraceTargets
 
 install(
   FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
   DESTINATION ${ConfigPackageLocation}
   COMPONENT ${component_development}
   )

@@ -74,6 +74,11 @@ public:
 		(*yy) = y();
 		(*zz) = z();
 	}
+	void get_position(double* xx, double* yy, double* zz) const {
+		(*xx) = x();
+		(*yy) = y();
+		(*zz) = z();
+	}
 	//@}
 
 	/// \name Get direction
@@ -86,6 +91,11 @@ public:
 		*y = dy() * scale;
 		*z = dz() * scale;
 	}
+	void get_direction(double* x, double* y, double* z, double scale) const {
+		*x = dx() * scale;
+		*y = dy() * scale;
+		*z = dz() * scale;
+	}
 	///@}
 
 	/// \name Get polarization for non-photons
@@ -94,6 +104,11 @@ public:
 	float sy() const { return _polarization[Y]; };
 	float sz() const { return _polarization[Z]; };
 	void get_polarization(float* x, float* y, float* z) const {
+		*x = sx();
+		*y = sy();
+		*z = sz();
+	}
+	void get_polarization(double* x, double* y, double* z) const {
 		*x = sx();
 		*y = sy();
 		*z = sz();
