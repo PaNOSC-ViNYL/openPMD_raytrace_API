@@ -57,9 +57,12 @@ find_package(openPMD REQUIRED)
 add_library(${LIBNAME}) 
 add_library(${NAMESPACE}::${LIBNAME} ALIAS ${LIBNAME})
 
-
+#add_definitions(-DDEBUG)
 target_sources(${LIBNAME}
   PRIVATE src/openPMD_io.cc src/rays.cc
+  )
+target_compile_definitions(${LIBNAME}
+  PRIVATE DOCTEST_CONFIG_DISABLE
   )
 set_target_properties(${LIBNAME}
    PROPERTIES LINKER_LANGUAGE CXX
@@ -168,8 +171,7 @@ include(CPack)
 #------------------------------------------------------------
 if(OPENPMDRAYTRACE_TEST)
 # Note: execute ctest --verbose to have more details 
-#enable_testing()
-#add_subdirectory(tests) # tests yet to be added
+add_subdirectory(tests) # tests yet to be added
 endif(OPENPMDRAYTRACE_TEST)
 
 

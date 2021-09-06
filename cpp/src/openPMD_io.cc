@@ -2,7 +2,6 @@
 #include "openPMD_io.hh"
 #include <iostream>
 #include <openPMD/openPMD.hpp> // openPMD C++ API
-#define DEBUG
 
 #include <exception>
 ///\file
@@ -138,8 +137,9 @@ raytracing::openPMD_io::init_write(std::string particle_species, unsigned long l
 	// branchIndex: unique index number assigned to the latice branch the[article is in.
 	// (it should be per particle
 	//
+#ifdef DEBUG
 	std::cout << "Filename: " << filename << std::endl; // remove
-	// auto i = _series->iterations[1];
+#endif
 	auto i = iter_pmd(iter);
 	_series->flush();
 
@@ -149,19 +149,21 @@ raytracing::openPMD_io::init_write(std::string particle_species, unsigned long l
 	// float type _series->setAttribute("directionOfGravity_X", directionOfGravity[0]);
 	//_series->setAttribute("directionOfGravity_Y", directionOfGravity[1]);
 	//_series->setAttribute("directionOfGravity_Z", directionOfGravity[2]);
-
+#ifdef DEBUG
 	std::cout << "Iter: " << _iter << std::endl;
+#endif
 	// set the mccode, mccode_version, component name, instrument name
 
 	init_rays(particle_species, n_rays, iter);
-	std::cout << "init rays done" << std::endl;
 	// openPMD::Record mass = rays["mass"];
 	// openPMD::RecordComponent mass_scalar = mass[openPMD::RecordComponent::SCALAR];
 
 	//	mass_scalar.resetDataset(dataset);
 
 	_series->flush();
+#ifdef DEBUG
 	std::cout << "flush done" << std::endl;
+#endif
 }
 
 //------------------------------------------------------------
@@ -194,7 +196,7 @@ raytracing::openPMD_io::save_write(void) {
 	
 	// this check is here and not in the trace_write because I believe that loosing time for a
 	// CHUNKSIZE simulating rays that are not store is much less frequent that.
-	if (_nrays >= _max_allowed_rays)
+	if (_nrays > _max_allowed_rays)
 		throw std::runtime_error("Maximum number of foreseen rays reached, stopping");
 
 	openPMD::Extent extent = {extent_size};

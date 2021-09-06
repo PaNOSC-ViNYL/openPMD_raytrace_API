@@ -18,7 +18,7 @@ constexpr double V2W = 3.956034e-07; // m^2/
  * used
  */
 typedef int particleStatus_t;
-constexpr int kDead  = 0; ///<  particleStatus_t: dead ray
+constexpr int kDead  = 0; ///< particleStatus_t: dead ray
 constexpr int kAlive = 1; ///< alive ray
 
 /** \class Ray
@@ -69,7 +69,7 @@ public:
 	float x() const { return _position[X]; };
 	float y() const { return _position[Y]; };
 	float z() const { return _position[Z]; };
-	void get_position(float* xx, float* yy, float* zz) const {
+  	void get_position(float* xx, float* yy, float* zz) const {
 		(*xx) = x();
 		(*yy) = y();
 		(*zz) = z();
@@ -78,6 +78,12 @@ public:
 		(*xx) = x();
 		(*yy) = y();
 		(*zz) = z();
+	}
+	///\todo add methods using reference instead of pointers for C++ users
+	void get_position(float& xx, float& yy, float& zz) const {
+		xx = x();
+		yy = y();
+		zz = z();
 	}
 	//@}
 
@@ -257,7 +263,10 @@ public:
 
 } // namespace raytracing
 
+
+
 #endif
+
 
 
 

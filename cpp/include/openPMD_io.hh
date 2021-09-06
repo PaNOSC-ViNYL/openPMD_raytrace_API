@@ -104,8 +104,8 @@ private:
 
 		//------------------------------ private memebers
 	private:
-		size_t _size; // number of stored rays = min(chunk_size, remaining rays to read)
-		size_t _read; // current index when reading
+		size_t _size = 0; // number of stored rays = min(chunk_size, remaining rays to read)
+		size_t _read = 0; // current index when reading
 
 		//------------------------------ public methods
 	public:
@@ -123,6 +123,7 @@ private:
 		 * object
 		 */
 		Ray pop(bool next = true);
+
 		/** \brief reset the container, removing all the rays */
 		void clear(void) {
 			_size = 0;
@@ -205,11 +206,11 @@ public:
 	 *
 	 * This method calls init_rays() a first time.
 	 */
-	void init_write(std::string pdgId,             ///< PDG ID of the particles
+	void init_write(std::string particle_species,  ///< PDG ID of the particles
 	                unsigned long long int n_rays, ///< number of rays being simulated (max)
 	                openPMD_output_format_t output_format = raytracing::AUTO, ///< output format
-	                unsigned int iter                     = 1     ///< openPMD iteration
-			///\todo add gravity direction and horizontal direction
+	                unsigned int iter                     = 1 ///< openPMD iteration
+	                ///\todo add gravity direction and horizontal direction
 	);
 
 	/** \brief declare the ray particle species in the file
