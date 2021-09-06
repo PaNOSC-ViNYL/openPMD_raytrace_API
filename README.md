@@ -27,8 +27,8 @@ The list of variables stored in the openPMD file as defined by the extension is 
 
 Dependencies
 ------------------------------
-This packaged depends on:
- - [**cmake**](https://cmake.org) (3.11.4): 
+This package depends on:
+ - [**cmake**](https://cmake.org) (3.21.1):
  - [**openPMD-api**](https://www.openpmd.org/openPMD-api/) (0.12.1) used as base layer
  - [**pybind11**](https://github.com/pybind/pybind11) (2.4.3) [optional, ON by default] for the python binding 
  - [**doxygen**](https://doxygen.nl) (1.8.14) [optional]

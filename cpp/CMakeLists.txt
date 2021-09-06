@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20.2)
 
 project(openPMDraytrace
   VERSION 0.1.0
-  LANGUAGES CXX
+  LANGUAGES CXX C # the C language is required when looking for the HDF5 dependency
   HOMEPAGE_URL "https://panosc-vinyl.github.io/openPMD_raytrace_API/"
   )
 
