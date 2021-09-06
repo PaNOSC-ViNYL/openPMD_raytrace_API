@@ -208,8 +208,8 @@ public:
 	 */
 	void init_write(std::string particle_species,  ///< PDG ID of the particles
 	                unsigned long long int n_rays, ///< number of rays being simulated (max)
-	                openPMD_output_format_t output_format = raytracing::AUTO, ///< output format
-	                unsigned int iter                     = 1 ///< openPMD iteration
+
+	                unsigned int iter = 1 ///< openPMD iteration
 	                ///\todo add gravity direction and horizontal direction
 	);
 
@@ -282,8 +282,6 @@ private:
 	Ray _last_ray;
 	unsigned int _iter;
 	std::string _particle_species;
-
-	static const std::map<openPMD_output_format_t, std::string> output_format_names;
 
 	//------------------------------ set of helper methods
 	inline openPMD::Iteration& iter_pmd(unsigned int iter) { return _series->iterations[iter]; }

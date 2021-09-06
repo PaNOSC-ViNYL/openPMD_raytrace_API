@@ -31,7 +31,7 @@ TEST_CASE("[openPMD_io] Write") {
 	raytracing::openPMD_io iol(filename, "test code");
 	unsigned long long int n_rays_max = 11;
 	unsigned int iter                 = 2;
-	iol.init_write("2112", n_rays_max, raytracing::AUTO, iter);
+	iol.init_write("2112", n_rays_max, iter);
 	std::cout << "filename = " << filename << std::endl;
 
 	iol.set_gravity_direction(0.33, 0.33, 0.33);

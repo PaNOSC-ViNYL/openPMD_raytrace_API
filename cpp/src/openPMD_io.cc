@@ -19,11 +19,6 @@ constexpr size_t CHUNK_SIZE = 3;
 /** \todo use particlePatches ... but I don't understand if/how */
 
 //------------------------------------------------------------
-// filaname extensions base on the declared format
-const std::map<raytracing::openPMD_output_format_t, std::string>
-        raytracing::openPMD_io::output_format_names = {
-                {JSON, "json"}, {HDF5, "h5"}, {AUTO, ""} //
-};
 
 //------------------------------------------------------------
 raytracing::openPMD_io::openPMD_io(const std::string& filename, std::string mc_code_name,
@@ -119,14 +114,9 @@ raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long lo
 
 void
 raytracing::openPMD_io::init_write(std::string particle_species, unsigned long long int n_rays,
-                                   openPMD_output_format_t extension, unsigned int iter) {
+                                   unsigned int iter) {
 	_iter                = iter;
 	std::string filename = _name;
-	//	size_t extension_pos = filename.rfind('.', 5);
-	if (extension != AUTO) {
-		std::string a = output_format_names.find(extension)->second;
-		filename += std::string(".") + a;
-	}
 	// assign the global variable to keep track of it
 	_series = std::unique_ptr<openPMD::Series>(
 	        new openPMD::Series(filename, openPMD::Access::CREATE));
