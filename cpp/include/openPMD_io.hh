@@ -1,7 +1,6 @@
 #ifndef RAYTRACE_API_HH
 #define RAYTRACE_API_HH
 ///\file
-#include "openpmd_output_formats.h" // enum with the available openPMD backends
 #include "ray.hh"
 #include <openPMD/openPMD.hpp> // openPMD C++ API
 #include <string>
