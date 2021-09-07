@@ -48,7 +48,6 @@ target_compile_definitions(mytest
   )
 target_link_libraries(mytest
   PRIVATE openPMDraytrace doctest
-#  PRIVATE openPMD::openPMD
   )
 
 

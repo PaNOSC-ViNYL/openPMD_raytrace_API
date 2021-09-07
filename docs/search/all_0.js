@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['auto',['AUTO',['../namespaceraytracing.html#a246cdad8af88382c1837ca3edaa6f613a188bc1d560012af02b49f4fa6249505b',1,'raytracing']]]
+  ['c_2b_2b_20api_20for_20the_20openpmd_20ray_20trace_20extension',['c++ API for the openPMD ray trace extension',['../index.html',1,'']]]
 ];

@@ -27,7 +27,7 @@ set(component_runtime OPENPMDRAYTRACE_API_CPP_RUNTIME)
 set(component_development OPENPMDRAYTRACE_API_CPP_DEVELOPMENT)
 #------------------------------------------------------------
 option(OPENPMDRAYTRACE_TEST "Compiling the test programs" OFF)
-option(OPENPMDRAYTRACE_INSTALL "Perform the installation" OFF)
+#option(OPENPMDRAYTRACE_INSTALL "Perform the installation" OFF)
 if(NOT DEFINED ${CMAKE_BUILD_TYPE})
   set(CMAKE_BUILD_TYPE "Release") # set Release by default
 endif()

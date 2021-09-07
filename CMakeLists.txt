@@ -79,7 +79,7 @@ ExternalProject_Add(openPMDraytrace
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp/
   DEPENDS openPMD-api
   #  DEPENDS pybind11
-  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} #-DopenPMD_DIR=${openPMD_DIR}
+  CMAKE_ARGS  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DOPENPMDRAYTRACE_TEST=ON
   #INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
   #INSTALL_COMMAND ""
   #set(openPMDraytrace_DIR ${install_dir}/src/openPMDraytrace-build/)
@@ -130,7 +130,7 @@ if (DOXYGEN_FOUND)
   message("Doxygen build started")
   
   # note the option ALL which allows to build the docs together with the application
-  add_custom_target( doc 
+  add_custom_target( openPMDraytrace_doc 
     ALL
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

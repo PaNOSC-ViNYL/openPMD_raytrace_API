@@ -49,11 +49,15 @@ cmake --build build/
 cmake --build build/ --target doc
 ```
 
+For testing:
+```
+ctest --test-dir  build/openPMDraytrace-prefix/src/openPMDraytrace-build/tests/ --output-on-failure
+```
 
 More information about the usage can be found [here](@ref usage)
 
 
 To do
 ------------------------------
- - [ ] Make a dedicated set of tests for the C++ API in cpp/tests/
+ - [X] Make a dedicated set of tests for the C++ API in cpp/tests/
  - [ ] Uniform convention for header files .h

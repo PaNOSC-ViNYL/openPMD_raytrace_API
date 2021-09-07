@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['c_2b_2b_20api_20for_20the_20openpmd_20ray_20trace_20extension',['c++ API for the openPMD ray trace extension',['../index.html',1,'']]]
+  ['get_5fposition',['get_position',['../classraytracing_1_1Ray.html#a6e7c3f83ea6b069b7b923480f10ce9c0',1,'raytracing::Ray']]],
+  ['get_5fstatus',['get_status',['../classraytracing_1_1Ray.html#a0456b47ec080626a3933bf0ab22d388a',1,'raytracing::Ray']]]
 ];

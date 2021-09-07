@@ -66,7 +66,7 @@ Otherwise, the user can also use the bare Ray class with the "scale" optional ar
  - [ ] Test the python binding
  - [ ] Cmake install for the python binding
  - [ ] PyPi package
- - [ ] ostream friend for the ray class to make easier to debug
+ - [X] ostream friend for the ray class to make easier to debug
  - [X] Repeating ray multiple times if requested when reading the openPMD file
  - [X] Writing in chunks
  - [X] Throwing runtime_error when over the maximum foreseen number of rays
