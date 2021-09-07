@@ -77,6 +77,8 @@ private:
 				_max = max;
 			}
 
+			void clear_chunk(void) { _vals.clear(); }
+
 			void clear(void) {
 				std::numeric_limits<T> lim;
 				_max = lim.min();
@@ -118,12 +120,48 @@ private:
 		void push(const Ray& this_ray);
 
 		/** \brief pop first ray
-		 * \param[in] next : if true, it returns the current ray and advance the counter by
-		 * one if false, at the next pop() it will retrieve the same ray \return ray : a ray
-		 * object
+		 * \param[in] next :
+		 *      if true it returns the current ray and advance the counter by one;
+		 *      if false at the next pop() it will retrieve the same ray
+		 * \return ray : a ray object
 		 */
 		Ray pop(bool next = true);
 
+		/** \brief empty the container but don't clear the min-max values for the records */
+		void clear_chunk(void) {
+			_size = 0;
+			_read = 0;
+
+			_x.clear_chunk();
+			_y.clear_chunk();
+			_z.clear_chunk();
+
+			_dx.clear_chunk();
+			_dy.clear_chunk();
+			_dz.clear_chunk();
+
+			_sx.clear_chunk();
+			_sy.clear_chunk();
+			_sz.clear_chunk();
+
+			_sPolAx.clear_chunk();
+			_sPolAy.clear_chunk();
+			_sPolAz.clear_chunk();
+			_pPolAx.clear_chunk();
+			_pPolAy.clear_chunk();
+			_pPolAz.clear_chunk();
+
+			_sPolPh.clear_chunk();
+			_pPolPh.clear_chunk();
+
+			_wavelength.clear_chunk();
+
+			_time.clear_chunk();
+			_weight.clear_chunk();
+
+			_id.clear_chunk();
+			_status.clear_chunk();
+		}
 		/** \brief reset the container, removing all the rays */
 		void clear(void) {
 			_size = 0;
@@ -290,26 +328,27 @@ private:
 	inline openPMD::ParticleSpecies& rays_pmd(void) {
 		auto i = iter_pmd(_iter);
 		return i.particles[_particle_species];
-		}
+	}
 
-		// returns the given particle species from the current iteration
-		inline openPMD::ParticleSpecies& rays_pmd(std::string particle_species) {
-			_particle_species = particle_species;
-			auto i            = iter_pmd(_iter);
-			return i.particles[particle_species];
-		}
+	// returns the given particle species from the current iteration
+	inline openPMD::ParticleSpecies& rays_pmd(std::string particle_species) {
+		_particle_species = particle_species;
+		auto i            = iter_pmd(_iter);
+		return i.particles[particle_species];
+	}
 
-		/** \brief Sets a new Record for the current particles of the current iteration
-		 * \param[in] isScalar : bool indicating if it is scalar
-		 * \param[in] dims : Unit dimensions
-		 * \param[in]
-		 */
-		void init_ray_prop(std::string name, ///< name : name of the field/property
-		                   openPMD::Dataset & dataset, ///< dataset definition
-		                   bool isScalar,              ///< true if it is a scalar
-		                   std::map<openPMD::UnitDimension, double> const& dims =
-		                           {{openPMD::UnitDimension::L, 0.}}, ///< dimensions
-		                   double unitSI = 0.);                       ///< scale w.r.t. SI
-	};
+	/** \brief Sets a new Record for the current particles of the current iteration
+	 * \param[in] isScalar : bool indicating if it is scalar
+	 * \param[in] dims : Unit dimensions
+	 * \param[in]
+	 */
+	void init_ray_prop(std::string name,          ///< name : name of the field/property
+	                   openPMD::Dataset& dataset, ///< dataset definition
+	                   bool isScalar,             ///< true if it is a scalar
+	                   std::map<openPMD::UnitDimension, double> const& dims =
+	                           {{openPMD::UnitDimension::L, 0.}}, ///< dimensions
+	                   double unitSI = 0.);                       ///< scale w.r.t. SI
+};
+
 } // namespace raytracing
 #endif

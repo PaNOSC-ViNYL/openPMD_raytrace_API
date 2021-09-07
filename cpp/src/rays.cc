@@ -4,12 +4,18 @@
 #include <cmath>
 ///\file
 
-using raytracing::Ray;
 using raytracing::openPMD_io;
-//using raytracing::openPMD_io::Rays;
+using raytracing::Ray;
+// using raytracing::openPMD_io::Rays;
 #ifndef V2SE
 #define VS2E 5.22703725e-6 /* Convert (v[m/s])**2 to E[meV] */
 #endif
+namespace raytracing {
+std::ostream&
+operator<<(std::ostream& os, const Ray& ray) {
+	return os << "(" << ray.x() << ", " << ray.y() << "\t" << ray.z() << ")";
+}
+} // namespace raytracing
 
 openPMD_io::Rays::Rays(): _size(0), _read(0) {}
 
@@ -66,7 +72,7 @@ openPMD_io::Rays::pop(bool next) {
 
 	r.set_id(_id[_read]);
 	r.set_status(_status[_read]);
-	
+
 	if (next) ++_read;
 	return r;
 }
@@ -74,12 +80,13 @@ openPMD_io::Rays::pop(bool next) {
 #ifdef SHERVIN
 //------------------------------
 void
-openPMD_io::Rays::store(float x, float y, float z,                    // position
-            float dx, float dy, float dz,                 // direction
-            float sx, float sy, float sz,                 // polarization
-            float sPolx, float sPoly, float sPolz,        // s-polarization
-            float pPolx, float pPoly, float pPolz,        // p-polarization
-            float wavelength, float time, float weight) { // ray wavelength, time and weight
+openPMD_io::Rays::store(float x, float y, float z,             // position
+                        float dx, float dy, float dz,          // direction
+                        float sx, float sy, float sz,          // polarization
+                        float sPolx, float sPoly, float sPolz, // s-polarization
+                        float pPolx, float pPoly, float pPolz, // p-polarization
+                        float wavelength, float time,
+                        float weight) { // ray wavelength, time and weight
 
 	_x.push_back(x);
 	_y.push_back(y);
@@ -118,9 +125,9 @@ openPMD_io::Rays::store(float x, float y, float z,                    // positio
 #ifdef SHERVIN
 void
 openPMD_io::Rays::push_back_nonphoton(double x, double y, double z,    //
-                          double dx, double dy, double dz, //
-                          double sx, double sy, double sz, //
-                          double t, double p) {
+                                      double dx, double dy, double dz, //
+                                      double sx, double sy, double sz, //
+                                      double t, double p) {
 	double abs_v = sqrt(dx * dx + dy * dy + dz * dz);
 	double ekin  = VS2E * abs_v * abs_v / 1e9;
 
@@ -155,9 +162,9 @@ openPMD_io::Rays::push_back_nonphoton(double x, double y, double z,    //
  */
 void
 openPMD_io::Rays::retrieve(double* x, double* y, double* z,    //
-               double* sx, double* sy, double* sz, //
-               double* vx, double* vy, double* vz, //
-               double* t, double* p) {             //, uint32_t userflag) {
+                           double* sx, double* sy, double* sz, //
+                           double* vx, double* vy, double* vz, //
+                           double* t, double* p) {             //, uint32_t userflag) {
 
 	assert(_read <= _size);
 	// Convert position from cm to m

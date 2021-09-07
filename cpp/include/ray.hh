@@ -32,34 +32,39 @@ constexpr int kAlive = 1; ///< alive ray
  * convenient methods for the user. Derived classes can be created from this and used by the users
  * in their programs.
  *
- * Unit conversions should be applied here, so that the Rays class stores information in a coherent way.
- * There is a small inefficiency if rays are used multiple times, but the time spent in unit conversions
- * is anyway negligible w.r.t. the simulation time.
+ * Unit conversions should be applied here, so that the Rays class stores information in a coherent
+ * way. There is a small inefficiency if rays are used multiple times, but the time spent in unit
+ * conversions is anyway negligible w.r.t. the simulation time.
  */
 class Ray {
 public:
-	static const size_t DIM = 3;
-	static const size_t X   = 0;
-	static const size_t Y   = 1;
-	static const size_t Z   = 2;
+#define DIM_INIT \
+	{ 0, 0, 0 }
+#define PHASEDIM_INIT \
+	{ 0, 0, 0, 0 }
+
+	static const size_t DIM      = 3;
+	static const size_t X        = 0;
+	static const size_t Y        = 1;
+	static const size_t Z        = 2;
 	static const size_t PHASEDIM = DIM + 1;
-	static const size_t PHASE = 3;
+	static const size_t PHASE    = 3;
 
 private:
-	float _position[DIM];
-	float _direction[DIM];
-	float _polarization[DIM]; // for non-photons
-	float _sPolarization[PHASEDIM];
-	float _pPolarization[PHASEDIM];
-	float _wavelength          = 0;
-	float _time                = 0;
-	float _weight              = 1;
-	unsigned long long int _id = 0;
+	float _position[DIM]           = DIM_INIT;
+	float _direction[DIM]          = DIM_INIT;
+	float _polarization[DIM]       = DIM_INIT; // for non-photons
+	float _sPolarization[PHASEDIM] = PHASEDIM_INIT;
+	float _pPolarization[PHASEDIM] = PHASEDIM_INIT;
+	float _wavelength              = 0;
+	float _time                    = 0;
+	float _weight                  = 1;
+	unsigned long long int _id     = 0;
 	// particleStatus_t _status;
 	particleStatus_t _status = kAlive;
 
 public:
-	//Ray(){};
+	// Ray(){};
 
 	/// \name Getters
 	///@{
@@ -229,7 +234,6 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Ray& ray);
 };
 
-
 #ifdef DD
 
 /** \class photon
@@ -262,8 +266,6 @@ public:
 };
 
 } // namespace raytracing
-
-
 
 #endif
 

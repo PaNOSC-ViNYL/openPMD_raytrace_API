@@ -63,6 +63,7 @@ target_sources(${LIBNAME}
   )
 target_compile_definitions(${LIBNAME}
   PRIVATE DOCTEST_CONFIG_DISABLE
+#  PRIVATE DEBUG
   )
 set_target_properties(${LIBNAME}
    PROPERTIES LINKER_LANGUAGE CXX

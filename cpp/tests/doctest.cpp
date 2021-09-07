@@ -25,7 +25,11 @@ TEST_CASE("[Ray] Read-Write") {
 TEST_CASE("[openPMD_io] Write") {
 
 	std::string filename = "test_file.";
-	SUBCASE("JSON") { filename += "json"; };
+	int to_read =2;
+	SUBCASE("JSON") { filename += "json";
+	  SUBCASE("Read 5 reays"){ to_read=5;}
+	  SUBCASE("Read 2 rays"){ to_read =2;}
+	};
 	SUBCASE("HDF5") { filename += "h5"; };
 
 	raytracing::openPMD_io iol(filename, "test code");
@@ -42,24 +46,37 @@ TEST_CASE("[openPMD_io] Write") {
 
 	// append
 	for (size_t i = 0; i < n_rays_max; ++i) { // don't write less than those set during init
-		myray.set_position(i, i, i);
+		myray.set_position(i+1, i+2, i+3);
 		iol.trace_write(myray);
 	}
 
-	std::cout << "trace write done" << std::endl;
 	iol.save_write();
-	std::cout << "save write done" << std::endl;
 
 	unsigned int nrepeat = 3;
-	auto nrays           = iol.init_read("2112", iter, 2, nrepeat);
+	//nrays as returned by init_read should be used because
+	//it might be < than what requested because there are not enough rays saved in the file
+	auto nrays           = iol.init_read("2112", iter, to_read, nrepeat);
+
+	// gravity direction
 	float x = 3, y = 5, z = 7;
 	iol.get_gravity_direction(&x, &y, &z);
-	std::cout << x << "\t" << y << "\t" << z << std::endl;
 	CHECK(x == doctest::Approx(0.33));
 	CHECK(y == doctest::Approx(0.33));
 	CHECK(z == doctest::Approx(0.33));
 
-	for (unsigned int i = 0; i < nrays * nrepeat; ++i) {
-		std::cout << i << "/" << nrays << "\t" << iol.trace_read();
+	
+	for (unsigned int i = 0; i < nrays; ++i) {
+	  for(size_t j  = 0; j < nrepeat; ++j) {
+	    std::cout << "\n[DOCTEST] ray " << i << "/" << nrays << " to be returned\t ray: \n";
+	    auto ray = iol.trace_read();
+	    std::cout << ray << std::endl;
+	    CHECK(ray.x() == doctest::Approx(i+1));
+	    CHECK(ray.y() == doctest::Approx(i+2));
+	    CHECK(ray.z() == doctest::Approx(i+3));
+	  }
 	}
+	std::cout << "#### END ######" << std::endl;
+
+
+	
 }
