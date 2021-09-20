@@ -1,4 +1,3 @@
-//#include "rays.hh" // helper class that stores the rays and returns 1D vectors
 #include "openPMD_io.hh"
 #include <iostream>
 #include <openPMD/openPMD.hpp> // openPMD C++ API
@@ -105,7 +104,7 @@ raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long lo
 	openPMD::Dataset dataset_ulongint =
 	        openPMD::Dataset(openPMD::Datatype::ULONGLONG, openPMD::Extent{n_rays});
 
-	init_ray_prop("position", dataset_float, false, {{openPMD::UnitDimension::L, 1.}}, 1e-2);
+	init_ray_prop("position", dataset_float, false, {{openPMD::UnitDimension::L, 1.}}, 1e-2); //cm
 	init_ray_prop("direction", dataset_float, false);
 
 	init_ray_prop("nonPhotonPolarization", dataset_float, false);
@@ -114,10 +113,10 @@ raytracing::openPMD_io::init_rays(std::string particle_species, unsigned long lo
 	init_ray_prop("photonPPolarizationAmplitude", dataset_float, false);
 	init_ray_prop("photonPPolarizationPhase", dataset_float, true);
 
-	init_ray_prop("wavelength", dataset_float, true, {{openPMD::UnitDimension::L, -1}},
-	              0); // 1.6021766e-13); // MeV
+	init_ray_prop("wavelength", dataset_float, true, {{openPMD::UnitDimension::L, 1}},
+	              1); // 1.6021766e-13); // MeV ///\todo which units?
 	init_ray_prop("weight", dataset_float, true);
-	init_ray_prop("rayTime", dataset_float, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3);
+	init_ray_prop("rayTime", dataset_float, true, {{openPMD::UnitDimension::T, 1.}}, 1e-3); //ms
 
 	init_ray_prop("id", dataset_ulongint, true);
 	init_ray_prop("particleStatus", dataset_int, true);
@@ -187,21 +186,18 @@ raytracing::openPMD_io::save_write(void) {
 	           "Number of saved rays: " << _rays.size() << "\t" << _rays._x.vals().size())
 
 	auto rays = rays_pmd();
-	// number of new rays being written
-	unsigned long long int extent_size =
-	        (_offset[0] + _rays.size() > _max_allowed_rays)
-	                ? _max_allowed_rays - _offset[0] // write only up to the maximum allowed
-	                                                 // number of rays and discard the others
-	                : _rays.size();                  // save all the rays
-
-	_nrays += extent_size;
-
 	// this check is here and not in the trace_write because I believe that loosing time for a
 	// CHUNKSIZE simulating rays that are not store is much less frequent that.
-	if (_nrays > _max_allowed_rays)
+	if (_nrays + _rays.size() > _max_allowed_rays)
 		throw std::runtime_error("Maximum number of foreseen rays reached, stopping");
 
-	openPMD::Extent extent = {extent_size};
+	// number of new rays being written
+#ifdef DEBUG
+	assert(_nrays == _offset[0]);
+#endif
+	_nrays += _rays.size();
+
+	openPMD::Extent extent = {_rays.size()};
 
 	save_write_single(rays, "position", "x", _rays._x, _offset, extent);
 	save_write_single(rays, "position", "y", _rays._y, _offset, extent);
