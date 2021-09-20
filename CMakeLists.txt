@@ -3,7 +3,7 @@
 # patch -p1 < ../cmake_api.patch
 # cmake .. -DopenPMD_USE_PYTHON=OFF -DopenPMD_INSTALL=OFF -DopenPMD_USE_INTERNAL_CATCH=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_CLI_TOOLS=OFF
 #cmake_minimum_required(VERSION 3.7.2)
-cmake_minimum_required(VERSION 3.21.1)
+cmake_minimum_required(VERSION 3.20.2)
 
 project(openPMD_raytrace_API VERSION 0.1.0)
 
